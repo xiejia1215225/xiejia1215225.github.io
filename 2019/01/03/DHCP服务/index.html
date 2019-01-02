@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>DNCP服务 | Linux小白之路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="网络配置&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。12[root@CentOS6 ~]#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNCP服务">
+<meta property="og:url" content="http://yoursite.com/2019/01/03/DHCP服务/index.html">
+<meta property="og:site_name" content="Linux小白之路">
+<meta property="og:description" content="网络配置&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。12[root@CentOS6 ~]#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%201.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%202.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%203.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+<meta property="og:updated_time" content="2018-12-18T05:41:26.861Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DNCP服务">
+<meta name="twitter:description" content="网络配置&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。12[root@CentOS6 ~]#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Linux小白之路" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Linux小白之路</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-DHCP服务" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/03/DHCP服务/" class="article-date">
+  <time datetime="2019-01-02T17:24:16.480Z" itemprop="datePublished">2019-01-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/DHCP/">DHCP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DNCP服务
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h1><p>&ensp;&ensp;&ensp;&ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0 </span></span><br><span class="line">    BOOTPROTO=dhcp</span><br></pre></td></tr></table></figure></p>
+<p>DHCP可以自动分配IP、子网掩码、网关、DNS。</p>
+<p>DHCP客户端使用的端口68，服务端使用端口67，使用的UDP应用层的协议。</p>
+<p>&ensp;&ensp;&ensp;&ensp;DHCP一般不为服务器分配IP，因为他们要使用固定IP，所以DHCP一般只为办公环境的主机分配IP。服务器一旦开机则自动分配IP，并有一定的租期，租期到了则收回，IP可以续租，续租失败则收回并重新分配，如果服务器关闭则收回IP，先到先得的原则，哪台主机先申请就优先分配，并且基于广播机制(DHCP服务器和客户端需要在一个局域网).但DHCP也可以为其他网段内主机分配IP，只要连接两个网段中间的路由器能转发DHCP配置请求即可，但这要求路由器配置中继功能。</p>
+<h2 id="续租"><a href="#续租" class="headerlink" title="续租"></a>续租</h2><p>&ensp;&ensp;&ensp;&ensp;50%：租赁时间达到50%时来续租，刚向DHCP服务器发向新的DHCPREQUEST请求。如果dhcp服务没有拒绝的理由，则回应DHCPACK信息。当DHCP客户端收到该应答信息后，就重新开始新的租用周期<br>&ensp;&ensp;&ensp;&ensp;87.5%：如果之前DHCP Server没有回应续租请求，等到租约期的7/8时，主机会再发送一次广播请求   </p>
+<h2 id="主要用途"><a href="#主要用途" class="headerlink" title="主要用途"></a>主要用途</h2><p>用于内部网络和网络服务供应商自动分配IP地址给用户<br>用于内部网络管理员作为对所有电脑作集中管理的手段  </p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>自动化安装系统<br>解决IPV4资源不足问题DHCP服务  </p>
+<h1 id="DHCP的工作原理-前四种经常用到"><a href="#DHCP的工作原理-前四种经常用到" class="headerlink" title="DHCP的工作原理(前四种经常用到)"></a>DHCP的工作原理(前四种经常用到)</h1><ol>
+<li>DHCP DISCOVER：客户端到服务器，客户端设置为自动获取后一开机就会向网络发广播</li>
+<li>DHCP OFFER ：服务器到客户端，如果网络中有DHCP服务器就会分配一个IP并同时在网络中进行标记此IP已被占用</li>
+<li>DHCP REQUEST：客户端到服务器，网络中有多个DHCP同时分配IP，客户端这时就会选择一个最快到达的ip</li>
+<li>DHCP ACK ：服务器到客户端，服务器最终确认</li>
+<li>DHCP NAK：服务器到客户端,通知用户无法分配合适的IP地址</li>
+<li>DHCP DECLINE ：客户端到服务器，指示地址已被使用</li>
+<li>DHCP RELEASE：客户端到服务器，放弃网络地址和取消剩余的租约时间</li>
+<li>DHCP INFORM：客户端到服务器, 客户端如果需要从DHCP服务器端获取更为详细的配置信息，则发送Inform报文向服务器进行请求，极少用到</li>
+</ol>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png?raw=true" alt="">  </p>
+<h1 id="模拟dhcp的实现过程"><a href="#模拟dhcp的实现过程" class="headerlink" title="模拟dhcp的实现过程"></a>模拟dhcp的实现过程</h1><ol>
+<li>准备：两台虚拟机（centos7模拟DHCP服务器，centos6模拟客户端）<br>centos7本身使用静态获取，centos6为动态获取 并且为仅主机模式<br>关闭防火墙 iptables -vnL<br>清空防火墙 iptables -F<br>关闭SELinux 检查状态getenforce<br>vim /etc/sysconfig/selinux   改为SELinux=disabled   重启后生效<br>对centos7设置，使其成为dhcp服务器  </li>
+</ol>
+<p>打开虚拟机—&gt;编辑—-&gt;虚拟网络设置—&gt;选中仅主机—&gt;取消下面DHCP设置  </p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%201.png?raw=true" alt="">  </p>
+<p>取消DHCP服务就意味着网络中没有了DHCP服务器，那么客户端如果设置DHCP获取那么是不能获取到IP  </p>
+<p>在客户机将其获取方式改为DHCP vim /etc/sysconfig/network-scripts/ifcfg-eth0<br><img src="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%202.png?raw=true" alt="">  </p>
+<p>设置完之后重启，客户机将不能获取IP，因为网络中没有DHCP服务器  </p>
+<ol start="2">
+<li>开始配置DHCP服务器（centos7）<br>配置前首先安装包  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#yum install dhcp -y</span></span><br><span class="line">Loaded plugins: fastestmirror, langpacks</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在其他的服务安装后就可以开启服务，但dhcp比较特殊，所以此时应先复制模板到配置文件进行相关设置，然后再开启服务<br><img src="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%203.png?raw=true" alt="">  </p>
+<p>如果此时开启服务肯定是失败的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#systemctl start httpd</span></span><br><span class="line">Failed to start httpd.service: Unit not found.</span><br></pre></td></tr></table></figure></p>
+<p>复制模板<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#cp /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example /etc/dhcp/dhcpd.conf</span></span><br><span class="line">cp: overwrite <span class="string">'/etc/dhcp/dhcpd.conf'</span>? y</span><br><span class="line">```  </span><br><span class="line">配置文件  </span><br><span class="line">```bash</span><br><span class="line">[root@cetos7 ~]<span class="comment">#vim /etc/dhcp/dhcpd.conf</span></span><br><span class="line"><span class="comment"># No service will be given on this subnet, but declaring it helps the </span></span><br><span class="line"><span class="comment"># DHCP server to understand the network topology.</span></span><br><span class="line"></span><br><span class="line">subnet 192.168.183.0 netmask 255.255.255.0 &#123;         <span class="comment">#添加网断及子网掩码</span></span><br><span class="line">        range 192.168.183.10 192.168.183.100;        <span class="comment">#指定ip范围                                            </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is a very basic subnet declaration.</span></span><br><span class="line"></span><br><span class="line">subnet 10.254.239.0 netmask 255.255.255.224 &#123;</span><br><span class="line">  range 10.254.239.10 10.254.239.20;</span><br></pre></td></tr></table></figure></p>
+<p>重启服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]<span class="comment">#systemctl restart dhcpd</span></span><br></pre></td></tr></table></figure></p>
+<p>重启完之后再次重启客户端(centos6),然后通过ifcongfig就能看见客户端获取到你指定范围内的ip了。至此已经实现一个模拟的DHCP服务器。  </p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/01/03/DHCP服务/" data-id="cjqfii8kb0000pco9dssn518p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/03/DNS服务/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DNS服务
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/03/Ansible基础及常用模块/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ansible基础及常用模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DHCP/">DHCP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ansiable/">ansiable</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ansible/">ansible</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux-文本工具/">linux 文本工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux，文本工具/">linux，文本工具</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/linux-文本工具/" style="font-size: 10px;">linux 文本工具</a> <a href="/tags/linux，文本工具/" style="font-size: 10px;">linux，文本工具</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/03/linux kernel/">linux kernel</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/03/自动化安装系统/">自动化安装系统</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/03/文本三剑客之sed/">文本三剑客之sed</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/03/系统启动流程与grub/">系统启动流程与grub</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/03/文本三剑客之grep/">文本三剑客之grep</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 谢 佳<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
