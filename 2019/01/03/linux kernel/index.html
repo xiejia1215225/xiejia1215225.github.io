@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>linux kernel | Linux知识库</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linux">
+  
+  
+  
+  
+  <meta name="description" content="kernel introduce    内核是操作系统的核心，掌控着所有硬件设备的控制权。也就是说，你所希望计算机帮你完成的各项工作，都需要通过内核的帮助才能完成。内核可以分为以下几种设计流派：  单内核(monolithic kernel)： Linux把所有功能集成于同一个程序微内核(micro kernel)：Windows, Solaris每种功能使用一个单独子系统实现内核   Linux">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux kernel">
+<meta property="og:url" content="http://yoursite.com/2019/01/03/linux kernel/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="kernel introduce    内核是操作系统的核心，掌控着所有硬件设备的控制权。也就是说，你所希望计算机帮你完成的各项工作，都需要通过内核的帮助才能完成。内核可以分为以下几种设计流派：  单内核(monolithic kernel)： Linux把所有功能集成于同一个程序微内核(micro kernel)：Windows, Solaris每种功能使用一个单独子系统实现内核   Linux">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+<meta property="og:updated_time" content="2019-01-02T17:43:16.966Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux kernel">
+<meta name="twitter:description" content="kernel introduce    内核是操作系统的核心，掌控着所有硬件设备的控制权。也就是说，你所希望计算机帮你完成的各项工作，都需要通过内核的帮助才能完成。内核可以分为以下几种设计流派：  单内核(monolithic kernel)： Linux把所有功能集成于同一个程序微内核(micro kernel)：Windows, Solaris每种功能使用一个单独子系统实现内核   Linux">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;" href="#" data-toggle="modal" data-target="#myModal">
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </ul></div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-linux kernel" style="width: 75%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      linux kernel
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/03/linux kernel/" class="article-date">
+	  <time datetime="2019-01-02T17:48:49.100Z" itemprop="datePublished">2019-01-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kernel-introduce"><a href="#kernel-introduce" class="headerlink" title="kernel introduce"></a>kernel introduce</h1><p>    内核是操作系统的核心，掌控着所有硬件设备的控制权。也就是说，你所希望计算机帮你完成的各项工作，都需要通过内核的帮助才能完成。内核可以分为以下几种设计流派：</p>
+<blockquote>
+<p>单内核(monolithic kernel)： Linux<br>把所有功能集成于同一个程序<br>微内核(micro kernel)：Windows, Solaris<br>每种功能使用一个单独子系统实现内核</p>
+</blockquote>
+<ul>
+<li><p>Linux内核特点：</p>
+<blockquote>
+<p>支持模块化：.ko（内核对象）<br>如：文件系统，硬件驱动，网络协议等<br>支持内核模块的动态装载和卸载</p>
+</blockquote>
+</li>
+<li><p>组成部分：</p>
+<blockquote>
+<p>核心文件：/boot/vmlinuz-VERSION-release<br>ramdisk：辅助的伪根系统</p>
+<blockquote>
+<p>CentOS 5: /boot/initrd-VERSION-release.img<br>CentOS 6,7: /boot/initramfs-VERSION-release.img</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>模块文件：/lib/modules/VERSION-release</p>
+</blockquote>
+<ul>
+<li>kernel</li>
+</ul>
+<blockquote>
+<p>自身初始化<br>检测可识别到的所有硬件设备<br>加载硬件驱动程序（借助于ramdisk加载驱动）<br>以只读方式挂载根文件系统<br>运行用户空间的第一个应用程序：/sbin/init启动流程</p>
+</blockquote>
+<h1 id="ramdisk："><a href="#ramdisk：" class="headerlink" title="ramdisk："></a>ramdisk：</h1><p>内核中的特性之一：使用缓冲和缓存来加速对磁盘上的文件访问，并加载相应的硬件驱动</p>
+<p>CentOS 5: initrd</p>
+<blockquote>
+<p>工具程序：mkinitrd<br>CentOS 6，7: initramfs<br>工具程序：mkinitrd, dracut</p>
+</blockquote>
+<p>ramdisk文件的制作</p>
+<ol>
+<li><p>mkinitrd命令<br> 为当前正在使用的内核重新制作ramdisk文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkinitrd /boot/initramfs-$(uname -r).img $(uname -r)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dracut命令<br> 为当前正在使用的内核重新制作ramdisk文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dracut /boot/initramfs-$(uname -r).img $(uname -r)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="内核版本"><a href="#内核版本" class="headerlink" title="内核版本"></a>内核版本</h1><h2 id="uname命令"><a href="#uname命令" class="headerlink" title="uname命令"></a>uname命令</h2><p>uname - print system information<br>uname [OPTION]…<br>-r: 显示VERSION-RELEASE<br>-n: 显示主机名<br>-a:显示所有信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#uname -r</span></span><br><span class="line">2.6.32-754.el6.x86_64</span><br><span class="line">[root@CentOS6 ~]<span class="comment">#uname -n</span></span><br><span class="line">CentOS6.localdomain</span><br><span class="line">[root@CentOS6 ~]<span class="comment">#uname -a</span></span><br><span class="line">Linux CentOS6.localdomain 2.6.32-754.el6.x86_64 <span class="comment">#1 SMP Tue Jun 19 21:26:04 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure>
+<p>uname -a 现实的内容依次为：</p>
+<ul>
+<li>Linux 操作系统类型</li>
+<li>CentOS6.localdomain 操作系统的主机名</li>
+<li>2.6.32-754.el6.x86_64 内核版本信息</li>
+<li>#1 SMP Tue Jun 19 21:26:04 UTC 2018 内核的编译日期</li>
+<li>x86_64 x86_64 x86_64 这三组分别是：操作系统版本、处理器类型、硬件平台</li>
+<li>GNU/Linux 操作系统名称</li>
+</ul>
+<h1 id="proc目录"><a href="#proc目录" class="headerlink" title="/proc目录"></a>/proc目录</h1><p>该目录是系统与内核交互的一个伪文件系统接口，内核把自己内部状态信息及统计信息，以及可配置参数通过proc伪文件系统加以输出。</p>
+<p>参数</p>
+<blockquote>
+<p>只读：输出信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@CentOS6 ~]<span class="comment">#cat /proc/sys/net/ipv4/icmp_echo_ignore_all </span></span><br><span class="line">&gt; 0</span><br><span class="line">&gt; [root@CentOS6 ~]<span class="comment">#ping 192.168.183.157</span></span><br><span class="line">&gt; PING 192.168.183.157 (192.168.183.157) 56(84) bytes of data.</span><br><span class="line">&gt; 64 bytes from 192.168.183.157: icmp_seq=1 ttl=64 time=0.074 ms</span><br><span class="line">&gt; 64 bytes from 192.168.183.157: icmp_seq=2 ttl=64 time=0.068 ms</span><br><span class="line">&gt; 64 bytes from 192.168.183.157: icmp_seq=3 ttl=64 time=0.069 ms</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>可写：可接受用户指定“新值”来实现对内核某功能或特性的配置,不支持编辑器编辑</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@CentOS6 ~]<span class="comment">#echo 1 &gt; /proc/sys/net/ipv4/icmp_echo_ignore_all</span></span><br><span class="line">&gt; [root@CentOS6 ~]<span class="comment">#cat /proc/sys/net/ipv4/icmp_echo_ignore_all</span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; [root@CentOS6 ~]<span class="comment">#ping -wl -c1 192.168.183.157</span></span><br><span class="line">&gt; PING 192.168.183.157 (192.168.183.157) 56(84) bytes of data.</span><br><span class="line">&gt; </span><br><span class="line">&gt; --- 192.168.183.157 ping statistics ---</span><br><span class="line">&gt; 1 packets transmitted, 0 received, 100% packet loss, time 10001ms</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/proc/sys</span><br></pre></td></tr></table></figure>
+<ol>
+<li>echo命令通过重定向方式也可以修改大多数参数的值<br> echo “VALUE” &gt; /proc/sys/path/to/parameter<br> echo “websrv” &gt; /proc/sys/kernel/hostname</li>
+<li>sysctl命令用于查看或设定此目录中诸多参数<br> sysctl -w path.to.parameter=VALUE<br> sysctl -w kernel.hostname=mail.magedu.com</li>
+</ol>
+<h1 id="sysctl命令"><a href="#sysctl命令" class="headerlink" title="sysctl命令"></a>sysctl命令</h1><p>默认配置文件：/etc/sysctl.conf</p>
+<ol>
+<li><p>设置某参数<br> sysctl -w parameter=VALUE</p>
+</li>
+<li><p>通过读取配置文件设置参数<br> sysctl -p [/path/to/conf_file]</p>
+</li>
+<li><p>查看所有生效参数<br> sysctl -a</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#sysctl -a |less</span></span><br><span class="line">kernel.sched_child_runs_first = 0</span><br><span class="line">kernel.sched_min_granularity_ns = 2000000</span><br><span class="line">kernel.sched_latency_ns = 10000000</span><br><span class="line">kernel.sched_wakeup_granularity_ns = 2000000</span><br><span class="line">kernel.sched_tunable_scaling = 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用的几个参数：<br> net.ipv4.ip_forward<br> net.ipv4.icmp_echo_ignore_all<br> vm.drop_caches</p>
+</li>
+</ol>
+<h1 id="sys目录"><a href="#sys目录" class="headerlink" title="/sys目录"></a>/sys目录</h1><p>sysfs：为用户使用的伪文件系统，输出内核识别出的各硬件设备的相关属性信息，也有内核对硬件特性的设定信息；有些参数是可以修改的，用于调整硬件工作特性<br>udev通过此路径下输出的信息动态为各设备创建所需要设备文件，udev是运行用户空间程序<br>专用工具：udevadmin, hotplug<br>udev为设备创建设备文件时，会读取其事先定义好的规则文件，一般在/etc/udev/rules.d及/usr/lib/udev/rules.d目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">网卡</span><br><span class="line">[root@CentOS6 ~]<span class="comment">#cat /etc/udev/rules.d/70-persistent-net.rules</span></span><br><span class="line"><span class="comment"># This file was automatically generated by the /lib/udev/write_net_rules</span></span><br><span class="line"><span class="comment"># program, run by the persistent-net-generator.rules rules file.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># You can modify it, as long as you keep each rule on a single</span></span><br><span class="line"><span class="comment"># line, and change only the value of the NAME= key.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># PCI device 0x8086:0x100f (e1000)</span></span><br><span class="line">SUBSYSTEM==<span class="string">"net"</span>, ACTION==<span class="string">"add"</span>, DRIVERS==<span class="string">"?*"</span>, ATTR&#123;address&#125;==<span class="string">"00:0c:29:bf:4b:56"</span>, ATTR&#123;<span class="built_in">type</span>&#125;==<span class="string">"1"</span>, KERNEL==<span class="string">"eth*"</span>, NAME=<span class="string">"eth0"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># PCI device 0x8086:0x100f (e1000)</span></span><br><span class="line">SUBSYSTEM==<span class="string">"net"</span>, ACTION==<span class="string">"add"</span>, DRIVERS==<span class="string">"?*"</span>, ATTR&#123;address&#125;==<span class="string">"00:0c:29:bf:4b:60"</span>, ATTR&#123;<span class="built_in">type</span>&#125;==<span class="string">"1"</span>, KERNEL==<span class="string">"eth*"</span>, NAME=<span class="string">"eth1"</span></span><br></pre></td></tr></table></figure>
+<h1 id="内核模块管理"><a href="#内核模块管理" class="headerlink" title="内核模块管理"></a>内核模块管理</h1><h2 id="查看当前内核已经装载的模块-lsmod"><a href="#查看当前内核已经装载的模块-lsmod" class="headerlink" title="查看当前内核已经装载的模块 lsmod"></a>查看当前内核已经装载的模块 lsmod</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#lsmod</span></span><br><span class="line">Module                  Size  Used by</span><br><span class="line">rfcomm                 71207  4 </span><br><span class="line">sco                    17589  2 </span><br><span class="line">bridge                 85770  0 </span><br><span class="line">bnep                   16370  2 </span><br><span class="line">l2cap                  54498  16 rfcomm,bnep</span><br><span class="line">autofs4                27000  3 </span><br><span class="line">8021q                  20507  0 </span><br><span class="line">garp                    7184  1 8021q</span><br><span class="line">stp                     2218  2 bridge,garp</span><br><span class="line">llc                     5450  3 bridge,garp,stp</span><br><span class="line">ipt_REJECT              2383  2 </span><br><span class="line">nf_conntrack_ipv4       9218  2 </span><br><span class="line">...省略...</span><br></pre></td></tr></table></figure>
+<h2 id="查看内核模块的文件-proc-modules"><a href="#查看内核模块的文件-proc-modules" class="headerlink" title="查看内核模块的文件/proc/modules"></a>查看内核模块的文件/proc/modules</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#cat /proc/modules </span></span><br><span class="line">rfcomm 71207 4 - Live 0xffffffffa05fd000</span><br><span class="line">sco 17589 2 - Live 0xffffffffa05f3000</span><br><span class="line">bridge 85770 0 - Live 0xffffffffa05d5000</span><br><span class="line">bnep 16370 2 - Live 0xffffffffa05cd000</span><br><span class="line">l2cap 54498 16 rfcomm,bnep, Live 0xffffffffa05b9000</span><br><span class="line">autofs4 27000 3 - Live 0xffffffffa05ad000</span><br><span class="line">8021q 20507 0 - Live 0xffffffffa05a2000</span><br><span class="line">garp 7184 1 8021q, Live 0xffffffffa059c000</span><br><span class="line">stp 2218 2 bridge,garp, Live 0xffffffffa0598000</span><br><span class="line">llc 5450 3 bridge,garp,stp, Live 0xffffffffa0592000</span><br><span class="line">ipt_REJECT 2383 2 - Live 0xffffffffa0567000</span><br><span class="line">nf_conntrack_ipv4 9218 2 - Live 0xffffffffa0560000</span><br><span class="line">nf_defrag_ipv4 1483 1 nf_conntrack_ipv4, Live 0xffffffffa055c000</span><br><span class="line">...省略...</span><br></pre></td></tr></table></figure>
+<h2 id="查看模块的详细描述信息-modinfo"><a href="#查看模块的详细描述信息-modinfo" class="headerlink" title="查看模块的详细描述信息 modinfo"></a>查看模块的详细描述信息 modinfo</h2><p>modinfo [ -k kernel ] [ modulename|filename… ]<br>-n：只显示模块文件路径<br>-p：显示模块参数<br>-a：作者<br>-d：描述</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#modinfo xfs</span></span><br><span class="line">filename:       /lib/modules/2.6.32-754.el6.x86_64/kernel/fs/xfs/xfs.ko</span><br><span class="line">license:        GPL</span><br><span class="line">description:    SGI XFS with ACLs, security attributes, large block/inode numbers, no debug enabled</span><br><span class="line">author:         Silicon Graphics, Inc.</span><br><span class="line">retpoline:      Y</span><br><span class="line">srcversion:     032C69ECC93FCBD7B47F691</span><br><span class="line">depends:        exportfs</span><br><span class="line">vermagic:       2.6.32-754.el6.x86_64 SMP mod_unload modversions</span><br></pre></td></tr></table></figure>
+<h2 id="内核模块装载或卸载-modprobe"><a href="#内核模块装载或卸载-modprobe" class="headerlink" title="内核模块装载或卸载 modprobe"></a>内核模块装载或卸载 modprobe</h2><p>装载模块：modprobe MOD_NAME (注意这里会自动解决模块间的依赖关系)<br>卸载模块：modprobe -r modulename</p>
+<h2 id="手动实现模块文件的装载和卸载"><a href="#手动实现模块文件的装载和卸载" class="headerlink" title="手动实现模块文件的装载和卸载"></a>手动实现模块文件的装载和卸载</h2><p>insmod命令：insmod /path/to/module_file(注意这里不会自动解决模块间的依赖关系)<br>rmmod命令:rmmod MOD_NAME</p>
+<h1 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h1><h2 id="前提："><a href="#前提：" class="headerlink" title="前提："></a>前提：</h2><ol>
+<li><p>准备好开发环境</p>
+</li>
+<li><p>获取目标主机上硬件设备的相关信息</p>
+</li>
+<li><p>获取目标主机系统功能的相关信息<br> 例如:需要启用相应的文件系统</p>
+</li>
+<li><p>获取内核源代码包</p>
+<p><a href="http://www.kernel.org" target="_blank" rel="noopener">www.kernel.org</a></p>
+<h2 id="开发环境准备"><a href="#开发环境准备" class="headerlink" title="开发环境准备"></a>开发环境准备</h2></li>
+<li><p>包组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Development Tools</span><br><span class="line">ncurses-devel</span><br><span class="line">elfutils-libelf-devel</span><br><span class="line">openssl-devel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标主机硬件设备相关信息</p>
+</li>
+</ol>
+<p>CPU：</p>
+<blockquote>
+<p>cat /proc/cpuinfo<br>x86info -a<br>lscpu</p>
+</blockquote>
+<p>PCI设备：</p>
+<blockquote>
+<p>lspci</p>
+<blockquote>
+<p>-v<br>-vv</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>lsusb</p>
+<blockquote>
+<p>-v<br>-vv</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>lsblk 块设备</p>
+</blockquote>
+<p>3.了解全部硬件设备信息<br>hal-device：CentOS 6</p>
+<h2 id="内核编译安装系统"><a href="#内核编译安装系统" class="headerlink" title="内核编译安装系统"></a>内核编译安装系统</h2><ul>
+<li><p>安装开发包组</p>
+</li>
+<li><p>下载源码文件</p>
+</li>
+<li>.config：准备文本配置文件</li>
+<li>make menuconfig：配置内核选项</li>
+<li>make [-j #]</li>
+<li>make modules_install：安装模块</li>
+<li>make install: 安装内核相关文件</li>
+<li>​安装bzImage为/boot/vmlinuz-VERSION-RELEASE</li>
+<li>​生成initramfs文件</li>
+<li>​编辑grub的配置文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">编译安装内核示例</span><br><span class="line">tar xf linux-3.10.67.tar.xz -C /usr/src</span><br><span class="line"><span class="built_in">cd</span> /usr/src/linux-3.10.67 </span><br><span class="line">cp /boot/config-$(uname -r) ./.config</span><br><span class="line">make <span class="built_in">help</span>  </span><br><span class="line">make menuconfig  </span><br><span class="line">make -j 2  </span><br><span class="line">make modules_install</span><br><span class="line">make install  </span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<h2 id="卸载内核"><a href="#卸载内核" class="headerlink" title="卸载内核"></a>卸载内核</h2><ul>
+<li>make clean：清理大多数编译生成的文件，但会保留config文件等</li>
+<li>make mrproper: 清理所有编译生成的文件、 config及某些备份文件</li>
+<li>make distclean：mrproper、清理patches以及编辑器备份文件卸载内核</li>
+<li>删除/lib/modules/目录下不需要的内核库文件</li>
+<li>删除/usr/src/linux/目录下不需要的内核源码</li>
+<li>删除/boot目录下启动的内核和内核映像文件</li>
+<li>更改grub的配置文件，删除不需要的内核启动列表</li>
+</ul>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: 'Donate', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>谢 佳
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/01/03/linux kernel/" target="_blank" title="linux kernel">http://yoursite.com/2019/01/03/linux kernel/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+</div></div>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/01/03/自动化安装系统/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">自动化安装系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kernel-introduce"><span class="nav-number">1.</span> <span class="nav-text">kernel introduce</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ramdisk："><span class="nav-number">2.</span> <span class="nav-text">ramdisk：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核版本"><span class="nav-number">3.</span> <span class="nav-text">内核版本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#uname命令"><span class="nav-number">3.1.</span> <span class="nav-text">uname命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#proc目录"><span class="nav-number">4.</span> <span class="nav-text">/proc目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl命令"><span class="nav-number">5.</span> <span class="nav-text">sysctl命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sys目录"><span class="nav-number">6.</span> <span class="nav-text">/sys目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核模块管理"><span class="nav-number">7.</span> <span class="nav-text">内核模块管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看当前内核已经装载的模块-lsmod"><span class="nav-number">7.1.</span> <span class="nav-text">查看当前内核已经装载的模块 lsmod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看内核模块的文件-proc-modules"><span class="nav-number">7.2.</span> <span class="nav-text">查看内核模块的文件/proc/modules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看模块的详细描述信息-modinfo"><span class="nav-number">7.3.</span> <span class="nav-text">查看模块的详细描述信息 modinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核模块装载或卸载-modprobe"><span class="nav-number">7.4.</span> <span class="nav-text">内核模块装载或卸载 modprobe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动实现模块文件的装载和卸载"><span class="nav-number">7.5.</span> <span class="nav-text">手动实现模块文件的装载和卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译内核"><span class="nav-number">8.</span> <span class="nav-text">编译内核</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提："><span class="nav-number">8.1.</span> <span class="nav-text">前提：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发环境准备"><span class="nav-number">8.2.</span> <span class="nav-text">开发环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核编译安装系统"><span class="nav-number">8.3.</span> <span class="nav-text">内核编译安装系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载内核"><span class="nav-number">8.4.</span> <span class="nav-text">卸载内核</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2018 - 2019 Linux知识库 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Linux知识库
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 谢 佳 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

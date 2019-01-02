@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>文本处理三剑客之awk | Linux知识库</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linux">
+  
+  
+  
+  
+  <meta name="description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本处理三剑客之awk">
+<meta property="og:url" content="http://yoursite.com/2019/01/03/文本处理三剑客之awk/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+<meta property="og:updated_time" content="2018-12-31T12:55:24.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文本处理三剑客之awk">
+<meta name="twitter:description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;" href="#" data-toggle="modal" data-target="#myModal">
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </ul></div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-文本处理三剑客之awk" style="width: 75%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      文本处理三剑客之awk
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/03/文本处理三剑客之awk/" class="article-date">
+	  <time datetime="2019-01-02T17:24:16.512Z" itemprop="datePublished">2019-01-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。<br>    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断、数组、循环等各种编程语言中所有可以使用的功能，因此我们还可以把gwak称为一种脚本语言解释器。</p>
+<ul>
+<li>基本用法：<br>  awk [options] ‘program’ var=value file…<br>  awk [options] -f programfile var=value file…<br>  awk [options] ‘BEGIN{action;… }pattern{action;… }END{action;… }’ file …<br>  awk程序可由：BEGIN语句块、能够使用模式匹配的通用语句块、END语句块，共3部分组成<br>  program 通常是被放在单引号中<br>  选项：<br>  -F “分隔符” 指明输入时用到的字段分隔符<br>  -v var=value 变量赋值</li>
+<li>awk语言</li>
+</ul>
+<p>基本格式：awk [options] ‘program’ file…<br>Program：pattern{action statements;..}</p>
+<blockquote>
+<p>pattern和action</p>
+<blockquote>
+<p>pattern部分决定动作语句何时触发及触发事件</p>
+<blockquote>
+<p>BEGIN,END</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>action statements对数据进行处理，放在{}内指明</p>
+<blockquote>
+<p>print, printf</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>分割符、域和记录</p>
+<blockquote>
+<p>awk执行时，由分隔符分隔的字段（域）标记1,1,2…n称为域标识。n称为域标识。0为所有域，注意：此时和shell中变量符含义不同文件的每一行称为记录省略action，则默认执行print符含义不同文件的每一行称为记录省略action，则默认执行print0 的操作</p>
+<ul>
+<li>awk工作原理<br>  第一步：执行BEGIN{action;… }语句块中的语句<br>  第二步：从文件或标准输入(stdin)读取一行，然后执行pattern{ action;… }语句块，它逐行扫描文件，从第一行到最后一行重复这个过程，直到文件全部被读取完毕。<br>  第三步：当读至输入流末尾时，执行END{action;…}语句块</li>
+</ul>
+</blockquote>
+<p>    BEGIN语句块在awk开始从输入流中读取行之前被执行，这是一个可选的语句块，<br>比如变量初始化、打印输出表格的表头等语句通常可以写在BEGIN语句块中<br>    END语句块在awk从输入流中读取完所有的行之后即被执行，比如打印所有行的分析结果这类信息汇总都是在END语句块中完成，它也是一个可选语句块<br>    pattern语句块中的通用命令是最重要的部分，也是可选的。如果没有提供pattern语句块，则默认执行<code>{ print }</code>，即打印每一个读取到的行，awk读取的每一行都会执行该语句块</p>
+<h2 id="awk的输出命令之一：print"><a href="#awk的输出命令之一：print" class="headerlink" title="awk的输出命令之一：print"></a>awk的输出命令之一：print</h2><p>print格式：print item1, item2, …</p>
+<blockquote>
+<p>item:字符串，用引号引用;</p>
+<blockquote>
+<p>print “hello”,”world”</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>变量：显示变量的值，也可以直接使用变量的名进行引用;</p>
+<blockquote>
+<p>print name</p>
+</blockquote>
+</blockquote>
+<p>要点：</p>
+<ol>
+<li>各item之间需要逗号分隔：而输出的分隔符为默认空白字符;</li>
+<li>输出item可以字符串，也可是数值；当前记录的字段、变量或awk的表达式:数值会被隐士转换为字符串进行输出；</li>
+<li>如省略item，相当于”print $0”,用于输出整行;</li>
+<li>输出空白字符：print “ “</li>
+</ol>
+<p>示例：</p>
+<blockquote>
+<p>awk -F: ‘{print}’ /etc/passwd 等同于 awk -F: ‘{print $0}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#cat /etc/passwd</span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt; bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print&#125;' /etc/passwd</span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt; bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘{print “wang”}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print "wang"&#125;' /etc/passwd  </span></span><br><span class="line">&gt; <span class="comment"># 以：为分隔符，打印wang</span></span><br><span class="line">&gt; wang</span><br><span class="line">&gt; wang</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘{print $1}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print $1&#125;' /etc/passwd  </span></span><br><span class="line">&gt; <span class="comment"># 以：为分隔符，打印第一列</span></span><br><span class="line">&gt; root</span><br><span class="line">&gt; bin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘{print 1”\t”1”\t”3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print $1" \t"$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; <span class="comment"># 以：为分隔符，打印第一列、第三列加上空格和制表符</span></span><br><span class="line">&gt; root    0</span><br><span class="line">&gt; bin     1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>grep “^UUID” /etc/fstab | awk ‘{print 2,2,4}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#grep "^UUID" /etc/fstab | awk '&#123;print $2,$4&#125;'</span></span><br><span class="line">&gt; / defaults</span><br><span class="line">&gt; /boot defaults</span><br><span class="line">&gt; /data defaults</span><br><span class="line">&gt; swap defaults</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="awk变量"><a href="#awk变量" class="headerlink" title="awk变量"></a>awk变量</h1><p>变量：内置和自定义变量</p>
+<h2 id="内置变量"><a href="#内置变量" class="headerlink" title="内置变量"></a>内置变量</h2><ol>
+<li><p>FS：输入字段分隔符，默认为空白字符</p>
+<blockquote>
+<p>awk -v FS=’:’ ‘{print 1,FS,1,FS,3}’ /etc/passwd<br>等同于awk -F: ‘{print 1,”:”,1,”:”,3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -v FS=':' '&#123;print $1,FS,$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; root : 0</span><br><span class="line">&gt; bin : 1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>OFS：输出字段分隔符，默认为空白字符</p>
+<blockquote>
+<p>awk -v FS=’:’ -v OFS=’:’ ‘{print 1,1,3,$7}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -v FS=':' -v OFS=':' '&#123;print $1,$3,$7&#125;' /etc/passwd</span></span><br><span class="line">&gt; root:0:/bin/bash</span><br><span class="line">&gt; bin:1:/sbin/nologin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>RS：输入记录分隔符，指定输入时的换行符</p>
+<blockquote>
+<p>awk -v RS=’:’ ‘{print }’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -v RS=':' '&#123;print &#125;' /etc/passwd</span></span><br><span class="line">&gt; root</span><br><span class="line">&gt; x</span><br><span class="line">&gt; 0</span><br><span class="line">&gt; 0</span><br><span class="line">&gt; root</span><br><span class="line">&gt; /root</span><br><span class="line">&gt; /bin/bash</span><br><span class="line">&gt; bin</span><br><span class="line">&gt; x</span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 1</span><br><span class="line">&gt; bin</span><br><span class="line">&gt; /bin</span><br><span class="line">&gt; /sbin/nologin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>ORS：输出记录分隔符，输出时用指定符号代替换行符</p>
+<blockquote>
+<p>awk -v RS=’:’ -v ORS=’\t’ ‘{print }’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -v RS=':' -v ORS='\t' '&#123;print &#125;' /etc/passwd   </span></span><br><span class="line">&gt; root    x       0       0       root    /root   /bin/bash</span><br><span class="line">&gt; bin     x       1       1       bin     /bin    /sbin/nologin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>NF：字段数量</p>
+<blockquote>
+<p>awk -F: ‘{print NF}’ /etc/passwd 引用变量时，变量前不需加$</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print NF&#125;' /etc/passwd</span></span><br><span class="line">&gt; 7</span><br><span class="line">&gt; 7</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk -F: ‘{print $(NF-1)}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print $(NF-1)&#125;' /etc/passwd</span></span><br><span class="line">&gt; /root</span><br><span class="line">&gt; /bin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>NR：记录号(如果是多个文件，它会一起计数的)</p>
+<blockquote>
+<p>awk ‘{print NR}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print NR&#125;' /etc/passwd</span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 2</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk END’{print NR}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk END'&#123;print NR&#125;' /etc/passwd </span></span><br><span class="line">&gt; 58</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>FNR：各文件分别计数,记录号</p>
+<blockquote>
+<p>awk ‘{print FNR}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print FNR&#125;' /etc/passwd</span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 2</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>FILENAME：当前文件名</p>
+<blockquote>
+<p>awk ‘{print FILENAME}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print FILENAME&#125;' /etc/fstab </span></span><br><span class="line">&gt; /etc/fstab</span><br><span class="line">&gt; /etc/fstab</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>ARGC：命令行参数的个数</p>
+<blockquote>
+<p>awk ‘{print ARGC}’ /etc/fstab /etc/inittab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print ARGC&#125;' /etc/passwd</span></span><br><span class="line">&gt; 2</span><br><span class="line">&gt; 2</span><br><span class="line">&gt; ``` </span><br><span class="line">&gt; 10. ARGV：数组，保存的是命令行所给定的各参数  </span><br><span class="line">&gt; &gt;awk <span class="string">'&#123;print ARGV[0]&#125;'</span> /etc/passwd  </span><br><span class="line">&gt; ```bash</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print ARGV[0]&#125;' /etc/passwd  </span></span><br><span class="line">&gt; awk</span><br><span class="line">&gt; awk</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;print ARGV[1]&#125;' /etc/passwd </span></span><br><span class="line">&gt; /etc/passwd</span><br><span class="line">&gt; /etc/passwd</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<h2 id="自定义变量-区分字符大小写"><a href="#自定义变量-区分字符大小写" class="headerlink" title="自定义变量(区分字符大小写)"></a>自定义变量(区分字符大小写)</h2><ol>
+<li><p>-v var=value</p>
+</li>
+<li><p>在program中直接定义</p>
+<p> 示例：</p>
+<blockquote>
+<p>awk -v name=”test” ‘{print $1,name}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -v name="test" '&#123;print $1,name&#125;' /etc/fstab </span></span><br><span class="line">&gt;  <span class="built_in">test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; <span class="comment"># test</span></span><br><span class="line">&gt; UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 <span class="built_in">test</span></span><br><span class="line">&gt; UUID=7d1b5c8d-8054-4496-befe-267963e07605 <span class="built_in">test</span></span><br><span class="line">&gt; UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 <span class="built_in">test</span></span><br><span class="line">&gt; UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 <span class="built_in">test</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk ‘{sex=”male”;print $1,sex,age;age=”18”}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;sex="male";print $1,sex,age;age="18"&#125;' /etc/fstab </span></span><br><span class="line">&gt;  male        <span class="comment">#第一次age变量没有值，为空。所以变量应该先赋值，后使用</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; <span class="comment"># male 18</span></span><br><span class="line">&gt; UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 male 18</span><br><span class="line">&gt; UUID=7d1b5c8d-8054-4496-befe-267963e07605 male 18</span><br><span class="line">&gt; UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 male 18</span><br><span class="line">&gt; UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 male 18</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#cat awkscript</span></span><br><span class="line">&#123;<span class="built_in">print</span> script,<span class="variable">$1</span>,<span class="variable">$2</span>&#125;    <span class="comment">#print的内容可以写在一个脚本，可以用 -f  调用。</span></span><br><span class="line">[root@cetos7 ~]<span class="comment">#awk -F: -f awkscript script="awk" /etc/passwd</span></span><br><span class="line">awk root x</span><br><span class="line">awk bin x</span><br><span class="line">awk daemon x</span><br><span class="line">awk adm x</span><br></pre></td></tr></table></figure>
+<h1 id="awk的输出命令之二-printf命令"><a href="#awk的输出命令之二-printf命令" class="headerlink" title="awk的输出命令之二:printf命令"></a>awk的输出命令之二:printf命令</h1><p>格式化输出：printf “FORMAT” , item1, item2, …</p>
+<ul>
+<li>必须指定FORMAT</li>
+<li>不会自动换行，需要显式给出换行控制符，\n</li>
+<li>FORMAT中需要分别为后面每个item指定格式符</li>
+</ul>
+<ol>
+<li>格式符：与item一一对应<br> %c：显示字符的ASCII码<br> %d, %i：显示十进制整数<br> %e, %E：显示科学计数法数值<br> %f：显示为浮点数<br> %g, %G：以科学计数法或浮点形式显示数值<br> %s：显示字符串<br> %u：无符号整数<br> %%：显示%自身</li>
+<li>修饰符<br> #[.#] 第一个数字控制显示的宽度；第二个#表示小数点后精度，%3.1f</li>
+</ol>
+<ul>
+<li><p>左对齐（默认右对齐） %-15s</p>
+</li>
+<li><p>显示数值的正负符号 %+dprintf示例</p>
+<p>  示例：</p>
+<blockquote>
+<p>awk -F: ‘{printf “%s”,$1}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;printf "%s",$1&#125;'  /etc/passwd  </span></span><br><span class="line">&gt; rootbindaemonadmlpsyncshutdownhaltmailoperatorgamesftpnobodysystemd-networkdbuspolkitdlibstoragemgmtrpccolordsaslauthabrtsetroubleshootrtkitchronyrpcusernfsnobodyqemuunboundglustertssusbmuxdgeoclueradvdpulsegdmgnome-initial-setupsshdavahipostfixntptcpdumpxiealiceyanglizhaohuappapp2webuserapp3zhanggentoomagetomcatapachememcachedhttpd</span><br><span class="line">&gt; ```   </span><br><span class="line">&gt; &gt;awk -F: <span class="string">'&#123;printf "%-20s %10d\n",$1,$3&#125;'</span> /etc/passwd  </span><br><span class="line">&gt; </span><br><span class="line">&gt; &gt;awk -F: <span class="string">'&#123;printf "Username: %s,UID:%d\n",$1,$3&#125;'</span> /etc/passwd </span><br><span class="line">&gt; ```bash</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;printf "Username: %s,UID:%d\n",$1,$3&#125;' /etc/passwd  </span></span><br><span class="line">&gt; Username: root,UID:0</span><br><span class="line">&gt; Username: bin,UID:1</span><br><span class="line">&gt; ``` </span><br><span class="line">&gt; &gt;awk -F: <span class="string">'&#123;printf "Username: %15s,UID:%d\n",$1,$3&#125;'</span> /etc/passwd  </span><br><span class="line">&gt; ```bash</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;printf "Username: %15s,UID:%d\n",$1,$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; Username:            root,UID:0</span><br><span class="line">&gt; Username:             bin,UID:1</span><br><span class="line">&gt; Username:          daemon,UID:2</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>awk -F: ‘{printf “Username: %-15s,UID:%d\n”,1,1,3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;printf "Username: %-15s,UID:%d\n",$1,$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; Username: root           ,UID:0</span><br><span class="line">&gt; Username: bin            ,UID:1</span><br><span class="line">&gt; Username: daemon         ,UID:2</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h1><ol>
+<li><p>算术操作符：<br> x+y, x-y, x*y, x/y, x^y, x%y<br> -x：转换为负数<br> +x：将字符串转换为数值</p>
+</li>
+<li><p>字符串操作符：没有符号的操作符，字符串连接</p>
+</li>
+<li><p>赋值操作符：<br> =, +=, -=, *=, /=, %=, ^=，++, –<br> 下面两语句有何不同</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk ‘BEGIN&#123;i=0;<span class="built_in">print</span> ++i,i&#125;’  <span class="comment">#先自加再打印</span></span><br><span class="line">awk ‘BEGIN&#123;i=0;<span class="built_in">print</span> i++,i&#125;’  <span class="comment">#先打印再自加</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较操作符：<br> ==, !=, &gt;, &gt;=, &lt;, &lt;=</p>
+</li>
+<li><p>模式匹配符：</p>
+<p> ~：左边是否和右边匹配，包含</p>
+<p> !~：是否不匹配</p>
+<p> 示例：</p>
+<blockquote>
+<p>awk -F: ‘0 ~ /root/{print0 ~ /root/{print1}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$0 ~ /root/&#123;print $1&#125;' /etc/passwd   </span></span><br><span class="line">&gt; root</span><br><span class="line">&gt; operator</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk ‘$0~”^root”‘ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '$0~"^root"' /etc/passwd  </span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘$3==0’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$3==0' /etc/passwd   </span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>逻辑操作符：与&amp;&amp;，或||，非!</p>
+<p> 示例：</p>
+<blockquote>
+<p>awk -F: ‘3&gt;1000{print3&gt;1000{print1,$3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$3&gt;1000&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; nfsnobody 65534</span><br><span class="line">&gt; alice 1003</span><br><span class="line">&gt; yang 1004</span><br><span class="line">&gt; ·········</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk -F: ‘3&lt;1000{print3&lt;1000{print1,$3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$3&lt;1000&#123;print $1,$3&#125;' /etc/passwd </span></span><br><span class="line">&gt; root 0</span><br><span class="line">&gt; bin 1</span><br><span class="line">&gt; daemon 2</span><br><span class="line">&gt; ·········</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>条件表达式（三目表达式）</p>
+<p> selector?if-true-expression:if-false-expression</p>
+<p> 示例：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#awk -F: '&#123;$3&gt;=1000 ? usertype="Common User":usertype="SysUser";printf "%15s:%-s\n",$1,usertype&#125;' /etc/passwd</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="awk-PATTERN"><a href="#awk-PATTERN" class="headerlink" title="awk PATTERN"></a>awk PATTERN</h2><p>PATTERN:根据pattern条件，过滤匹配的行，再做处理</p>
+<ol>
+<li><p>如果未指定：空模式，匹配每一行</p>
+</li>
+<li><p>/regular expression/：仅处理能够模式匹配到的行，需要用/ /括起来</p>
+<blockquote>
+<p>awk ‘/^UUID/{print $1}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '/^UUID/&#123;print $1&#125;' /etc/fstab </span></span><br><span class="line">&gt; UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920</span><br><span class="line">&gt; UUID=7d1b5c8d-8054-4496-befe-267963e07605</span><br><span class="line">&gt; UUID=7556e4a8-128e-457f-99f7-3f1ccf517952</span><br><span class="line">&gt; UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk ‘!/^UUID/{print $1}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '!/^UUID/&#123;print $1&#125;' /etc/fstab </span></span><br><span class="line">&gt; </span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt; <span class="comment">#</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>relational expression: 关系表达式，结果为“真”才会被处理</p>
+<p> 真：结果为非0值，非空字符串</p>
+<p> 假：结果为空字符串或0值</p>
+<p> 示例：</p>
+<blockquote>
+<p>awk -F: ‘i=1;j=1{print i,j}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: 'i=1;j=1&#123;print i,j&#125;' /etc/passwd</span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt; 1 1</span><br><span class="line">&gt; bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">&gt; 1 1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk ‘!0’ /etc/passwd ; awk ‘!1’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '!0' /etc/passwd</span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt; bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '!1' /etc/passwd</span></span><br><span class="line">&gt; root:x:0:0:root:/root:/bin/bash</span><br><span class="line">&gt; bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘NF==”/bin/bash” {printNF==”/bin/bash” {print1,$NF}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$NF=="/bin/bash" &#123;print $1,$NF&#125;' /etc/passwd       </span></span><br><span class="line">&gt; root /bin/bash</span><br><span class="line">&gt; xie /bin/bash</span><br><span class="line">&gt; alice /bin/bash</span><br><span class="line">&gt; yang /bin/bash</span><br><span class="line">&gt; li /bin/bash</span><br><span class="line">&gt; zhao /bin/bash</span><br><span class="line">&gt; hu /bin/bash</span><br><span class="line">&gt; app /bin/bash</span><br><span class="line">&gt; app3 /bin/bash</span><br><span class="line">&gt; zhang /bin/bash</span><br><span class="line">&gt; mage /bin/bash</span><br><span class="line">&gt; tomcat /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘NF /bashNF /bash/{print 1,1,NF}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '$NF ~ /bash$/&#123;print $1,$NF&#125;' /etc/passwd</span></span><br><span class="line">&gt; root /bin/bash</span><br><span class="line">&gt; xie /bin/bash</span><br><span class="line">&gt; alice /bin/bash</span><br><span class="line">&gt; yang /bin/bash</span><br><span class="line">&gt; li /bin/bash</span><br><span class="line">&gt; zhao /bin/bash</span><br><span class="line">&gt; hu /bin/bash</span><br><span class="line">&gt; app /bin/bash</span><br><span class="line">&gt; app3 /bin/bash</span><br><span class="line">&gt; zhang /bin/bash</span><br><span class="line">&gt; mage /bin/bash</span><br><span class="line">&gt; tomcat /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>line ranges：行范围</p>
+<p> startline,endline：/pat1/,/pat2/ 不支持直接给出数字格式</p>
+<blockquote>
+<p>awk -F: ‘/^root/,/^adm/{print $1}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '/^root/,/^adm/&#123;print $1&#125;' /etc/passwd</span></span><br><span class="line">&gt; root</span><br><span class="line">&gt; bin</span><br><span class="line">&gt; daemon</span><br><span class="line">&gt; adm</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk -F: ‘(NR&gt;5&amp;&amp;NR&lt;10){print NR,$1}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '(NR&gt;5&amp;&amp;NR&lt;10)&#123;print NR,$1&#125;' /etc/passwd      </span></span><br><span class="line">&gt; 6 sync</span><br><span class="line">&gt; 7 shutdown</span><br><span class="line">&gt; 8 halt</span><br><span class="line">&gt; 9 mail</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>BEGIN/END模式</p>
+<p> BEGIN{}：仅在开始处理文件中的文本之前执行一次</p>
+<p> END{}：仅在文本处理完成之后执行一次</p>
+<p> 示例 :</p>
+<blockquote>
+<p>awk -F: ‘BEGIN{print “USER USERID”} {print 1”:”1”:”3} END{print “END FILE”}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: 'BEGIN&#123;print "USER USERID"&#125; &#123;print $1":"$3&#125; END&#123;print "END FILE"&#125;' /etc/passwd</span></span><br><span class="line">&gt; USER USERID</span><br><span class="line">&gt; root:0</span><br><span class="line">&gt; bin:1</span><br><span class="line">&gt; ······</span><br><span class="line">&gt; memcached:986</span><br><span class="line">&gt; httpd:80</span><br><span class="line">&gt; END FILE</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk -F: ‘{print “USER USERID”;print 1”:”1”:”3} END{print “END FILE”}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: '&#123;print "USER USERID";print $1":"$3&#125; END&#123;print "END FILE"&#125;' /etc/passwd  </span></span><br><span class="line">&gt; USER USERID</span><br><span class="line">&gt; root:0</span><br><span class="line">&gt; USER USERID</span><br><span class="line">&gt; bin:1</span><br><span class="line">&gt; ······</span><br><span class="line">&gt; USER USERID</span><br><span class="line">&gt; memcached:986</span><br><span class="line">&gt; USER USERID</span><br><span class="line">&gt; httpd:80</span><br><span class="line">&gt; END FILE</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘BEGIN{print “USER UID \n————— “}{print 1,1,3}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: 'BEGIN&#123;print "USER UID \n--------------- "&#125;&#123;print $1,$3&#125;' /etc/passwd</span></span><br><span class="line">&gt; USER UID </span><br><span class="line">&gt; --------------- </span><br><span class="line">&gt; root 0</span><br><span class="line">&gt; bin 1</span><br><span class="line">&gt; ······</span><br><span class="line">&gt; memcached:986</span><br><span class="line">&gt; httpd:80</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk -F: ‘BEGIN{print “USER UID \n—————– “}{print 1,1,3}END{print”=================”}’ /etc/passwd</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk -F: 'BEGIN&#123;print "USER UID \n----------------- "&#125;&#123;print $1,$3&#125;END&#123;print"================="&#125;'  /etc/passwd </span></span><br><span class="line">&gt; USER UID </span><br><span class="line">&gt; ----------------- </span><br><span class="line">&gt; root 0</span><br><span class="line">&gt; bin 1</span><br><span class="line">&gt; ······</span><br><span class="line">&gt; memcached 986</span><br><span class="line">&gt; httpd 80</span><br><span class="line">&gt; =================</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>seq 5 | awk ‘i=0’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk 'i=0'</span></span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>seq 5 | awk ‘i=1’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk 'i=1'  </span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 2</span><br><span class="line">&gt; 3</span><br><span class="line">&gt; 4</span><br><span class="line">&gt; 5</span><br><span class="line">&gt; ``` </span><br><span class="line">&gt; &gt;seq 5 | awk <span class="string">'i=!i'</span>  </span><br><span class="line">&gt; ```bash</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk 'i=!i' </span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 3</span><br><span class="line">&gt; 5</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>seq 5 | awk ‘{i=!i;print i}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk '&#123;i=!i;print i&#125;'</span></span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 0</span><br><span class="line">&gt; 1</span><br><span class="line">&gt; 0</span><br><span class="line">&gt; 1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>seq 5 | awk ‘!(i=!i)’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk '!(i=!i)</span></span><br><span class="line">&gt; 2</span><br><span class="line">&gt; 4</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>seq 5 | awk -v i=1 ‘i=!i’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#seq 5 | awk -v i=1 'i=!i'</span></span><br><span class="line">&gt; 2</span><br><span class="line">&gt; 4</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="awk-action"><a href="#awk-action" class="headerlink" title="awk action"></a>awk action</h1><p>常用的action分类</p>
+<ul>
+<li><p>Expressions：算术，比较表达式等</p>
+</li>
+<li><p>Control statements：if, while等</p>
+</li>
+<li><p>Compound statements：组合语句</p>
+</li>
+<li><p>input statements</p>
+</li>
+<li><p>output statements：print等</p>
+<h1 id="awk控制语句"><a href="#awk控制语句" class="headerlink" title="awk控制语句"></a>awk控制语句</h1></li>
+</ul>
+<ol>
+<li><p>if-else</p>
+<p> 语法：if(condition){statement;…}[else statement]</p>
+<p> if(condition1){statement1}else if(condition2){statement2}else{statement3}</p>
+<p> 使用场景：对awk取得的整行或某个字段做条件判断</p>
+<p> 示例：</p>
+<blockquote>
+<p>df -h|awk -F% ‘/^\/dev/{print 1}’|awk ‘1}’|awk ‘NF&gt;=10{print 1,1,5}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#df -h|awk -F% '/^\/dev/&#123;print $1&#125;'|awk '$NF&gt;=10&#123;print $1,$5&#125;'  </span></span><br><span class="line">&gt; /dev/sda2 21</span><br><span class="line">&gt; /dev/sda1 17</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>awk ‘BEGIN{ test=100;if(test&gt;90){print “very good”}else if(test&gt;60){ print “good”}else{print “no pass”}}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123; test=100;if(test&gt;90)&#123;print "very good"&#125;else if(test&gt;60)&#123; print "good"&#125;else&#123;print "no pass"&#125;&#125;'  </span></span><br><span class="line">&gt; very good</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>while循环<br> 语法：while(condition){statement;…}<br> 条件“真”，进入循环；条件“假”，退出循环<br> 使用场景：<br> 对一行内的多个字段逐一类似处理时使用<br> 对数组中的各元素逐一处理时使用<br> 示例：</p>
+<blockquote>
+<p>awk ‘/^[[:space:]]*linux16/{i=1;while(i&lt;=NF){if(length(i)&gt;=10){printi)&gt;=10){print1,length($i)};i++}}’ /etc/grub2.cfg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '/^[[:space:]]*linux16/&#123;i=1;while(i&lt;=NF)&#123;if(length($i)&gt;=10)&#123;print $1,length($i)&#125;;i++&#125;&#125;' /etc/grub2.cfg </span></span><br><span class="line">&gt; linux16 30</span><br><span class="line">&gt; linux16 46</span><br><span class="line">&gt; linux16 16</span><br><span class="line">&gt; linux16 16</span><br><span class="line">&gt; linux16 50</span><br><span class="line">&gt; linux16 46</span><br><span class="line">&gt; linux16 16</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>do-while循环<br> 语法：do {statement;…}while(condition)<br> 意义：无论真假，至少执行一次循环体<br> 示例：</p>
+<blockquote>
+<p>awk ‘BEGIN{total=0;i=0;do{ total+=i;i++ } while( i&lt;=100 );print total}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123;total=0;i=0;do&#123; total+=i;i++ &#125; while( i&lt;=100 );print total&#125;'</span></span><br><span class="line">&gt; 5050</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>for循环<br> 语法：for(expr1;expr2;expr3) {statement;…}<br> 常见用法：<br> for(variable assignment;condition;iteration process)<br> {for-body}</p>
+</li>
+<li><p>特殊用法：能够遍历数组中的元素<br> 语法：for(var in array) {for-body}<br> 示例：</p>
+<blockquote>
+<p>awk ‘/^[[:space:]]*linux16/{for(i=1;i&lt;=NF;i++) {print i,length(i,length(i)}}’ /etc/grub2.cfg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;             ^ syntax error</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '/^[[:space:]]*linux16/&#123;for(i=1;i&lt;=NF;i++) &#123;print $i,length($i)&#125;&#125;' /etc/grub2.cfg</span></span><br><span class="line">&gt; linux16 7</span><br><span class="line">&gt; /vmlinuz-3.10.0-862.el7.x86_64 30</span><br><span class="line">&gt; root=UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 46</span><br><span class="line">&gt; ro 2</span><br><span class="line">&gt; crashkernel=auto 16</span><br><span class="line">&gt; rhgb 4</span><br><span class="line">&gt; quiet 5</span><br><span class="line">&gt; LANG=en_US.UTF-8 16</span><br><span class="line">&gt; linux16 7</span><br><span class="line">&gt; /vmlinuz-0-rescue-adda87b767b846f69b46c9188469daa7 50</span><br><span class="line">&gt; root=UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 46</span><br><span class="line">&gt; ro 2</span><br><span class="line">&gt; crashkernel=auto 16</span><br><span class="line">&gt; rhgb 4</span><br><span class="line">&gt; quiet 5</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>switch语句<br> 语法：switch(expression) {case VALUE1 or /REGEXP/: statement1; case<br> VALUE2 or /REGEXP2/: statement2; …; default: statementn}</p>
+</li>
+<li><p>break和continue</p>
+<p> continue:满足条件则结束本次循环，不满足条件，继续执行。</p>
+<blockquote>
+<p>awk ‘BEGIN{sum=0;for(i=1;i&lt;=100;i++){if(i%2==0)continue;sum+=i}print sum}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123;sum=0;for(i=1;i&lt;=100;i++)&#123;if(i%2==0)continue;sum+=i&#125;print sum&#125;' </span></span><br><span class="line">&gt; 2500</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<p>break:满足条件则结束整个循环</p>
+<blockquote>
+<p>awk ‘BEGIN{sum=0;for(i=1;i&lt;=100;i++){if(i==50)break;sum+=i}print sum}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123;sum=0;for(i=1;i&lt;=100;i++)&#123;if(i==50)break;sum+=i&#125;print sum&#125;'   </span></span><br><span class="line">&gt; 1225</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>next:提前结束对本行处理而直接进入下一行处理（awk自身循环）</p>
+<blockquote>
+<p>awk ‘{if (NR%2==0)next;print NR,$0}’ /etc/fstab</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;if (NR%2==0)next;print NR,$0&#125;' /etc/fstab  </span></span><br><span class="line">&gt; 1 </span><br><span class="line">&gt; 3 <span class="comment"># /etc/fstab</span></span><br><span class="line">&gt; 5 <span class="comment">#</span></span><br><span class="line">&gt; 7 <span class="comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</span></span><br><span class="line">&gt; 9 UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 /                       xfs     defaults        0 0</span><br><span class="line">&gt; 11 UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 /data                   xfs     defaults        0</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="awk数组"><a href="#awk数组" class="headerlink" title="awk数组"></a>awk数组</h1><ol>
+<li><p>关联数组：array[index-expression]</p>
+<p> index-expression:</p>
+<blockquote>
+<p>可使用任意字符串；字符串要使用双引号括起来<br>如果某数组元素事先不存在，在引用时，awk会自动创建此元素，并将其值初始化为“空串”<br>若要判断数组中是否存在某元素，要使用“index in array” 格式进行遍历</p>
+</blockquote>
+</li>
+</ol>
+<p>示例：</p>
+<blockquote>
+<p>awk ‘BEGIN{weekdays[“mon”]=”Monday”;weekdays[“tue”]=”Tuesday”;print weekdays[“mon”]}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123;weekdays["mon"]="Monday";weekdays["tue"]="Tuesday";print weekdays["mon"]&#125;'</span></span><br><span class="line">&gt; Monday</span><br><span class="line">&gt; ```  </span><br><span class="line">&gt; 2. 若要遍历数组中的每个元素，要使用<span class="keyword">for</span>循环  </span><br><span class="line">&gt; <span class="keyword">for</span>(var <span class="keyword">in</span> array) &#123;<span class="keyword">for</span>-body&#125;  </span><br><span class="line">&gt; 注意：var会遍历array的每个索引  </span><br><span class="line">&gt; 示例：  </span><br><span class="line">&gt; awk<span class="string">'BEGIN&#123;weekdays["mon"]="Monday";weekdays["tue"]="Tuesday";for(i in weekdays) &#123;print weekdays[i]&#125;&#125;'</span>  </span><br><span class="line">&gt; &gt;netstat -tan | awk <span class="string">'/^tcp/&#123;state[$NF]++&#125;END&#123;for(i in state) &#123; print i,state[i]&#125;&#125;'</span></span><br><span class="line">&gt; ```bash</span><br><span class="line">&gt; [root@cetos7 ~]<span class="comment">#netstat -tan | awk '/^tcp/&#123;state[$NF]++&#125;END&#123;for(i in state) &#123; print i,state[i]&#125;&#125;'</span></span><br><span class="line">&gt; LISTEN 10</span><br><span class="line">&gt; ESTABLISHED 1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>awk ‘{ip[$1]++}END{for(i in ip) {print i,ip[i]}}’ /var/log/httpd/access_log</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk '&#123;ip[$1]++&#125;END&#123;for(i in ip) &#123;print i,ip[i]&#125;&#125;' /var/log/httpd/access_log       </span></span><br><span class="line">&gt; 192.168.189.129 8</span><br><span class="line">&gt; 192.168.183.140 8</span><br><span class="line">&gt; 192.168.183.1 38</span><br><span class="line">&gt; 192.168.189.1 34</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="awk函数"><a href="#awk函数" class="headerlink" title="awk函数"></a>awk函数</h1><ol>
+<li><p>数值处理：<br> rand()：返回0和1之间一个随机数</p>
+<blockquote>
+<p>awk ‘BEGIN{srand(); for (i=1;i&lt;=5;i++)print int(rand()*100)}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#awk 'BEGIN&#123;srand(); for (i=1;i&lt;=5;i++)print int(rand()*100)&#125;'  </span></span><br><span class="line">&gt; 87</span><br><span class="line">&gt; 77</span><br><span class="line">&gt; 39</span><br><span class="line">&gt; 61</span><br><span class="line">&gt; 76</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>字符串处理：<br> length([s])：返回指定字符串的长度<br> sub(r,s,[t])：对t字符串搜索r表示模式匹配的内容，并将第一个匹配内容替换为s</p>
+<blockquote>
+<p>echo “2008:08:08 08:08:08” | awk ‘sub(/:/, “-“, $1)’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#echo "2008:08:08 08:08:08" | awk 'sub(/:/,"-",$1)'</span></span><br><span class="line">&gt; 2008-08:08 08:08:08</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<p>gsub(r,s,[t])：对t字符串进行搜索r表示的模式匹配的内容，并全部替换为s所表示的内容</p>
+<blockquote>
+<p>echo “2008:08:08 08:08:08” | awk ‘gsub(/:/,”-“,$0)’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#echo "2008:08:08 08:08:08" | awk 'gsub(/:/,"-",$0)'</span></span><br><span class="line">&gt; 2008-08-08 08-08-08</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>• split(s,array,[r])：以r为分隔符，切割字符串s，并将切割后的结果保存至array所表示的数组中，第一个索引值为1,第二个索引值为2,…</p>
+<blockquote>
+<p>netstat -tn | awk ‘/^tcp&gt;/{split($5,ip,”:”);count[ip[1]]++}END{for (i in count) {print i,count[i]}}’</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@cetos7 ~]<span class="comment">#netstat -tn | awk '/^tcp\&gt;/&#123;split($5,ip,":");count[ip[1]]++&#125;END&#123;for (i in count) &#123;print i,count[i]&#125;&#125;'</span></span><br><span class="line">&gt; 192.168.183.1 1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ol>
+<li><p>自定义函数格式：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> name ( parameter, parameter, ... ) &#123;</span><br><span class="line">statements</span><br><span class="line"><span class="built_in">return</span> expression</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat fun.awk</span><br><span class="line"><span class="keyword">function</span> max(x,y) &#123;</span><br><span class="line">x&gt;y?var=x:var=y</span><br><span class="line"><span class="built_in">return</span> var</span><br><span class="line">&#125;</span><br><span class="line">BEGIN&#123;a=3;b=2;<span class="built_in">print</span> max(a,b)&#125;</span><br><span class="line">awk -f fun.awk</span><br></pre></td></tr></table></figure>
+<h1 id="awk中调用shell命令"><a href="#awk中调用shell命令" class="headerlink" title="awk中调用shell命令"></a>awk中调用shell命令</h1><p>system命令<br>空格是awk中的字符串连接符，如果system中需要使用awk中的变量可以使用空格分隔，或者说除了awk的变量外其他一律用””引用起来<br>awk ‘BEGIN{system(“hostname”) }’<br>awk ‘BEGIN{score=100; system(“echo your score is “ score)}’</p>
+<h1 id="awk脚本"><a href="#awk脚本" class="headerlink" title="awk脚本"></a>awk脚本</h1><p>将awk程序写成脚本，直接调用或执行<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat f1.awk</span><br><span class="line">&#123;<span class="keyword">if</span>(<span class="variable">$3</span>&gt;=1000)<span class="built_in">print</span> <span class="variable">$1</span>,<span class="variable">$3</span>&#125;</span><br><span class="line">awk -F: -f f1.awk /etc/passwd</span><br><span class="line">cat f2.awk</span><br><span class="line"><span class="comment">#!/bin/awk –f</span></span><br><span class="line"><span class="comment">#this is a awk script</span></span><br><span class="line">&#123;<span class="keyword">if</span>(<span class="variable">$3</span>&gt;=1000)<span class="built_in">print</span> <span class="variable">$1</span>,<span class="variable">$3</span>&#125;</span><br><span class="line">chmod +x f2.awk</span><br><span class="line">f2.awk –F: /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>向awk脚本传递参数<br>格式：<br>awkfile var=value var2=value2… Inputfile<br>注意：在BEGIN过程中不可用。直到首行输入完成以后，变量才可用。可以通过-v 参数，让awk在执行BEGIN之前得到变量的值。命令行中每一个指定的变量都需要一个-v参数<br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat test.awk</span><br><span class="line"><span class="comment">#!/bin/awk –f</span></span><br><span class="line">&#123;<span class="keyword">if</span>(<span class="variable">$3</span> &gt;=min &amp;&amp; <span class="variable">$3</span>&lt;=max)<span class="built_in">print</span> <span class="variable">$1</span>,<span class="variable">$3</span>&#125;</span><br><span class="line">chmod +x test.awk</span><br><span class="line">test.awk -F: min=100 max=200 /etc/passwd</span><br></pre></td></tr></table></figure>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><ol>
+<li>文件ip_list.txt如下格式，请提取” .magedu.com” 前面的主机名部分并写入到回到该文件中<br> 1 blog.magedu.com<br> 2 <a href="http://www.magedu.com" target="_blank" rel="noopener">www.magedu.com</a><br> …<br> 999 study.magedu.com</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F <span class="string">'[ .]'</span> <span class="string">'&#123;print "."$3"."$4&#125;'</span>  ip_list.txt &gt;&gt; ip_list.txt</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>统计/etc/fstab文件中每个文件系统类型出现的次数</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/^UUID/&#123;filetype[$3]++&#125;END&#123;for (i in filetype)&#123;print i,filetype[i]&#125;&#125;'</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>统计/etc/fstab文件中每个单词出现的次数</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;i=1;while(i&lt;=NF)&#123;word[$i]++;i++&#125;&#125;END&#123;for(num in word)&#123;print num,word[num]&#125;&#125;'</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>提取出字符串Yd$C@M05MB%9&amp;Bdh7dq+YVixp3vpw中的所有数字</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"Yd<span class="variable">$C</span>@M05MB%9&amp;Bdh7dq+YVixp3vpw"</span>|awk <span class="string">'gsub(/[^0-9]/,"",$0)'</span></span><br><span class="line"><span class="comment">#把不是数字的全部用空代替掉</span></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>有一文件记录了1-100000之间随机的整数共5000个，存储的格式100,50,35,89…请取出其中最大和最小的整数</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F<span class="string">','</span> <span class="string">'&#123;i=2;max=$1;min=$1;while(i&lt;=NF)&#123;if &#123;$i &gt; max&#125;&#123;max=$i&#125;else if&#123;$i&lt;min&#125;&#123;min=$i&#125;;i++&#125;END&#123;print "max="max,"min="min&#125;'</span> random.txt</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>解决DOS攻击生产案例：根据web日志或者或者网络连接数，监控当某个IP并发连接数或者短时内PV达到100，即调用防火墙命令封掉对应的IP，监控频率每隔5分钟。防火墙命令为：iptables -A INPUT -s IP -j REJECT</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'&#123;access[$1]++&#125;END&#123;for(i in access)&#123;if(access[i]&gt;=100)&#123;print i,access[i]&#125;&#125;&#125;'</span> /var/<span class="built_in">log</span>/httpd/access_log</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>将以下文件内容中FQDN取出并根据其进行计数从高到低排序<br> <a href="http://mail.magedu.com/index.html" target="_blank" rel="noopener">http://mail.magedu.com/index.html</a><br> <a href="http://www.magedu.com/test.html" target="_blank" rel="noopener">http://www.magedu.com/test.html</a><br> <a href="http://study.magedu.com/index.html" target="_blank" rel="noopener">http://study.magedu.com/index.html</a><br> <a href="http://blog.magedu.com/index.html" target="_blank" rel="noopener">http://blog.magedu.com/index.html</a><br> <a href="http://www.magedu.com/images/logo.jpg" target="_blank" rel="noopener">http://www.magedu.com/images/logo.jpg</a><br> <a href="http://blog.magedu.com/20080102.html" target="_blank" rel="noopener">http://blog.magedu.com/20080102.html</a></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F <span class="string">'/'</span> <span class="string">'&#123;fqdn[$3]++&#125;END&#123;for (i in fqdn)&#123;print i fqdn[i]&#125;'</span> filename | sort -k2 -nr</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li>将以下文本以inode为标记，对inode相同的counts进行累加，并且统计出同一inode中beginnumber的最小值和endnumber的最大值<br> inode|beginnumber|endnumber|counts|<br> 106|3363120000|3363129999|10000|<br> 106|3368560000|3368579999|20000|<br> 310|3337000000|3337000100|101|<br> 310|3342950000|3342959999|10000|<br> 310|3362120960|3362120961|2|<br> 311|3313460102|3313469999|9898|<br> 311|3313470000|3313499999|30000|<br> 311|3362120962|3362120963|2|<br> 输出的结果格式为：<br> 310|3337000000|3362120961|10103|<br> 311|3313460102|3362120963|39900|</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F<span class="string">'|'</span> <span class="string">'NR==1&#123;print;next&#125;&#123;a[$1]?(a[$1]&gt;$2?a[$1]=$2:0):(a[$1]=$2);b[$1]?(b[$1]&lt;$3?b[$1]=$3:0):(b[$1]=$3);c[$1]+=$4&#125;END&#123;l=asorti(a,d);for(i=1;i&lt;=l;i++)print d[i] FS a[d[i]] FS b[d[i]] FS c[d[i]] FS&#125;'</span> f1.txt</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: 'Donate', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>谢 佳
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/01/03/文本处理三剑客之awk/" target="_blank" title="文本处理三剑客之awk">http://yoursite.com/2019/01/03/文本处理三剑客之awk/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+</div></div>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/03/系统启动流程与grub/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          系统启动流程与grub
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/03/文本三剑客之grep/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">文本三剑客之grep</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk的输出命令之一：print"><span class="nav-number">1.</span> <span class="nav-text">awk的输出命令之一：print</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#awk变量"><span class="nav-number"></span> <span class="nav-text">awk变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内置变量"><span class="nav-number">1.</span> <span class="nav-text">内置变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义变量-区分字符大小写"><span class="nav-number">2.</span> <span class="nav-text">自定义变量(区分字符大小写)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk的输出命令之二-printf命令"><span class="nav-number"></span> <span class="nav-text">awk的输出命令之二:printf命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作符"><span class="nav-number"></span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#awk-PATTERN"><span class="nav-number">1.</span> <span class="nav-text">awk PATTERN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk-action"><span class="nav-number"></span> <span class="nav-text">awk action</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk控制语句"><span class="nav-number"></span> <span class="nav-text">awk控制语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk数组"><span class="nav-number"></span> <span class="nav-text">awk数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk函数"><span class="nav-number"></span> <span class="nav-text">awk函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk中调用shell命令"><span class="nav-number"></span> <span class="nav-text">awk中调用shell命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#awk脚本"><span class="nav-number"></span> <span class="nav-text">awk脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#练习"><span class="nav-number"></span> <span class="nav-text">练习</span></a>
+    
+    </li></div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2018 - 2019 Linux知识库 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Linux知识库
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 谢 佳 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

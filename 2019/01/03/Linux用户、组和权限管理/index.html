@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>linux用户、组和权限管理 | Linux知识库</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linux">
+  
+  
+  
+  
+  <meta name="description" content="Linux 用户和用户组基础概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp; Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。 用户、用户组的类别： 用户user    Linux用户： Username/UID    管理员： root, 0普通用户： 1-60000 自动分配    系统用户：">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux用户、组和权限管理">
+<meta property="og:url" content="http://yoursite.com/2019/01/03/Linux用户、组和权限管理/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="Linux 用户和用户组基础概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp; Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。 用户、用户组的类别： 用户user    Linux用户： Username/UID    管理员： root, 0普通用户： 1-60000 自动分配    系统用户：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E5%AF%86%E7%A0%81%E6%9C%9F%E9%99%90.jpg?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.jpg?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+<meta property="og:updated_time" content="2019-01-02T16:47:58.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux用户、组和权限管理">
+<meta name="twitter:description" content="Linux 用户和用户组基础概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp; Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。 用户、用户组的类别： 用户user    Linux用户： Username/UID    管理员： root, 0普通用户： 1-60000 自动分配    系统用户：">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E5%AF%86%E7%A0%81%E6%9C%9F%E9%99%90.jpg?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;" href="#" data-toggle="modal" data-target="#myModal">
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </ul></div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Linux用户、组和权限管理" style="width: 75%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      Linux用户、组和权限管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/03/Linux用户、组和权限管理/" class="article-date">
+	  <time datetime="2019-01-02T17:24:16.510Z" itemprop="datePublished">2019-01-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Linux-用户和用户组基础概念"><a href="#Linux-用户和用户组基础概念" class="headerlink" title="Linux 用户和用户组基础概念"></a>Linux 用户和用户组基础概念</h1><p>&ensp;&ensp;&ensp;&ensp; Linux系统是一个多用户多任务的分时操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。</p>
+<h2 id="用户、用户组的类别："><a href="#用户、用户组的类别：" class="headerlink" title="用户、用户组的类别："></a>用户、用户组的类别：</h2><ul>
+<li><p>用户user  </p>
+<blockquote>
+<p>Linux用户： Username/UID  </p>
+<blockquote>
+<p>管理员： root, 0<br>普通用户： 1-60000 自动分配  </p>
+<blockquote>
+<p>系统用户： 1-499, 1-999 （CentOS7） 对守护进程获取资源进行权限分配<br>登录用户： 500+, 1000+（CentOS7）通过交互式方式登录  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+<li><p>组group  </p>
+<blockquote>
+<p>Linux组： Groupname/GID  </p>
+<blockquote>
+<p>管理员组： root, 0<br>普通组：  </p>
+<blockquote>
+<p>系统组： 1-499, 1-999（centos7）<br>普通组： 500+, 1000+（centos7）  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p>对于一个用户而言可以有不同的组，分别称为用户的基本组（主组）和附加组；基本组组名与用户名相同，且仅包含一个用户，也叫私有组。基本组以外的的组属于用户的附加组。  </p>
+<p><code>判断用户和组是不是管理员，不是根据名字叫root来判断的，而是根据UID和GID是不是等于0来判断的。等于0则为管理员，否则则不是。</code></p>
+<h2 id="用户配置文件"><a href="#用户配置文件" class="headerlink" title="用户配置文件"></a>用户配置文件</h2><ul>
+<li><p>用户及其属性信息(名称、 UID、主组ID等）：/etc/passwd</p>
+</li>
+<li><p>组及其属性信息：/etc/group</p>
+</li>
+<li><p>用户密码及相关属性：/etc/shadow</p>
+</li>
+<li><p>组密码及相关属性：/etc/gshadow</p>
+</li>
+</ul>
+<h2 id="etc-passwd"><a href="#etc-passwd" class="headerlink" title="/etc/passwd"></a>/etc/passwd</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<p>/etc/passwd中一行记录对应着一个用户，每行记录又被冒号(:)分隔为7个字段：</p>
+<ul>
+<li>用户名:口令:UID:GID:注释性描述:主目录:登录Shell类型</li>
+</ul>
+<p>系统中有一类用户称为系统用户，这些用户在/etc/passwd文件中也占有一条记录，但是不能登录，因为它们的登录Shell为空。它们的存在主要是方便系统管理，满足相应的系统进程对文件属主的要求.<br>系统用户含义:<br>bin 拥有可执行的用户命令文件<br>sys 拥有系统文件<br>adm 拥有帐户文件<br>uucp UUCP使用<br>lp lp或lpd子系统使用<br>nobody NFS使用  </p>
+<h2 id="etc-group"><a href="#etc-group" class="headerlink" title="/etc/group"></a>/etc/group</h2><p>当一个用户同时是多个组中的成员时，在/etc/passwd文件中记录的是用户所属的主组，也就是登录时所属的默认组，而其他组称为附加组。</p>
+<p>用户要访问属于附加组的文件时，必须首先使用newgrp命令使自己成为所要访问的组中的成员。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat /etc/group</span></span><br><span class="line">root:x:0:</span><br><span class="line">bin:x:1:</span><br><span class="line">daemon:x:2:</span><br><span class="line">sys:x:3:</span><br><span class="line">adm:x:4:</span><br><span class="line">tty:x:5:</span><br><span class="line">disk:x:6:</span><br><span class="line">lp:x:7:</span><br></pre></td></tr></table></figure></p>
+<p>此文件的格式也类似于/etc/passwd文件，由冒号(:)隔开若干个字段，这些字段有：</p>
+<ul>
+<li>组名:口令:组标识号:组内用户列表</li>
+</ul>
+<p>组名:是用户组的名称，由字母或数字构成。与/etc/passwd中的登录名一样，组名不应重复。<br>口令:字段存放的是用户组加密后的口令字。<br>组标识号:与用户标识号类似，也是一个整数，被系统内部用来标识组。<br>组内用户列表:是属于这个组的所有用户的列表，不同用户之间用逗号(,)分隔。这个用户组可能是用户的主组，也可能是附加组</p>
+<h2 id="etc-shadow"><a href="#etc-shadow" class="headerlink" title="/etc/shadow"></a>/etc/shadow</h2><p>/etc/shadow文件用于单独存放加密后的口令字，只有超级用户才拥有该文件读权限<br><code>注意：/etc/shadow中的记录行与/etc/passwd中的一一对应，它由pwconv命令根据/etc/passwd中的数据自动产生</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat /etc/shadow</span></span><br><span class="line">root:<span class="variable">$6</span><span class="variable">$9T5n</span>/VcnCXrseL/f<span class="variable">$Nqs3zA</span>.hfJPXIrNtuiyUD9Ps6s.aGC.XYPrABjgPPABgvRIyMntuEkw2All7VhDQd5XM3AiN2RqAdwuoUfJ0K1::0:99999:7:::</span><br><span class="line">bin:*:17632:0:99999:7:::</span><br><span class="line">daemon:*:17632:0:99999:7:::</span><br><span class="line">adm:*:17632:0:99999:7:::</span><br><span class="line">lp:*:17632:0:99999:7:::</span><br></pre></td></tr></table></figure></p>
+<p>它的文件格式与/etc/passwd类似，由若干个字段组成，字段之间用”:”隔开。这些字段是：</p>
+<ul>
+<li>登录名:加密口令:最后一次修改时间:最小时间间隔:最大时间间隔:警告时间:不活动时间:失效时间:标志<br><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E5%AF%86%E7%A0%81%E6%9C%9F%E9%99%90.jpg?raw=true" alt=""></li>
+</ul>
+<p>登录名:/etc/passwd文件中的登录名相一致的用户账号<br>口令:字段存放的是加密后的用户口令字，长度为13个字符。如果为空，则对应用户没有口令，登录时不需要口令；<br>最后一次修改时间:表示的是从某个时刻起，到用户最后一次修改口令时的天数<br>最小时间间隔:指的是两次修改口令之间所需的最小天数<br>最大时间间隔:指的是口令保持有效的最大天数<br>警告时间:字段表示的是从系统开始警告用户到用户密码正式失效之间的天数<br>不活动时间:表示的是用户没有登录活动但账号仍能保持有效的最大天数<br>失效时间:字段给出的是一个绝对的天数，如果使用了这个字段，那么就给出相应账号的生存期。期满后，该账号就不再是一个合法的账号，也就不能再用来登录了。  </p>
+<h2 id="etc-gshadow"><a href="#etc-gshadow" class="headerlink" title="/etc/gshadow"></a>/etc/gshadow</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat /etc/gshadow</span></span><br><span class="line">root:::</span><br><span class="line">bin:::</span><br><span class="line">daemon:::</span><br><span class="line">sys:::</span><br><span class="line">adm:::</span><br><span class="line">tty:::</span><br><span class="line">disk:::</span><br><span class="line">lp:::</span><br></pre></td></tr></table></figure>
+<p>它的文件格式与/etc/group类似，由若干个字段组成，字段之间用”:”隔开。这些字段是：<br>群组名称：就是群组名称<br>群组密码：<br>组管理员列表：组管理员的列表，更改组密码和成员<br>以当前组为附加组的用户列表： (分隔符为逗号)</p>
+<h1 id="用户和组的管理命令"><a href="#用户和组的管理命令" class="headerlink" title="用户和组的管理命令"></a>用户和组的管理命令</h1><p>用户管理命令  </p>
+<blockquote>
+<p>useradd(创建用户)<br>usermod(修改用户)<br>userdel(删除用户)</p>
+</blockquote>
+<p>组管理命令  </p>
+<blockquote>
+<p>groupadd(创建组)<br>groupmod(修改组)<br>groupdel(删除组)</p>
+</blockquote>
+<p>密码配置命令  </p>
+<blockquote>
+<p>passwd(设置用户密码)<br>gpasswd（设置组密码）</p>
+</blockquote>
+<h2 id="用户创建-useradd"><a href="#用户创建-useradd" class="headerlink" title="用户创建:useradd"></a>用户创建:useradd</h2><ul>
+<li>useradd  [options] LOGIN  </li>
+</ul>
+<p>-u UID:用户ID的数字值。此值必须为唯一的，除非使用了-o选项。此值必须非负，默认使用大于等于UID_MIN，且大于任何其他用户ID最小值<br>-o 配合-u 选项，不检查UID的唯一性<br>-g GID：指明用户所属基本组，可为组名，也可以GID<br>-c “COMMENT”：用户的注释信息<br>-d HOME_DIR: 以指定的路径(不存在)为家目录<br>-s SHELL: 指明用户的默认shell程序，可用列表在/etc/shells文件中<br>-G GROUP1[,GROUP2,…]：为用户指明附加组，组须事先存在<br>-N 不创建私用组做主组，使用users组做主组<br>-r 创建系统用户 CentOS 6: ID&lt;500， CentOS 7: ID&lt;1000<br>-m 创建家目录，用于系统用户<br>-M 不创建家目录，用于非系统用户   </p>
+<p>useradd -D：显示创建用户时的默认设置；<br>useradd -D  选项：设置某默认选项；  </p>
+<p>例1：创建一个用户sam，为sam指定主目录为/usr/sam<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -d /usr/sam sam</span><br></pre></td></tr></table></figure></p>
+<p>例2：创建用户gentoo，附加组为bin和root，默认shell为/bin/csh，注释信息为<br>“Gentoo Distribution”<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -c <span class="string">"Gentoo Distribution"</span> -G bin,root -s /bin/csh gentoo</span><br></pre></td></tr></table></figure></p>
+<p>例3:新建用户gem，指定该用户的登录Shell是 /bin/sh，指定它属于group用户组，同时又属于adm和root用户组，其中group用户组是其主组。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">groupadd group</span><br><span class="line">groupadd adm</span><br><span class="line">useradd -s /bin/sh -g group –G <span class="string">"adm,root"</span> gem</span><br></pre></td></tr></table></figure></p>
+<p>例4:创建下面的用户、组和组成员关系<br>名字为webs 的组<br>用户nginx 使用webs 作为附属组<br>用户varnish，也使用webs 作为附属组<br>用户mysql，不可交互登录系统，且不是webs 的成员， nginx， varnish，mysql密码都是magedu<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">groupadd webs</span><br><span class="line">useradd nginx -G webs</span><br><span class="line">useradd varnish -G webs</span><br><span class="line">useradd mysql -s /sbin/nologin</span><br><span class="line"><span class="built_in">echo</span> magedu | passwd --stdin nginx</span><br><span class="line"><span class="built_in">echo</span> magedu | passwd --stdin varnish</span><br><span class="line"><span class="built_in">echo</span> magedu | passwd --stdin mysql</span><br></pre></td></tr></table></figure></p>
+<h2 id="用户属性修改-usermod"><a href="#用户属性修改-usermod" class="headerlink" title="用户属性修改:usermod"></a>用户属性修改:usermod</h2><p><code>注意：usermod不允许改变正在线上的使用者帐号名称。当usermod改变userID,必须确认这名user没在电脑上执行任何程序</code>  </p>
+<ul>
+<li>usermod [OPTION] login<br>-u UID: 新UID<br>-g GID: 新主组<br>-G GROUP1[,GROUP2,…[,GROUPN]]]：新附加组，原来的附加组将会被覆盖；若保留原有，则要同时使用-a选项<br>-s SHELL：新的默认SHELL<br>-c ‘COMMENT’：新的注释信息<br>-d HOME: 新家目录不会自动创建；若要创建新家目录并移动原家数据，同时使用-m选项<br>-l login_name: 新的名字<br>-L: lock指定用户,在/etc/shadow 密码栏的增加 !<br>-U: unlock指定用户,将 /etc/shadow 密码栏的 ! 拿掉<br>-e YYYY-MM-DD: 指明用户账号过期日期<br>-f INACTIVE: 设定非活动期限  </li>
+</ul>
+<h2 id="删除用户-userdel"><a href="#删除用户-userdel" class="headerlink" title="删除用户:userdel"></a>删除用户:userdel</h2><ul>
+<li>userdel [OPTION]… login<br>-r：用户主目录中的文件将随用户主目录和用户邮箱一起删除</li>
+</ul>
+<h2 id="创建组-groupadd"><a href="#创建组-groupadd" class="headerlink" title="创建组:groupadd"></a>创建组:groupadd</h2><ul>
+<li>groupadd [OPTION]… group_name<br>-g GID :指明GID,默认是上一个组的GID+1<br>-r:创建系统组，默认为1-999数字  </li>
+</ul>
+<h2 id="修改和删除组"><a href="#修改和删除组" class="headerlink" title="修改和删除组"></a>修改和删除组</h2><blockquote>
+<p>组属性修改:groupmod  </p>
+<ul>
+<li>groupmod [OPTION]… group<br>-n group_name: 新名字<br>-g GID: 新的GID  </li>
+</ul>
+</blockquote>
+<blockquote>
+<p>组删除：groupdel<br>groupdel GROUP</p>
+</blockquote>
+<h2 id="passwd：密码设置常用命令"><a href="#passwd：密码设置常用命令" class="headerlink" title="passwd：密码设置常用命令"></a>passwd：密码设置常用命令</h2><p><code>以下命令只有root才有权限操作</code><br>passwd：修改自己的密码<br>passwd  username：修改其它用户的密码<br>-d：删除指定用户密码<br>-l： 锁定指定用户<br>-e：强制用户下次登录修改密码<br>-f：强制操作<br>-n mindays：指定最短使用期限<br>-x maxdays： 最大使用期限<br>-w warndays：提前多少天开始警告<br>-i inactivedays：非活动期限<br>–stdin：从标准输入接收用户密码<br>echo “PASSWORD” | passwd –stdin USERNAME<br>​                           </p>
+<h2 id="更改组密码-gpasswd"><a href="#更改组密码-gpasswd" class="headerlink" title="更改组密码:gpasswd"></a>更改组密码:gpasswd</h2><ul>
+<li>gpasswd [OPTION] GROUP<br>-a UserName：把用户添加至组中<br>-d UserName：从此组中移除此用户；</li>
+<li>newgrp命令：登录到一个新组   </li>
+<li>chage命令：修改用户账号的各种期限；修改账户或口令的期限设定<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 口令最短使用期限7天，最长使用期限30天，警告期3天，非活动期3天。          </span><br><span class="line">[root@localhost ~]<span class="comment"># chage -m7 -M30 -W3 -I3 mageedu          </span></span><br><span class="line">2. 修改口令最近一次修改时间，需转换为设定时间到1970年1月1日的天数          </span><br><span class="line">[root@localhost ~]<span class="comment"># chage -d16860 mageedu          </span></span><br><span class="line">3. 设置账户过期时间，需转换为设定时间到1970年1月1日的天数。          </span><br><span class="line">[root@localhost ~]<span class="comment"># chage -E16920 mageedu</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>chsh：更换登入系统时使用的shell,</p>
+<p>chfn：提供使用者更改个人资讯,</p>
+<p>finger：使用者查询一些其他使用者的资料,</p>
+<p>pwck : 检查密码文件的完整性, </p>
+<p>grpck：检查组文件的完整性</p>
+<h2 id="su：切换用户"><a href="#su：切换用户" class="headerlink" title="su：切换用户"></a>su：切换用户</h2><ol>
+<li>不读取目标用户的配置文件,不改变当前工作目录（非登录式切换，半切换)<br>su  UserName   </li>
+<li>读取目标用户的配置文件,切换至家目录（登录式切换，完全切换)<br>su  -  UserName  </li>
+<li>仅以指定的用户的身份运行此处指定的命令，而不执行真正的身份切换操作<br>su [-] UserName -c ‘COMMAND’<br><code>注意：root切换至任何其它用户无须认证密码；普通用户切换至其它用户，都需要密码</code>  </li>
+</ol>
+<h1 id="用户和用户组权限管理"><a href="#用户和用户组权限管理" class="headerlink" title="用户和用户组权限管理"></a>用户和用户组权限管理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#ll -d /etc       # 显示文件名与相关属性命令</span></span><br><span class="line">drwxr-xr-x. 137 root root 12288 Oct 21 09:57 /etc</span><br></pre></td></tr></table></figure>
+<ol>
+<li>类型和权限(permission)：</li>
+</ol>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7.png?raw=true" alt=""><br>显示格式：</p>
+<ul>
+<li>类型和权限  连接数  所有者   用户组   文件大小  修改日期   文件名</li>
+</ul>
+<ol start="2">
+<li>权限组合机制：(8bites 二进制)</li>
+</ol>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.jpg?raw=true" alt=""></p>
+<p>第二道十个字符：每三个为一组，均为’rwx’三个参数组合<br>rwxrwxrwx每个位置固定不定，若无则为空，用’-‘符号表示</p>
+<p>r：readable, 读；w：writable, 写；x：excutable，执行</p>
+<p>r=4    w=2   x=1 -=0</p>
+<ol start="3">
+<li>文件权限系统主要分为3类用户：</li>
+</ol>
+<p>属主：owner,u          属组：group,g       其他：other,o</p>
+<p>其与之对应的权限:<br>​     rwx                rwx                     rwx</p>
+<ol start="4">
+<li>文件和目录的权限管理：</li>
+</ol>
+<p>对于文件的含义:  </p>
+<blockquote>
+<p>r：可获取文件的数据；可以使用类似于cat命令查看文件内容</p>
+</blockquote>
+<blockquote>
+<p>w: 可修改文件的数据；可以编或者删除此文件</p>
+</blockquote>
+<blockquote>
+<p>x：可将此文件运行为进程；可以在命令提示符下当做命令提交给内核运行</p>
+</blockquote>
+<p>对于目录的含义:</p>
+<blockquote>
+<p>r：可使用ls命令获取其下的所有文件列表；</p>
+</blockquote>
+<blockquote>
+<p>w: 可修改此目录下的文件列表；即创建或删除文件；</p>
+</blockquote>
+<blockquote>
+<p>x: 可cd至此目录中，且可使用ls -l来获取所有文件的详细属性信息；</p>
+</blockquote>
+<blockquote>
+<p>X: 只针对目录添加x权限，不对目录下的文件添加x权限；</p>
+</blockquote>
+<h1 id="权限管理命令"><a href="#权限管理命令" class="headerlink" title="权限管理命令"></a>权限管理命令</h1><h2 id="chmod-更改文件目录权限"><a href="#chmod-更改文件目录权限" class="headerlink" title="chmod:更改文件目录权限"></a>chmod:更改文件目录权限</h2><p>用户类型：u：属主   g：属组   o：其它    a: 所有</p>
+<p>chmod [OPTION]…  MODE[,MODE]… FILE…  </p>
+<ol>
+<li><p>赋权表示法：直接操作一类用户的所有权限位rwx<br>用等号表示：[u|g|o|a]=rwx中的一位或者多位 </p>
+</li>
+<li><p>授权表示法：直接操作一类用户的一个权限位r,w,x<br>用加减号表示：[u|g|o|a][+|-]rwx  </p>
+</li>
+</ol>
+<p>chmod [OPTION]…  OCTAL-MODE FILE…<br>直接使用三位数字的方式给文件目录增加权限，分别表示所有者、所属组、其他人的权限<br>数字的表示方法同上：8bites 二进制表示权限的组合机制<br>r=4   w=2   x=1  三位相加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 data]<span class="comment">#ll</span></span><br><span class="line">--w-------. 1 root root     0 Oct 21 20:29 f1</span><br><span class="line">[root@CentOS6 data]<span class="comment">#chmod 666 f1    #对 (u g o)添加读写权限</span></span><br><span class="line">[root@CentOS6 data]<span class="comment">#ll</span></span><br><span class="line">-rw-rw-rw-. 1 root root     0 Oct 21 20:29 f1</span><br></pre></td></tr></table></figure></p>
+<p>chmod [OPTION]…  –reference=RFILE FILE…   参照某个文件的权限来进行授权操作<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 data]<span class="comment">#ll</span></span><br><span class="line">--w-------. 1 root root     0 Oct 21 20:29 f1</span><br><span class="line">-rw-r--r--. 1 root root     0 Oct 21 21:20 f2</span><br><span class="line">-rw-r--r--. 1 root root     0 Oct 21 21:20 f3</span><br><span class="line">[root@CentOS6 data]<span class="comment">#chmod --reference=f1 f2 f3</span></span><br><span class="line">[root@CentOS6 data]<span class="comment">#ll</span></span><br><span class="line">--w-------. 1 root root     0 Oct 21 20:29 f1</span><br><span class="line">--w-------. 1 root root     0 Oct 21 21:20 f2</span><br><span class="line">--w-------. 1 root root     0 Oct 21 21:20 f3</span><br></pre></td></tr></table></figure></p>
+<p><code>注意：普通用户仅能修改属主为自己的那些文件的权限；root可以更改所有用户</code></p>
+<h2 id="chown-更改文件目录的所有者，也可以更改所属组"><a href="#chown-更改文件目录的所有者，也可以更改所属组" class="headerlink" title="chown:更改文件目录的所有者，也可以更改所属组"></a>chown:更改文件目录的所有者，也可以更改所属组</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-rw-rw-. 1 root root     0 Oct 21 20:29 f1</span><br><span class="line">[root@CentOS6 data]<span class="comment">#chown xie f1</span></span><br><span class="line">[root@CentOS6 data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-rw-rw-. 1 xie root 0 Oct 21 20:29 f1</span><br></pre></td></tr></table></figure>
+<ol>
+<li>chgrp [OPTION]… GROUPFILE… 更改所属组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-rw-rw-. 1 xie root 0 Oct 21 20:29 f1</span><br><span class="line">[root@CentOS6 data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-rw-rw-. 1 xie rpc 0 Oct 21 20:29 f1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><code>注意：</code></p>
+<ol>
+<li>普通用户是不能更改文件的所有者的</li>
+<li>作为普通用户，要想更改文件的所属组：  <blockquote>
+<p>文件是普通用户它自己的<br>如果要更改的组，普通用户必须在这个组里</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="umask-文件的权限反向掩码，遮罩码"><a href="#umask-文件的权限反向掩码，遮罩码" class="headerlink" title="umask:文件的权限反向掩码，遮罩码"></a>umask:文件的权限反向掩码，遮罩码</h2><ol>
+<li>umask：查看当前umask<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#umask</span></span><br><span class="line">0022</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>系统默认为：0022 表示特殊权限、所有者权限、所有组权限、其他人权限<br>更改默认设置位置：/etc/bashrc </p>
+<ol start="2">
+<li>对文件目录的umask操作 <blockquote>
+<p>文件：666-umask 文件默认不能拥有执行权限;如果减得的结果中有执行权限，则需要将其加1<br>文件夹：777-umask</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="Linux文件系统上的特殊权限"><a href="#Linux文件系统上的特殊权限" class="headerlink" title="Linux文件系统上的特殊权限"></a>Linux文件系统上的特殊权限</h1><h2 id="SUID"><a href="#SUID" class="headerlink" title="SUID"></a>SUID</h2><p>功能：继承二进制程序所有者的权限<br>权限设定：<br>chmod u+s file…<br>chmod u-s file…<br>chmod 4### file…<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-r--r--. 1 root root 595 Oct 14 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#chmod  u+s f1</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rwSr--r--. 1 root root 595 Oct 14 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#chmod u-s f1</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-r--r--. 1 root root 595 Oct 14 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#chmod 4644 f1</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll f1        </span></span><br><span class="line">-rwSr--r--. 1 root root 595 Oct 14 14:16 f1</span><br></pre></td></tr></table></figure></p>
+<p>SUID只对二进制可执行程序有效<br>SUID设置在目录上无意义</p>
+<h2 id="SGID"><a href="#SGID" class="headerlink" title="SGID"></a>SGID</h2><ol>
+<li><p>可执行文件上SGID权限<br>功能：继承二进制程序所有组的权限<br>权限设定：<br>chmod g+s file…<br>chmod g-s file…<br>chmod 2### file…  </p>
+</li>
+<li><p>目录上的SGID权限<br>功能：此目录新建的文件继承目录的所属组<br>权限设定：<br>chmod g+s dir…<br>chmod g-s dir…<br>chmod 2### dir…  </p>
+</li>
+</ol>
+<h2 id="Sticky位"><a href="#Sticky位" class="headerlink" title="Sticky位"></a>Sticky位</h2><p>功能：作用于目录，此目录的文件只能被所有者或root删除<br>权限设定:<br>chmod o+t dir…<br>chmod o-t dir…<br>chmod 1### dir…<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#ll -d /tmp</span></span><br><span class="line">drwxrwxrwt. 15 root root 4096 Oct 23 18:33 /tmp</span><br></pre></td></tr></table></figure></p>
+<h2 id="权限位映射"><a href="#权限位映射" class="headerlink" title="权限位映射"></a>权限位映射</h2><p>SUID: user,占据属主的执行权限位<br>s： 属主拥有x权限<br>S：属主没有x权限<br>SGID: group,占据属组的执行权限位<br>s： group拥有x权限<br>S： group没有x权限<br>Sticky: other,占据other的执行权限位<br>t： other拥有x权限<br>T： other没有x权限  </p>
+<h1 id="访问控制列表"><a href="#访问控制列表" class="headerlink" title="访问控制列表"></a>访问控制列表</h1><p>ACL： Access Control List，实现灵活的权限管理<br>除了文件的所有者，所属组和其它人，可以对更多的用户设置权限<br>CentOS7 默认创建的xfs和ext4文件系统具有ACL功能<br>CentOS7 之前版本，默认手工创建的ext4文件系统无ACL功能,需手动增加<br>tune2fs –o acl /dev/sdb1<br>mount –o acl /dev/sdb1 /mnt/test<br>ACL生效顺序：所有者，自定义用户，自定义组，其他人</p>
+<ol>
+<li>常见的一些命令<br>setfacl -m u:username:rwx file  为用户的文件赋予访问权限rwx<br>setfacl -m g:groupname:rw file  为组的文件赋予访问权限rwx<br>getfacl filename  查看设置的acl权限<br>setfacl -b filename 清空acl权限<br>setfacl -k dir 删除默认ACL权限<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-r--r--. 1 root root 595 Oct 14 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#setfacl -m u:xie:rw f1</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-rw-r--+ 1 root root 595 Oct 14 14:16 f1  <span class="comment"># +代表有acl权限</span></span><br><span class="line">[root@localhost data]<span class="comment">#getfacl f1</span></span><br><span class="line"><span class="comment"># file: f1</span></span><br><span class="line"><span class="comment"># owner: root</span></span><br><span class="line"><span class="comment"># group: root</span></span><br><span class="line">user::rw-</span><br><span class="line">user:xie:rw-</span><br><span class="line">group::r--</span><br><span class="line">mask::rw-</span><br><span class="line">other::r--</span><br><span class="line">[root@localhost data]<span class="comment">#setfacl -b f1</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll f1</span></span><br><span class="line">-rw-r--r--. 1 root root 595 Oct 14 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#getfacl f1</span></span><br><span class="line"><span class="comment"># file: f1</span></span><br><span class="line"><span class="comment"># owner: root</span></span><br><span class="line"><span class="comment"># group: root</span></span><br><span class="line">user::rw-</span><br><span class="line">group::r--</span><br><span class="line">other::r--</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><ol>
+<li><p>当用户docker对/testdir 目录无执行权限时，意味着无法做哪些操作？<br>答:无法cd至此目录中；无法查看目录的详细属性；无法查看文件的内容；</p>
+</li>
+<li><p>当用户mongodb对/testdir 目录无读权限时，意味着无法做哪些操作？<br>答:可使用ls命令获取其下的所有文件列表</p>
+</li>
+<li><p>当用户redis 对/testdir 目录无写权限时，该目录下的只读文件file1是否可<br>修改和删除？<br>答:不行，文件能不能删除由目录的权限决定的。（rw）</p>
+</li>
+<li><p>当用户zabbix对/testdir 目录有写和执行权限时，该目录下的只读文件file1<br>是否可修改和删除？<br>答:可以</p>
+</li>
+<li><p>复制/etc/fstab文件到/var/tmp下，设置文件所有者为tomcat读写权限，所<br>属组为apps组有读写权限，其他人无权限  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useradd tomcat</span><br><span class="line">groupadd apps</span><br><span class="line">cp /etc/fstab /var/tmp</span><br><span class="line">chown tomcat /var/tmp/fstab</span><br><span class="line">chgrp apps /var/tmp/fstab</span><br><span class="line">chmod 660 /var/tmp/fstab</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>误删除了用户git的家目录，请重建并恢复该用户家目录及相应的权限属性  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useradd git</span><br><span class="line">rm -rf /home/git</span><br><span class="line">mkdir /home/git</span><br><span class="line">cp -a /etc/skel/.[^.]* /home/git</span><br><span class="line">chown -R git.git /home/git</span><br><span class="line">chmod 700 /home/git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在/testdir/dir里创建的新文件自动属于webs组，组apps的成员如：<br>tomcat能对这些新文件有读写权限，组dbs的成员如： mysql只能对新文件有读权限，其它用户（不属于webs,apps,dbs）不能访问这个文件夹  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mkdir     -p     /testdir/dir</span><br><span class="line">groupadd webs</span><br><span class="line">chgrp     webs   /testdir/dir</span><br><span class="line">chmod    g+s     /testdir/dir </span><br><span class="line">groupadd apps  </span><br><span class="line">groupadd dbs</span><br><span class="line">useradd -G apps tomcat</span><br><span class="line">useradd -G dbs mysql</span><br><span class="line">setfacl -m g:apps:rw /testdir/dir/</span><br><span class="line">setfacl -m g:dbs:r /testdir/dir/</span><br><span class="line">chmod o= /testdir/dir</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>备份/testdir/dir里所有文件的ACL权限到/root/acl.txt中，清除/testdir/dir中所有ACL权限，最后还原ACL权限  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getfacl -R /testdir/dir &gt; /root/acl.txt </span><br><span class="line">setfacl -b /testdir/dir</span><br><span class="line">setfacl -R –<span class="built_in">set</span>-file=acl.txt /testdir/dir</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: 'Donate', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>谢 佳
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/01/03/Linux用户、组和权限管理/" target="_blank" title="Linux用户、组和权限管理">http://yoursite.com/2019/01/03/Linux用户、组和权限管理/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+</div></div>
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/03/管道和标准IO/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          标准IO和管道
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/03/Hello Linux basics/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DNS服务Hello Linux basics</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-用户和用户组基础概念"><span class="nav-number">1.</span> <span class="nav-text">Linux 用户和用户组基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用户、用户组的类别："><span class="nav-number">1.1.</span> <span class="nav-text">用户、用户组的类别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户配置文件"><span class="nav-number">1.2.</span> <span class="nav-text">用户配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-passwd"><span class="nav-number">1.3.</span> <span class="nav-text">/etc/passwd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-group"><span class="nav-number">1.4.</span> <span class="nav-text">/etc/group</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-shadow"><span class="nav-number">1.5.</span> <span class="nav-text">/etc/shadow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-gshadow"><span class="nav-number">1.6.</span> <span class="nav-text">/etc/gshadow</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户和组的管理命令"><span class="nav-number">2.</span> <span class="nav-text">用户和组的管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用户创建-useradd"><span class="nav-number">2.1.</span> <span class="nav-text">用户创建:useradd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户属性修改-usermod"><span class="nav-number">2.2.</span> <span class="nav-text">用户属性修改:usermod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除用户-userdel"><span class="nav-number">2.3.</span> <span class="nav-text">删除用户:userdel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建组-groupadd"><span class="nav-number">2.4.</span> <span class="nav-text">创建组:groupadd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改和删除组"><span class="nav-number">2.5.</span> <span class="nav-text">修改和删除组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#passwd：密码设置常用命令"><span class="nav-number">2.6.</span> <span class="nav-text">passwd：密码设置常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改组密码-gpasswd"><span class="nav-number">2.7.</span> <span class="nav-text">更改组密码:gpasswd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#su：切换用户"><span class="nav-number">2.8.</span> <span class="nav-text">su：切换用户</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户和用户组权限管理"><span class="nav-number">3.</span> <span class="nav-text">用户和用户组权限管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#权限管理命令"><span class="nav-number">4.</span> <span class="nav-text">权限管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#chmod-更改文件目录权限"><span class="nav-number">4.1.</span> <span class="nav-text">chmod:更改文件目录权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chown-更改文件目录的所有者，也可以更改所属组"><span class="nav-number">4.2.</span> <span class="nav-text">chown:更改文件目录的所有者，也可以更改所属组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#umask-文件的权限反向掩码，遮罩码"><span class="nav-number">4.3.</span> <span class="nav-text">umask:文件的权限反向掩码，遮罩码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux文件系统上的特殊权限"><span class="nav-number">5.</span> <span class="nav-text">Linux文件系统上的特殊权限</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SUID"><span class="nav-number">5.1.</span> <span class="nav-text">SUID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SGID"><span class="nav-number">5.2.</span> <span class="nav-text">SGID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sticky位"><span class="nav-number">5.3.</span> <span class="nav-text">Sticky位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限位映射"><span class="nav-number">5.4.</span> <span class="nav-text">权限位映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#访问控制列表"><span class="nav-number">6.</span> <span class="nav-text">访问控制列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#练习"><span class="nav-number">7.</span> <span class="nav-text">练习</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2018 - 2019 Linux知识库 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Linux知识库
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 谢 佳 All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
