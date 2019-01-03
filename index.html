@@ -1274,6 +1274,252 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/文本三剑客之grep/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢 佳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linux知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/03/文本三剑客之grep/" itemprop="url">文本三剑客之grep</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-03T01:24:16+08:00">
+                2019-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="grep-and-Regular-Expressions"><a href="#grep-and-Regular-Expressions" class="headerlink" title="grep and Regular Expressions"></a>grep and Regular Expressions</h1><p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%B0%81%E9%9D%A2.jpg?raw=true" alt=""></p>
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p><img src="https://github.com/xiejia1215225/Pictures/blob/master/grep.jpg?raw=true" alt=""><br>&ensp;&ensp;&ensp;&ensp;grep: Global search REgular expression and Print out the line,是一款文本过滤工具。<br>&ensp;&ensp;&ensp;&ensp;作用：文本搜索工具，根据用户指定的“模式”对目标文本逐行进行匹配检查；打印匹配到的行。<br>&ensp;&ensp;&ensp;&ensp;模式：由正则表达式字符及文本字符所编写的过滤条件。<br>&ensp;&ensp;&ensp;&ensp;正则表达式REGEXP： Regular Expressions，由一类特殊字符及文本字符所编写的模式，其中有些字符（元字符）不表示字符字面意义，而表示控制或通配的功能。  </p>
+<p>正则表达式分两类：  </p>
+<ul>
+<li>基本正则表达式： BRE</li>
+<li>扩展正则表达式： ERE<br>grep工具支持基本正则表达式，egrep工具支持扩展的正则表达式，并且grep -E = egrep.</li>
+</ul>
+<h2 id="grep语法"><a href="#grep语法" class="headerlink" title="grep语法"></a><strong><em>grep语法</em></strong></h2><p>grep [OPTIONS] PATTERN [FILE…]   </p>
+<ul>
+<li>-v: 显示不被pattern匹配到的行  </li>
+<li>-i: 忽略字符大小写  </li>
+<li>-n： 显示匹配的行号  </li>
+<li>-c: 统计匹配的行数  </li>
+<li>-o: 仅显示匹配到的字符串    </li>
+<li>-q: 静默模式，不输出任何信息  </li>
+<li>-A #: after, 后#行  </li>
+<li>-B #: before, 前#行  </li>
+<li>-C #： context, 前后各#行</li>
+<li>-e：实现多个选项间的逻辑or关系</li>
+<li>-w：匹配整个单词</li>
+<li>-E：使用ERE</li>
+<li>-F：相当于fgrep，不支持正则表达式</li>
+<li>-f file: 根据模式文件处理</li>
+</ul>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg?raw=true" alt=""></p>
+<h2 id="基本正则表达式元字符"><a href="#基本正则表达式元字符" class="headerlink" title="基本正则表达式元字符"></a>基本正则表达式元字符</h2><h3 id="字符匹配"><a href="#字符匹配" class="headerlink" title="字符匹配"></a><strong><em>字符匹配</em></strong></h3><ul>
+<li><p>.  &ensp; &ensp;&ensp;&ensp;匹配任意单个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#grep "r..t" /etc/passwd </span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>[] &ensp; &ensp;&ensp;匹配指定范围内的任意单个字符，示例:[wang] [0-9] [a-z] [a-zA-Z]</p>
+</li>
+<li>[^] &ensp;&ensp;匹配指定范围外的任意单个字符</li>
+<li>[:alnum:] 字母和数字</li>
+<li>[:alpha:] 代表任何英文大小写字符，亦即 A-Z, a-z</li>
+<li>[:lower:] 小写字母,亦即 a-z  </li>
+<li>[:upper:] 大写字母,亦即 A-Z</li>
+<li>[:blank:] 空白字符（空格和制表符）</li>
+<li>[:space:] 水平和垂直的空白字符（比[:blank:]包含的范围广）</li>
+<li>[:cntrl:] 不可打印的控制字符（退格、删除、警铃…）</li>
+<li>[:digit:] 十进制数字   </li>
+<li>[:xdigit:] 十六进制数字</li>
+<li>[:graph:] 可打印的非空白字符</li>
+<li>[:print:] 可打印字符</li>
+<li>[:punct:] 标点符号<br>例  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep netmask | grep "[[:digit:]]."</span></span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br><span class="line">等价于</span><br><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep netmask | grep "[0-9]."      </span></span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="次数匹配"><a href="#次数匹配" class="headerlink" title="次数匹配"></a><strong><em>次数匹配</em></strong></h3><p><code>用在要指定次数的字符后面，用于指定前面的字符要出现的次数</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*  匹配前面的字符任意次，包括0次  </span><br><span class="line">贪婪模式：尽可能长的匹配.默认正则表达式为贪婪模式  </span><br><span class="line">.* 任意长度的任意字符  </span><br><span class="line">\? 匹配其前面的字符0或1次  </span><br><span class="line">\+ 匹配其前面的字符至少1次  </span><br><span class="line">\&#123;n\&#125; 匹配前面的字符n次  </span><br><span class="line">\&#123;m,n\&#125; 匹配前面的字符至少m次，至多n次  </span><br><span class="line">\&#123;,n\&#125; 匹配前面的字符至多n次  </span><br><span class="line">\&#123;n,\&#125; 匹配前面的字符至少n次正则表达式</span><br></pre></td></tr></table></figure></p>
+<p>例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep "[0-9]\&#123;1,3\&#125;"    </span></span><br><span class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br><span class="line">        inet6 fe80::bf41:5d04:86fa:37c9  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 00:0c:29:30:79:38  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 7676  bytes 850492 (830.5 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 6678  bytes 2198697 (2.0 MiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">例:只显示ifconfig ens33 的ip</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep -o  "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;"</span></span><br><span class="line">192.168.183.132</span><br><span class="line">255.255.255.0</span><br><span class="line">192.168.183.255</span><br></pre></td></tr></table></figure></p>
+<h3 id="位置锚定"><a href="#位置锚定" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p><code>定位出现的位置</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">* ^ 行首锚定，用于模式的最左侧  </span><br><span class="line">* $ 行尾锚定，用于模式的最右侧  </span><br><span class="line">* ^PATTERN$ 用于模式匹配整行  </span><br><span class="line">* ^$ 空行  </span><br><span class="line">* ^[[:space:]]*$ 空白行</span><br><span class="line">* \&lt; 或 \b 词首锚定，用于单词模式的左侧  </span><br><span class="line">* \&gt; 或 \b 词尾锚定，用于单词模式的右侧  </span><br><span class="line">* \&lt;PATTERN\&gt; 匹配整个单词正则表达式  </span><br><span class="line">``` </span><br><span class="line">```bash </span><br><span class="line">例:只显示/etc/fstab非空的行</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#cat /etc/fstab  | grep  -v "^#" | grep -v "^$"</span></span><br><span class="line">UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 /                       xfs     defaults        0 0</span><br><span class="line">UUID=7d1b5c8d-8054-4496-befe-267963e07605 /boot                   xfs     defaults        0 0</span><br><span class="line">UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 /data                   xfs     defaults        0 0</span><br><span class="line">UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">显示以root为单词词首的行</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment">#grep "\&lt;root" /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<h3 id="分组"><a href="#分组" class="headerlink" title="_分组_"></a><strong>_分组_</strong></h3><p><code>\(\) 将一个或多个字符捆绑在一起，当作一个整体处理，如： \(root\)\+</code>  </p>
+<ul>
+<li>分组括号中的模式匹配到的内容会被正则表达式引擎记录于内部的变量中，这些<br>变量的命名方式为: \1, \2, \3, …  </li>
+<li><p>\1 表示从左侧起第一个左括号以及与之匹配右括号之间的模式所匹配到的字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\(string1\+\(string2\)*\)</span><br><span class="line">\1 ： string1\+\(string2\)*</span><br><span class="line">\2 ： string2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后向引用：引用前面的分组括号中的模式所匹配字符(结果)， 而非模式本身</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat f1</span></span><br><span class="line">123ab123xxy123</span><br><span class="line">234xxx567</span><br><span class="line">[root@localhost ~]<span class="comment">#cat f1 | grep "\([0-9]\)\&#123;3\&#125;.*\1"</span></span><br><span class="line">123ab123xxy123</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>或者：\|<br>示例： a\|b: a或b C\|cat: C或cat \(C\|c\)at:Cat或cat</p>
+</li>
+</ul>
+<h2 id="扩展的正则表达式"><a href="#扩展的正则表达式" class="headerlink" title="扩展的正则表达式"></a>扩展的正则表达式</h2><p>egrep [OPTIONS] PATTERN [FILE…]</p>
+<h3 id="字符匹配-1"><a href="#字符匹配-1" class="headerlink" title="字符匹配"></a><strong><em>字符匹配</em></strong></h3><ul>
+<li>. 任意单个字符  </li>
+<li>[] 指定范围的字符  </li>
+<li>[^] 不在指定范围的字符<br>基本和正则表达式相同</li>
+</ul>
+<h3 id="次数匹配-1"><a href="#次数匹配-1" class="headerlink" title="次数匹配"></a><strong><em>次数匹配</em></strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*  匹配前面的字符任意次，包括0次  </span><br><span class="line">.* 任意长度的任意字符  </span><br><span class="line">?  匹配其前面的字符0或1次  </span><br><span class="line">+  匹配其前面的字符至少1次  </span><br><span class="line">&#123;n&#125;   匹配前面的字符n次  </span><br><span class="line">&#123;m,n&#125; 匹配前面的字符至少m次，至多n次  </span><br><span class="line">&#123;,n&#125;  匹配前面的字符至多n次  </span><br><span class="line">&#123;n,&#125;  匹配前面的字符至少n次正则表达式</span><br></pre></td></tr></table></figure>
+<h3 id="位置锚定-1"><a href="#位置锚定-1" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p>扩展正则表达式的位置锚定和基本正则表达式相同。</p>
+<h3 id="分组-1"><a href="#分组-1" class="headerlink" title="_分组_"></a><strong>_分组_</strong></h3><p>( )的内容不需要用<code>\</code>转义</p>
+<ul>
+<li>或者：|<br>示例： a|b: a或b C|cat: C或cat (C|c)at:Cat或cat</li>
+</ul>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ol>
+<li>利用df和grep，取出磁盘各分区利用率，并从大到小排序<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df | grep /dev/sd | grep -o <span class="string">"[0-9]\+%"</span> | grep -o <span class="string">"[0-9]\+"</span> |sort -nr</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df | grep  -E /dev/sd | grep -oE <span class="string">"[0-9]+%"</span> | grep -Eo <span class="string">"[0-9]+"</span> |sort -nr</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>显示ifconfig命令结果中所有IPv4地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig ens33 | grep -o <span class="string">"\&lt;\(\([0-1][0-9]\?\&#123;2\&#125;\|2[0-4][0-9]\|25[0-5]\)\.\)\&#123;3\&#125;\([0-1][0-9]\?\&#123;2\&#125;\|2[0-4][0-9]\|25[0-5]\)\&gt;"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig ens33 | egrep -o <span class="string">"\&lt;(([0-1][0-9]?&#123;2&#125;|2[0-4][0-9]|25[0-5])\.)&#123;3&#125;([0-1][0-9]?&#123;2&#125;|2[0-4][0-9]|25[0-5])\&gt;"</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>找出/etc/passwd用户名和shell同名的行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">"^\([[:alnum:]]\&#123;1,\&#125;\):.*\1$"</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E <span class="string">"^([[:alnum:]]&#123;1,&#125;):.*\1$"</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>手机号<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -o <span class="string">"1[34578][0-9]\&#123;9\&#125;"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -Eo <span class="string">"1[34578][0-9]&#123;9&#125;"</span></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>使用egrep取出/etc/rc.d/init.d/functions中其基名  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> /etc/rc.d/init.d/<span class="built_in">functions</span>/ | grep -o  <span class="string">"[^/]\+/\?$"</span> | grep -o <span class="string">".*[^/]"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> /etc/rc.d/init.d/<span class="built_in">functions</span>/ | egrep -o  <span class="string">"[^/]+/?$"</span> | egrep -o <span class="string">".*[^/]"</span></span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>显示CentOS7的/etc/grub2.cfg文件中，至少以一个空白字符开头的且后面有非空白字符的行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">"^[[:space:]]\+[^[:space:]]"</span> /etc/grub2.cfg</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E <span class="string">"^[[:space:]]+[^[:space:]]"</span> /etc/grub2.cfg</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/文本处理三剑客之awk/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1846,252 +2092,6 @@
 <li>将以下文本以inode为标记，对inode相同的counts进行累加，并且统计出同一inode中beginnumber的最小值和endnumber的最大值<br> inode|beginnumber|endnumber|counts|<br> 106|3363120000|3363129999|10000|<br> 106|3368560000|3368579999|20000|<br> 310|3337000000|3337000100|101|<br> 310|3342950000|3342959999|10000|<br> 310|3362120960|3362120961|2|<br> 311|3313460102|3313469999|9898|<br> 311|3313470000|3313499999|30000|<br> 311|3362120962|3362120963|2|<br> 输出的结果格式为：<br> 310|3337000000|3362120961|10103|<br> 311|3313460102|3362120963|39900|</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F<span class="string">'|'</span> <span class="string">'NR==1&#123;print;next&#125;&#123;a[$1]?(a[$1]&gt;$2?a[$1]=$2:0):(a[$1]=$2);b[$1]?(b[$1]&lt;$3?b[$1]=$3:0):(b[$1]=$3);c[$1]+=$4&#125;END&#123;l=asorti(a,d);for(i=1;i&lt;=l;i++)print d[i] FS a[d[i]] FS b[d[i]] FS c[d[i]] FS&#125;'</span> f1.txt</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/文本三剑客之grep/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢 佳">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Linux知识库">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/03/文本三剑客之grep/" itemprop="url">文本三剑客之grep</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-03T01:24:16+08:00">
-                2019-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="grep-and-Regular-Expressions"><a href="#grep-and-Regular-Expressions" class="headerlink" title="grep and Regular Expressions"></a>grep and Regular Expressions</h1><p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%B0%81%E9%9D%A2.jpg?raw=true" alt=""></p>
-<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p><img src="https://github.com/xiejia1215225/Pictures/blob/master/grep.jpg?raw=true" alt=""><br>&ensp;&ensp;&ensp;&ensp;grep: Global search REgular expression and Print out the line,是一款文本过滤工具。<br>&ensp;&ensp;&ensp;&ensp;作用：文本搜索工具，根据用户指定的“模式”对目标文本逐行进行匹配检查；打印匹配到的行。<br>&ensp;&ensp;&ensp;&ensp;模式：由正则表达式字符及文本字符所编写的过滤条件。<br>&ensp;&ensp;&ensp;&ensp;正则表达式REGEXP： Regular Expressions，由一类特殊字符及文本字符所编写的模式，其中有些字符（元字符）不表示字符字面意义，而表示控制或通配的功能。  </p>
-<p>正则表达式分两类：  </p>
-<ul>
-<li>基本正则表达式： BRE</li>
-<li>扩展正则表达式： ERE<br>grep工具支持基本正则表达式，egrep工具支持扩展的正则表达式，并且grep -E = egrep.</li>
-</ul>
-<h2 id="grep语法"><a href="#grep语法" class="headerlink" title="grep语法"></a><strong><em>grep语法</em></strong></h2><p>grep [OPTIONS] PATTERN [FILE…]   </p>
-<ul>
-<li>-v: 显示不被pattern匹配到的行  </li>
-<li>-i: 忽略字符大小写  </li>
-<li>-n： 显示匹配的行号  </li>
-<li>-c: 统计匹配的行数  </li>
-<li>-o: 仅显示匹配到的字符串    </li>
-<li>-q: 静默模式，不输出任何信息  </li>
-<li>-A #: after, 后#行  </li>
-<li>-B #: before, 前#行  </li>
-<li>-C #： context, 前后各#行</li>
-<li>-e：实现多个选项间的逻辑or关系</li>
-<li>-w：匹配整个单词</li>
-<li>-E：使用ERE</li>
-<li>-F：相当于fgrep，不支持正则表达式</li>
-<li>-f file: 根据模式文件处理</li>
-</ul>
-<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg?raw=true" alt=""></p>
-<h2 id="基本正则表达式元字符"><a href="#基本正则表达式元字符" class="headerlink" title="基本正则表达式元字符"></a>基本正则表达式元字符</h2><h3 id="字符匹配"><a href="#字符匹配" class="headerlink" title="字符匹配"></a><strong><em>字符匹配</em></strong></h3><ul>
-<li><p>.  &ensp; &ensp;&ensp;&ensp;匹配任意单个字符</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#grep "r..t" /etc/passwd </span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>[] &ensp; &ensp;&ensp;匹配指定范围内的任意单个字符，示例:[wang] [0-9] [a-z] [a-zA-Z]</p>
-</li>
-<li>[^] &ensp;&ensp;匹配指定范围外的任意单个字符</li>
-<li>[:alnum:] 字母和数字</li>
-<li>[:alpha:] 代表任何英文大小写字符，亦即 A-Z, a-z</li>
-<li>[:lower:] 小写字母,亦即 a-z  </li>
-<li>[:upper:] 大写字母,亦即 A-Z</li>
-<li>[:blank:] 空白字符（空格和制表符）</li>
-<li>[:space:] 水平和垂直的空白字符（比[:blank:]包含的范围广）</li>
-<li>[:cntrl:] 不可打印的控制字符（退格、删除、警铃…）</li>
-<li>[:digit:] 十进制数字   </li>
-<li>[:xdigit:] 十六进制数字</li>
-<li>[:graph:] 可打印的非空白字符</li>
-<li>[:print:] 可打印字符</li>
-<li>[:punct:] 标点符号<br>例  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep netmask | grep "[[:digit:]]."</span></span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br><span class="line">等价于</span><br><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep netmask | grep "[0-9]."      </span></span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="次数匹配"><a href="#次数匹配" class="headerlink" title="次数匹配"></a><strong><em>次数匹配</em></strong></h3><p><code>用在要指定次数的字符后面，用于指定前面的字符要出现的次数</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*  匹配前面的字符任意次，包括0次  </span><br><span class="line">贪婪模式：尽可能长的匹配.默认正则表达式为贪婪模式  </span><br><span class="line">.* 任意长度的任意字符  </span><br><span class="line">\? 匹配其前面的字符0或1次  </span><br><span class="line">\+ 匹配其前面的字符至少1次  </span><br><span class="line">\&#123;n\&#125; 匹配前面的字符n次  </span><br><span class="line">\&#123;m,n\&#125; 匹配前面的字符至少m次，至多n次  </span><br><span class="line">\&#123;,n\&#125; 匹配前面的字符至多n次  </span><br><span class="line">\&#123;n,\&#125; 匹配前面的字符至少n次正则表达式</span><br></pre></td></tr></table></figure></p>
-<p>例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep "[0-9]\&#123;1,3\&#125;"    </span></span><br><span class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br><span class="line">        inet6 fe80::bf41:5d04:86fa:37c9  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 00:0c:29:30:79:38  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 7676  bytes 850492 (830.5 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 6678  bytes 2198697 (2.0 MiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">例:只显示ifconfig ens33 的ip</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep -o  "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;"</span></span><br><span class="line">192.168.183.132</span><br><span class="line">255.255.255.0</span><br><span class="line">192.168.183.255</span><br></pre></td></tr></table></figure></p>
-<h3 id="位置锚定"><a href="#位置锚定" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p><code>定位出现的位置</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">* ^ 行首锚定，用于模式的最左侧  </span><br><span class="line">* $ 行尾锚定，用于模式的最右侧  </span><br><span class="line">* ^PATTERN$ 用于模式匹配整行  </span><br><span class="line">* ^$ 空行  </span><br><span class="line">* ^[[:space:]]*$ 空白行</span><br><span class="line">* \&lt; 或 \b 词首锚定，用于单词模式的左侧  </span><br><span class="line">* \&gt; 或 \b 词尾锚定，用于单词模式的右侧  </span><br><span class="line">* \&lt;PATTERN\&gt; 匹配整个单词正则表达式  </span><br><span class="line">``` </span><br><span class="line">```bash </span><br><span class="line">例:只显示/etc/fstab非空的行</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#cat /etc/fstab  | grep  -v "^#" | grep -v "^$"</span></span><br><span class="line">UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 /                       xfs     defaults        0 0</span><br><span class="line">UUID=7d1b5c8d-8054-4496-befe-267963e07605 /boot                   xfs     defaults        0 0</span><br><span class="line">UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 /data                   xfs     defaults        0 0</span><br><span class="line">UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">显示以root为单词词首的行</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment">#grep "\&lt;root" /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
-<h3 id="分组"><a href="#分组" class="headerlink" title="_分组_"></a><strong>_分组_</strong></h3><p><code>\(\) 将一个或多个字符捆绑在一起，当作一个整体处理，如： \(root\)\+</code>  </p>
-<ul>
-<li>分组括号中的模式匹配到的内容会被正则表达式引擎记录于内部的变量中，这些<br>变量的命名方式为: \1, \2, \3, …  </li>
-<li><p>\1 表示从左侧起第一个左括号以及与之匹配右括号之间的模式所匹配到的字符</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\(string1\+\(string2\)*\)</span><br><span class="line">\1 ： string1\+\(string2\)*</span><br><span class="line">\2 ： string2</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>后向引用：引用前面的分组括号中的模式所匹配字符(结果)， 而非模式本身</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#cat f1</span></span><br><span class="line">123ab123xxy123</span><br><span class="line">234xxx567</span><br><span class="line">[root@localhost ~]<span class="comment">#cat f1 | grep "\([0-9]\)\&#123;3\&#125;.*\1"</span></span><br><span class="line">123ab123xxy123</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>或者：\|<br>示例： a\|b: a或b C\|cat: C或cat \(C\|c\)at:Cat或cat</p>
-</li>
-</ul>
-<h2 id="扩展的正则表达式"><a href="#扩展的正则表达式" class="headerlink" title="扩展的正则表达式"></a>扩展的正则表达式</h2><p>egrep [OPTIONS] PATTERN [FILE…]</p>
-<h3 id="字符匹配-1"><a href="#字符匹配-1" class="headerlink" title="字符匹配"></a><strong><em>字符匹配</em></strong></h3><ul>
-<li>. 任意单个字符  </li>
-<li>[] 指定范围的字符  </li>
-<li>[^] 不在指定范围的字符<br>基本和正则表达式相同</li>
-</ul>
-<h3 id="次数匹配-1"><a href="#次数匹配-1" class="headerlink" title="次数匹配"></a><strong><em>次数匹配</em></strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*  匹配前面的字符任意次，包括0次  </span><br><span class="line">.* 任意长度的任意字符  </span><br><span class="line">?  匹配其前面的字符0或1次  </span><br><span class="line">+  匹配其前面的字符至少1次  </span><br><span class="line">&#123;n&#125;   匹配前面的字符n次  </span><br><span class="line">&#123;m,n&#125; 匹配前面的字符至少m次，至多n次  </span><br><span class="line">&#123;,n&#125;  匹配前面的字符至多n次  </span><br><span class="line">&#123;n,&#125;  匹配前面的字符至少n次正则表达式</span><br></pre></td></tr></table></figure>
-<h3 id="位置锚定-1"><a href="#位置锚定-1" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p>扩展正则表达式的位置锚定和基本正则表达式相同。</p>
-<h3 id="分组-1"><a href="#分组-1" class="headerlink" title="_分组_"></a><strong>_分组_</strong></h3><p>( )的内容不需要用<code>\</code>转义</p>
-<ul>
-<li>或者：|<br>示例： a|b: a或b C|cat: C或cat (C|c)at:Cat或cat</li>
-</ul>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ol>
-<li>利用df和grep，取出磁盘各分区利用率，并从大到小排序<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df | grep /dev/sd | grep -o <span class="string">"[0-9]\+%"</span> | grep -o <span class="string">"[0-9]\+"</span> |sort -nr</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df | grep  -E /dev/sd | grep -oE <span class="string">"[0-9]+%"</span> | grep -Eo <span class="string">"[0-9]+"</span> |sort -nr</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>显示ifconfig命令结果中所有IPv4地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig ens33 | grep -o <span class="string">"\&lt;\(\([0-1][0-9]\?\&#123;2\&#125;\|2[0-4][0-9]\|25[0-5]\)\.\)\&#123;3\&#125;\([0-1][0-9]\?\&#123;2\&#125;\|2[0-4][0-9]\|25[0-5]\)\&gt;"</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig ens33 | egrep -o <span class="string">"\&lt;(([0-1][0-9]?&#123;2&#125;|2[0-4][0-9]|25[0-5])\.)&#123;3&#125;([0-1][0-9]?&#123;2&#125;|2[0-4][0-9]|25[0-5])\&gt;"</span></span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>找出/etc/passwd用户名和shell同名的行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">"^\([[:alnum:]]\&#123;1,\&#125;\):.*\1$"</span> /etc/passwd</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E <span class="string">"^([[:alnum:]]&#123;1,&#125;):.*\1$"</span> /etc/passwd</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>手机号<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -o <span class="string">"1[34578][0-9]\&#123;9\&#125;"</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -Eo <span class="string">"1[34578][0-9]&#123;9&#125;"</span></span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>使用egrep取出/etc/rc.d/init.d/functions中其基名  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> /etc/rc.d/init.d/<span class="built_in">functions</span>/ | grep -o  <span class="string">"[^/]\+/\?$"</span> | grep -o <span class="string">".*[^/]"</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> /etc/rc.d/init.d/<span class="built_in">functions</span>/ | egrep -o  <span class="string">"[^/]+/?$"</span> | egrep -o <span class="string">".*[^/]"</span></span><br></pre></td></tr></table></figure>
-<ol start="6">
-<li>显示CentOS7的/etc/grub2.cfg文件中，至少以一个空白字符开头的且后面有非空白字符的行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">"^[[:space:]]\+[^[:space:]]"</span> /etc/grub2.cfg</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E <span class="string">"^[[:space:]]+[^[:space:]]"</span> /etc/grub2.cfg</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
 
           
@@ -3849,7 +3849,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">categories</span>
                 
               </div>
@@ -3859,10 +3859,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">tags</span>
-                
+                </a>
               </div>
             
 
