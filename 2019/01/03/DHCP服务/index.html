@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="dhcp,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="网络配置&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。12[root@CentOS6 ~]#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0">
-<meta name="keywords" content="linux">
+<meta name="keywords" content="dhcp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DNCP服务">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/DHCP服务/index.html">
@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%202.png?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%203.png?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2018-12-18T05:41:26.861Z">
+<meta property="og:updated_time" content="2019-01-03T17:38:32.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DNCP服务">
 <meta name="twitter:description" content="网络配置&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永久的，而dhcp分配的地址是可以有期限的。12[root@CentOS6 ~]#grep -i bootproto /etc/sysconfig/network-scripts/ifcfg-eth0">
@@ -327,8 +327,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/DHCP/" itemprop="url" rel="index">
-                    <span itemprop="name">DHCP</span>
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
                   </a>
                 </span>
 
@@ -396,7 +396,8 @@
 </ol>
 <p>在其他的服务安装后就可以开启服务，但dhcp比较特殊，所以此时应先复制模板到配置文件进行相关设置，然后再开启服务<br><img src="https://github.com/xiejia1215225/Pictures/blob/master/DHCP%203.png?raw=true" alt="">  </p>
 <p>如果此时开启服务肯定是失败的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#systemctl start httpd</span></span><br><span class="line">Failed to start httpd.service: Unit not found.</span><br></pre></td></tr></table></figure></p>
-<p>复制模板<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#cp /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example /etc/dhcp/dhcpd.conf</span></span><br><span class="line">cp: overwrite <span class="string">'/etc/dhcp/dhcpd.conf'</span>? y</span><br><span class="line">```  </span><br><span class="line">配置文件  </span><br><span class="line">```bash</span><br><span class="line">[root@cetos7 ~]<span class="comment">#vim /etc/dhcp/dhcpd.conf</span></span><br><span class="line"><span class="comment"># No service will be given on this subnet, but declaring it helps the </span></span><br><span class="line"><span class="comment"># DHCP server to understand the network topology.</span></span><br><span class="line"></span><br><span class="line">subnet 192.168.183.0 netmask 255.255.255.0 &#123;         <span class="comment">#添加网断及子网掩码</span></span><br><span class="line">        range 192.168.183.10 192.168.183.100;        <span class="comment">#指定ip范围                                            </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is a very basic subnet declaration.</span></span><br><span class="line"></span><br><span class="line">subnet 10.254.239.0 netmask 255.255.255.224 &#123;</span><br><span class="line">  range 10.254.239.10 10.254.239.20;</span><br></pre></td></tr></table></figure></p>
+<p>复制模板<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#cp /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example /etc/dhcp/dhcpd.conf</span></span><br><span class="line">cp: overwrite <span class="string">'/etc/dhcp/dhcpd.conf'</span>? y</span><br></pre></td></tr></table></figure></p>
+<p>配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@cetos7 ~]<span class="comment">#vim /etc/dhcp/dhcpd.conf</span></span><br><span class="line"><span class="comment"># No service will be given on this subnet, but declaring it helps the </span></span><br><span class="line"><span class="comment"># DHCP server to understand the network topology.</span></span><br><span class="line"></span><br><span class="line">subnet 192.168.183.0 netmask 255.255.255.0 &#123;         <span class="comment">#添加网断及子网掩码</span></span><br><span class="line">        range 192.168.183.10 192.168.183.100;        <span class="comment">#指定ip范围                                            </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is a very basic subnet declaration.</span></span><br><span class="line"></span><br><span class="line">subnet 10.254.239.0 netmask 255.255.255.224 &#123;</span><br><span class="line">  range 10.254.239.10 10.254.239.20;</span><br></pre></td></tr></table></figure></p>
 <p>重启服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]<span class="comment">#systemctl restart dhcpd</span></span><br></pre></td></tr></table></figure></p>
 <p>重启完之后再次重启客户端(centos6),然后通过ifcongfig就能看见客户端获取到你指定范围内的ip了。至此已经实现一个模拟的DHCP服务器。  </p>
 <p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
@@ -417,7 +418,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/dhcp/" rel="tag"># dhcp</a>
           
         </div>
       
@@ -529,10 +530,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">categories</span>
-                
+                </a>
               </div>
             
 
@@ -541,7 +542,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

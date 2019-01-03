@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="Inode,hard link,soft link,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="链接文件的概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Linux中的链接文件就相当于是Windows中的快捷方式，通过链接文件可以访问到链接指向的源文件。但是Linux下的链接文件和Windows中的快捷方式还是有一定的区别。Linux中有两种链接文件分别为硬链接和软链接（也称为符号链接）。在介绍链接文件之前先要介绍一下Linux文件系统中的inode。 节点的概念&amp;ensp;&amp;ensp;">
-<meta name="keywords" content="linux">
+<meta name="keywords" content="Inode,hard link,soft link">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅议linux中的硬链接和软链接">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/浅议linux中的硬链接和软链接/index.html">
@@ -92,7 +92,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://s1.51cto.com/images/20180329/1522294130887366.png">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-02T17:01:57.384Z">
+<meta property="og:updated_time" content="2019-01-03T17:45:07.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅议linux中的硬链接和软链接">
 <meta name="twitter:description" content="链接文件的概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Linux中的链接文件就相当于是Windows中的快捷方式，通过链接文件可以访问到链接指向的源文件。但是Linux下的链接文件和Windows中的快捷方式还是有一定的区别。Linux中有两种链接文件分别为硬链接和软链接（也称为符号链接）。在介绍链接文件之前先要介绍一下Linux文件系统中的inode。 节点的概念&amp;ensp;&amp;ensp;">
@@ -393,7 +393,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ln dir1 dir11</span></span><br><span class="line">ln: ‘dir1’: hard link not allowed <span class="keyword">for</span> directory</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h1 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h1><p>除了硬链接以外，还有一种特殊情况。文件A和文件B的incode号码虽然不一样，但是文件A的内容就是文件B的路径。读取文件A时系统会自动将访问者导向文件B。因此，无论打开哪一个文件，最终读取的都是文件B。这时文件A就称为文件B的”软链接”(soft link)或者”符号链接”(symbolic link)可以通过ln -s命令来创建软链接：<br>&ensp;&ensp;&ensp;&ensp;ln -s &ensp;源文件或目录&ensp; 目标文件或目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ll</span></span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 22.txt</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 2.txt</span><br><span class="line">-rw-r--r--. 1 root root  0 Sep 25 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#ln -s 2.txt 2.txt-link</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll</span></span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 22.txt</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 2.txt</span><br><span class="line">lrwxrwxrwx. 1 root root  5 Sep 25 16:01 2.txt-link -&gt; 2.txt</span><br><span class="line">[root@localhost data]<span class="comment">#cat 2.txt</span></span><br><span class="line">学习使我快乐！</span><br><span class="line">[root@localhost data]<span class="comment">#cat 2.txt-link</span></span><br><span class="line">学习使我快乐！</span><br></pre></td></tr></table></figure></p>
+<h1 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h1><p>除了硬链接以外，还有一种特殊情况。文件A和文件B的incode号码虽然不一样，但是文件A的内容就是文件B的路径。读取文件A时系统会自动将访问者导向文件B。因此，无论打开哪一个文件，最终读取的都是文件B。这时文件A就称为文件B的”软链接”(soft link)或者”符号链接”(symbolic link)可以通过ln -s命令来创建软链接：<br>&ensp;&ensp;&ensp;&ensp;ln -s &ensp;源文件或目录&ensp; 目标文件或目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ll</span></span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 22.txt</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 2.txt</span><br><span class="line">-rw-r--r--. 1 root root  0 Sep 25 14:16 f1</span><br><span class="line">[root@localhost data]<span class="comment">#ln -s 2.txt 2.txt-link</span></span><br><span class="line">[root@localhost data]<span class="comment">#ll</span></span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 22.txt</span><br><span class="line">-rw-r--r--. 2 root root 22 Sep 25 15:41 2.txt</span><br><span class="line">lrwxrwxrwx. 1 root root  5 Sep 25 16:01 2.txt-link -&gt; 2.txt</span><br><span class="line">[root@localhost data]<span class="comment">#cat 2.txt</span></span><br><span class="line">学习使我快乐！</span><br><span class="line">[root@localhost data]<span class="comment">#cat 2.txt-link</span></span><br><span class="line">学习使我快乐！</span><br></pre></td></tr></table></figure>
 <p>指向的是另一个文件的路径<br>其大小为指向的路径字符串的长度<br>不增加或减少目标文件inode的引用计数</p>
 <h1 id="硬链接和软链接的区别"><a href="#硬链接和软链接的区别" class="headerlink" title="硬链接和软链接的区别"></a>硬链接和软链接的区别</h1><ol>
 <li>是不是同一个文件? <strong><em>这是根本的原因</em></strong> </li>
@@ -469,7 +470,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/Inode/" rel="tag"># Inode</a>
+          
+            <a href="/tags/hard-link/" rel="tag"># hard link</a>
+          
+            <a href="/tags/soft-link/" rel="tag"># soft link</a>
           
         </div>
       
@@ -492,8 +497,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/文本处理三剑客之awk/" rel="prev" title="文本处理三剑客之awk">
-                文本处理三剑客之awk <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/03/文本三剑客之grep/" rel="prev" title="文本三剑客之grep">
+                文本三剑客之grep <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -581,10 +586,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">categories</span>
-                
+                </a>
               </div>
             
 
@@ -593,7 +598,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="linux,">
+  <meta name="keywords" content="IO,管道，tr,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="标准输入和输出程序：指令+数据 读入数据：Input   输出数据：Output  打开的文件都有一个fd: file descriptor (文件描述符)123456[root@centos7 ~]#ll /proc/$$/fdtotal 0lrwx------ 1 root root 64 Oct 28 14:43 0 -&amp;gt; /dev/pts/2lrwx------ 1 root roo">
-<meta name="keywords" content="linux">
+<meta name="keywords" content="IO,管道，tr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="标准IO和管道">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/管道和标准IO/index.html">
@@ -91,7 +91,7 @@
 <meta property="og:description" content="标准输入和输出程序：指令+数据 读入数据：Input   输出数据：Output  打开的文件都有一个fd: file descriptor (文件描述符)123456[root@centos7 ~]#ll /proc/$$/fdtotal 0lrwx------ 1 root root 64 Oct 28 14:43 0 -&amp;gt; /dev/pts/2lrwx------ 1 root roo">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-02T16:57:14.575Z">
+<meta property="og:updated_time" content="2019-01-03T17:41:24.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="标准IO和管道">
 <meta name="twitter:description" content="标准输入和输出程序：指令+数据 读入数据：Input   输出数据：Output  打开的文件都有一个fd: file descriptor (文件描述符)123456[root@centos7 ~]#ll /proc/$$/fdtotal 0lrwx------ 1 root root 64 Oct 28 14:43 0 -&amp;gt; /dev/pts/2lrwx------ 1 root roo">
@@ -400,15 +400,10 @@
 </li>
 </ul>
 <h1 id="tr命令"><a href="#tr命令" class="headerlink" title="tr命令"></a>tr命令</h1><p>转换和删除字符</p>
-<p>语法： tr [OPTION]… SET1 [SET2]<br>选项：<br>        -c 或 ——complerment：取代所有不属于第一字符集的字符；<br>        -d 或 ——delete：删除所有属于第一字符集的字符；<br>        -s 或 –squeeze-repeats：把连续重复的字符以单独一个字符表示；<br>        -t 或 –truncate-set1：先删除第一字符集较第二字符集多出的字符。  </p>
+<p>语法： tr [OPTION]… SET1 [SET2]<br>选项：<br>​        -c 或 ——complerment：取代所有不属于第一字符集的字符；<br>​        -d 或 ——delete：删除所有属于第一字符集的字符；<br>​        -s 或 –squeeze-repeats：把连续重复的字符以单独一个字符表示；<br>​        -t 或 –truncate-set1：先删除第一字符集较第二字符集多出的字符。  </p>
 <p>[:alnum:]：字母和数字<br>[:alpha:]：字母<br>[:cntrl:]：控制（非打印）字符<br>[:digit:]：数字<br>[:graph:]：图形字符<br>[:lower:]：小写字母<br>[:print:]：可打印字符<br>[:punct:]：标点符号<br>[:space:]：空白字符<br>[:upper:]：大写字母<br>[:xdigit:]：十六进制字符</p>
-<p>实例：</p>
-<pre><code># echo &quot;TANK&quot; |tr A-Z a-z   #大写字母转小写    
-# echo &quot;hello 123 world 456&quot; | tr -d &apos;0-9&apos;  #删除字符串中的数字
-# cat text | tr &apos;\t&apos; &apos; &apos;      #将制表符转换成空格
-# echo &quot;aa.,a 1 b#$bb 2 c*/cc 3 ddd 4&quot; | tr -dc &apos;0-9 \n&apos;  # 删除除数字外的字符
-# tr &apos;[:lower:]&apos; &apos;[:upper:]&apos;     #将小写字符转换成大写字符
-</code></pre><h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>连接程序，实现将前一个命令的输出直接定向后一个程序当作输入数据流<br>管道左边的命令必须要有标准输出的功能，管道右边的命令一道要有标准输入功能的否者没有意义。  </p>
+<p>实例：<br>​        # echo “TANK” |tr A-Z a-z   #大写字母转小写<br>​        # echo “hello 123 world 456” | tr -d ‘0-9’  #删除字符串中的数字<br>​        # cat text | tr ‘\t’ ‘ ‘      #将制表符转换成空格<br>​        # echo “aa.,a 1 b#$bb 2 c*/cc 3 ddd 4” | tr -dc ‘0-9 \n’  # 删除除数字外的字符<br>​        # tr ‘[:lower:]’ ‘[:upper:]’     #将小写字符转换成大写字符</p>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>连接程序，实现将前一个命令的输出直接定向后一个程序当作输入数据流<br>管道左边的命令必须要有标准输出的功能，管道右边的命令一道要有标准输入功能的否者没有意义。  </p>
 <p>管道（使用符号“|”表示）用来连接命令<br>命令1 | 命令2 | 命令3 | …  </p>
 <blockquote>
 <p>将命令1的STDOUT发送给命令2的STDIN，命令2的STDOUT发送到命令3的STDIN<br>STDERR默认不能通过管道转发，可利用2&gt;&amp;1 或 |&amp; 实现<br>最后一个命令会在当前shell进程的子shell进程中执行用来<br>组合多种工具的功能<br>ls | tr ‘a-z’ ‘A-Z<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">less ：一页一页地查看输入  </span><br><span class="line">ls -l /etc | less</span><br><span class="line">mail： 通过电子邮件发送输入  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"test email"</span> | mail -s <span class="string">"test"</span> user@example.com  </span><br><span class="line">lpr：把输入发送给打印机  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"test print"</span> | lpr -P printer_name</span><br></pre></td></tr></table></figure></p>
@@ -443,7 +438,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"xt.,l 1 jr#bcmn2 c*/fe3 uz4"</span> | tr -d <span class="string">"[[:alpha:]]"</span> | tr -d <span class="string">"[[:punct:]]"</span> </span><br><span class="line">或者</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"xt.,l 1 jr#bcmn2 c*/fe3 uz4"</span> |tr -dc <span class="string">"[:digit:][:space:]"</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>将PATH变量每个目录显示在独立的一行 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span> |tr -s <span class="string">":"</span> <span class="string">"\n"</span></span><br><span class="line">``` </span><br><span class="line">9. 将指定文件中0-9分别替代成a-j  </span><br><span class="line">```bash</span><br><span class="line">先创建文件touch f1 </span><br><span class="line">给f1 vim 输入0-9 </span><br><span class="line">cat f1 | tr <span class="string">"[0-9]"</span> <span class="string">"[a-j]"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span> |tr -s <span class="string">":"</span> <span class="string">"\n"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将指定文件中0-9分别替代成a-j  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先创建文件touch f1 </span><br><span class="line">给f1 vim 输入0-9 </span><br><span class="line">cat f1 | tr <span class="string">"[0-9]"</span> <span class="string">"[a-j]"</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>将文件/etc/centos-release中每个单词（由字母组成）显示在独立一行，并无空行  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/centos-release | tr -s <span class="string">" "</span> <span class="string">"\n"</span></span><br></pre></td></tr></table></figure>
@@ -467,7 +465,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/IO/" rel="tag"># IO</a>
+          
+            <a href="/tags/管道，tr/" rel="tag"># 管道，tr</a>
           
         </div>
       
@@ -579,10 +579,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">categories</span>
-                
+                </a>
               </div>
             
 
@@ -591,7 +591,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

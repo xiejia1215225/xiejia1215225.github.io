@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="linux，文本工具,">
+  <meta name="keywords" content="grep，文本工具,正则,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="grep and Regular Expressions grep&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;grep: Global search REgular expression and Print out the line,是一款文本过滤工具。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;作用：文本搜索工具，根据用户指定的“模式”对目标文本逐行进行匹配检查；打印匹配到的行。&amp;ens">
-<meta name="keywords" content="linux，文本工具">
+<meta name="keywords" content="grep，文本工具,正则">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本三剑客之grep">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/文本三剑客之grep/index.html">
@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/grep.jpg?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.jpg?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-02T17:03:44.152Z">
+<meta property="og:updated_time" content="2019-01-03T17:47:50.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本三剑客之grep">
 <meta name="twitter:description" content="grep and Regular Expressions grep&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;grep: Global search REgular expression and Print out the line,是一款文本过滤工具。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;作用：文本搜索工具，根据用户指定的“模式”对目标文本逐行进行匹配检查；打印匹配到的行。&amp;ens">
@@ -411,7 +411,8 @@
 </ul>
 <h3 id="次数匹配"><a href="#次数匹配" class="headerlink" title="次数匹配"></a><strong><em>次数匹配</em></strong></h3><p><code>用在要指定次数的字符后面，用于指定前面的字符要出现的次数</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*  匹配前面的字符任意次，包括0次  </span><br><span class="line">贪婪模式：尽可能长的匹配.默认正则表达式为贪婪模式  </span><br><span class="line">.* 任意长度的任意字符  </span><br><span class="line">\? 匹配其前面的字符0或1次  </span><br><span class="line">\+ 匹配其前面的字符至少1次  </span><br><span class="line">\&#123;n\&#125; 匹配前面的字符n次  </span><br><span class="line">\&#123;m,n\&#125; 匹配前面的字符至少m次，至多n次  </span><br><span class="line">\&#123;,n\&#125; 匹配前面的字符至多n次  </span><br><span class="line">\&#123;n,\&#125; 匹配前面的字符至少n次正则表达式</span><br></pre></td></tr></table></figure></p>
 <p>例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep "[0-9]\&#123;1,3\&#125;"    </span></span><br><span class="line">ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500</span><br><span class="line">        inet 192.168.183.132  netmask 255.255.255.0  broadcast 192.168.183.255</span><br><span class="line">        inet6 fe80::bf41:5d04:86fa:37c9  prefixlen 64  scopeid 0x20&lt;link&gt;</span><br><span class="line">        ether 00:0c:29:30:79:38  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 7676  bytes 850492 (830.5 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 6678  bytes 2198697 (2.0 MiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line"></span><br><span class="line">例:只显示ifconfig ens33 的ip</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#ifconfig ens33 | grep -o  "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;"</span></span><br><span class="line">192.168.183.132</span><br><span class="line">255.255.255.0</span><br><span class="line">192.168.183.255</span><br></pre></td></tr></table></figure></p>
-<h3 id="位置锚定"><a href="#位置锚定" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p><code>定位出现的位置</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">* ^ 行首锚定，用于模式的最左侧  </span><br><span class="line">* $ 行尾锚定，用于模式的最右侧  </span><br><span class="line">* ^PATTERN$ 用于模式匹配整行  </span><br><span class="line">* ^$ 空行  </span><br><span class="line">* ^[[:space:]]*$ 空白行</span><br><span class="line">* \&lt; 或 \b 词首锚定，用于单词模式的左侧  </span><br><span class="line">* \&gt; 或 \b 词尾锚定，用于单词模式的右侧  </span><br><span class="line">* \&lt;PATTERN\&gt; 匹配整个单词正则表达式  </span><br><span class="line">``` </span><br><span class="line">```bash </span><br><span class="line">例:只显示/etc/fstab非空的行</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#cat /etc/fstab  | grep  -v "^#" | grep -v "^$"</span></span><br><span class="line">UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 /                       xfs     defaults        0 0</span><br><span class="line">UUID=7d1b5c8d-8054-4496-befe-267963e07605 /boot                   xfs     defaults        0 0</span><br><span class="line">UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 /data                   xfs     defaults        0 0</span><br><span class="line">UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure></p>
+<h3 id="位置锚定"><a href="#位置锚定" class="headerlink" title="位置锚定"></a><strong><em>位置锚定</em></strong></h3><p><code>定位出现的位置</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">* ^ 行首锚定，用于模式的最左侧  </span><br><span class="line">* $ 行尾锚定，用于模式的最右侧  </span><br><span class="line">* ^PATTERN$ 用于模式匹配整行  </span><br><span class="line">* ^$ 空行  </span><br><span class="line">* ^[[:space:]]*$ 空白行</span><br><span class="line">* \&lt; 或 \b 词首锚定，用于单词模式的左侧  </span><br><span class="line">* \&gt; 或 \b 词尾锚定，用于单词模式的右侧  </span><br><span class="line">* \&lt;PATTERN\&gt; 匹配整个单词正则表达式</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">例:只显示/etc/fstab非空的行</span><br><span class="line"></span><br><span class="line">[root@localhost data]<span class="comment">#cat /etc/fstab  | grep  -v "^#" | grep -v "^$"</span></span><br><span class="line">UUID=d33ffb51-004a-4c4d-ac00-c40b9e2c2920 /                       xfs     defaults        0 0</span><br><span class="line">UUID=7d1b5c8d-8054-4496-befe-267963e07605 /boot                   xfs     defaults        0 0</span><br><span class="line">UUID=7556e4a8-128e-457f-99f7-3f1ccf517952 /data                   xfs     defaults        0 0</span><br><span class="line">UUID=152e9015-e93a-44f9-8c7d-65fe67fb5201 swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">显示以root为单词词首的行</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment">#grep "\&lt;root" /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
 <h3 id="分组"><a href="#分组" class="headerlink" title="_分组_"></a><strong>_分组_</strong></h3><p><code>\(\) 将一个或多个字符捆绑在一起，当作一个整体处理，如： \(root\)\+</code>  </p>
 <ul>
@@ -485,7 +486,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux，文本工具/" rel="tag"># linux，文本工具</a>
+            <a href="/tags/grep，文本工具/" rel="tag"># grep，文本工具</a>
+          
+            <a href="/tags/正则/" rel="tag"># 正则</a>
           
         </div>
       
@@ -498,8 +501,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/03/文本处理三剑客之awk/" rel="next" title="文本处理三剑客之awk">
-                <i class="fa fa-chevron-left"></i> 文本处理三剑客之awk
+              <a href="/2019/01/03/浅议linux中的硬链接和软链接/" rel="next" title="浅议linux中的硬链接和软链接">
+                <i class="fa fa-chevron-left"></i> 浅议linux中的硬链接和软链接
               </a>
             
           </div>
@@ -508,8 +511,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/系统启动流程与grub/" rel="prev" title="系统启动流程与grub">
-                系统启动流程与grub <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/03/文本处理三剑客之awk/" rel="prev" title="文本处理三剑客之awk">
+                文本处理三剑客之awk <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -597,10 +600,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">3</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">categories</span>
-                
+                </a>
               </div>
             
 
@@ -609,7 +612,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
