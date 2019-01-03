@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="正则,sed,文本工具,">
+  <meta name="keywords" content="sed,文本工具,正则,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="概述&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;sed是一种流编辑器、行编辑器。它一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。然后读入下行，执行下一个循环。如果没有使诸如‘D’ 的特殊命令，那会在两个循环之间清空模式空间，但不会清空保留空间。这样不断重复">
-<meta name="keywords" content="正则,sed,文本工具">
+<meta name="keywords" content="sed,文本工具,正则">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本三剑客之sed">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/文本三剑客之sed/index.html">
@@ -452,6 +452,35 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
@@ -459,11 +488,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/正则/" rel="tag"># 正则</a>
-          
             <a href="/tags/sed/" rel="tag"># sed</a>
           
             <a href="/tags/文本工具/" rel="tag"># 文本工具</a>
+          
+            <a href="/tags/正则/" rel="tag"># 正则</a>
           
         </div>
       
@@ -476,8 +505,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/03/系统启动流程与grub/" rel="next" title="系统启动流程与grub">
-                <i class="fa fa-chevron-left"></i> 系统启动流程与grub
+              <a href="/2019/01/03/文本处理三剑客之awk/" rel="next" title="文本处理三剑客之awk">
+                <i class="fa fa-chevron-left"></i> 文本处理三剑客之awk
               </a>
             
           </div>
@@ -486,8 +515,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/自动化安装系统/" rel="prev" title="自动化安装系统">
-                自动化安装系统 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/03/系统启动流程与grub/" rel="prev" title="系统启动流程与grub">
+                系统启动流程与grub <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -554,6 +583,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="谢 佳">
+            
               <p class="site-author-name" itemprop="name">谢 佳</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -587,7 +618,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

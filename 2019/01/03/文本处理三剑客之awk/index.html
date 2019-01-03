@@ -69,7 +69,7 @@
 
 
 
-  <meta name="keywords" content="文本工具,awk,正则，函数，数组，脚本,">
+  <meta name="keywords" content="文本工具,正则,awk,">
 
 
 
@@ -83,7 +83,7 @@
 
 
 <meta name="description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
-<meta name="keywords" content="文本工具,awk,正则，函数，数组，脚本">
+<meta name="keywords" content="文本工具,正则,awk">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本处理三剑客之awk">
 <meta property="og:url" content="http://yoursite.com/2019/01/03/文本处理三剑客之awk/index.html">
@@ -91,7 +91,7 @@
 <meta property="og:description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-03T17:48:05.491Z">
+<meta property="og:updated_time" content="2019-01-03T18:06:35.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本处理三剑客之awk">
 <meta name="twitter:description" content="Linux文本处理工具三剑客：grep、sed、awk.其中grep是一种文本过滤工具,sed是文本行编辑器,而awk是一种报表生成器，就是对文件进行格式化处理。这里的格式化就是对文件内容进行各种“排版”，进而格式化显示。    在Linux之上我们使用的是GNU awk，简称gawk.我们通过man gawk得知gawk–模式扫描和处理语言，gawk是一种过程式编程语言。gawk还支持条件判断">
@@ -850,6 +850,35 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
@@ -859,9 +888,9 @@
           
             <a href="/tags/文本工具/" rel="tag"># 文本工具</a>
           
-            <a href="/tags/awk/" rel="tag"># awk</a>
+            <a href="/tags/正则/" rel="tag"># 正则</a>
           
-            <a href="/tags/正则，函数，数组，脚本/" rel="tag"># 正则，函数，数组，脚本</a>
+            <a href="/tags/awk/" rel="tag"># awk</a>
           
         </div>
       
@@ -874,8 +903,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/03/文本三剑客之grep/" rel="next" title="文本三剑客之grep">
-                <i class="fa fa-chevron-left"></i> 文本三剑客之grep
+              <a href="/2019/01/03/加密和安全/" rel="next" title="加密和安全">
+                <i class="fa fa-chevron-left"></i> 加密和安全
               </a>
             
           </div>
@@ -884,8 +913,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/系统启动流程与grub/" rel="prev" title="系统启动流程与grub">
-                系统启动流程与grub <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/03/文本三剑客之sed/" rel="prev" title="文本三剑客之sed">
+                文本三剑客之sed <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -952,6 +981,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="谢 佳">
+            
               <p class="site-author-name" itemprop="name">谢 佳</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -985,7 +1016,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
