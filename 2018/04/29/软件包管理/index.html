@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rpm,yum,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="静态和动态链接&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态 静态链接 ​    把程序对应的依赖库复制一份到包   ​    以.a为后缀  ​    嵌入程序包   ​        升级难 需重新编译  ​    占用空间多 迁移容易   动态链接 只把依赖加做一个动态链接 以.so为后缀 连接">
+<meta name="keywords" content="rpm,yum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件包管理">
+<meta property="og:url" content="http://yoursite.com/2018/04/29/软件包管理/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="静态和动态链接&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态 静态链接 ​    把程序对应的依赖库复制一份到包   ​    以.a为后缀  ​    嵌入程序包   ​        升级难 需重新编译  ​    占用空间多 迁移容易   动态链接 只把依赖加做一个动态链接 以.so为后缀 连接">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+<meta property="og:updated_time" content="2019-01-07T13:41:24.122Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="软件包管理">
+<meta name="twitter:description" content="静态和动态链接&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态 静态链接 ​    把程序对应的依赖库复制一份到包   ​    以.a为后缀  ​    嵌入程序包   ​        升级难 需重新编译  ​    占用空间多 迁移容易   动态链接 只把依赖加做一个动态链接 以.so为后缀 连接">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/29/软件包管理/">
+
+
+
+
+
+  <title>软件包管理 | Linux知识库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xiejia1215225"><img style="position: absolute; top: 0; right: 0; border: 0
+	;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Linux知识库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/29/软件包管理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢 佳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linux知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">软件包管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-29T00:00:00+08:00">
+                2018-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="静态和动态链接"><a href="#静态和动态链接" class="headerlink" title="静态和动态链接"></a>静态和动态链接</h1><p>&ensp;&ensp;&ensp;&ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态</p>
+<h2 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h2><ol>
+<li><p>​    把程序对应的依赖库复制一份到包 </p>
+</li>
+<li><p>​    以.a为后缀</p>
+</li>
+<li><p>​    嵌入程序包 </p>
+</li>
+<li><p>​        升级难 需重新编译</p>
+</li>
+<li><p>​    占用空间多 迁移容易</p>
+</li>
+</ol>
+<h2 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h2><ol>
+<li>只把依赖加做一个动态链接</li>
+<li>以.so为后缀</li>
+<li>连接指向</li>
+<li>占用空间少  升级方便</li>
+</ol>
+<p>若一个库被删，那么所有依赖此库的命令都受影响（使用相对较多）</p>
+<h1 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h1><h2 id="包命名和工具"><a href="#包命名和工具" class="headerlink" title="包命名和工具"></a>包命名和工具</h2><ol>
+<li><p>源代码： name-VERSION.tar.gz|bz2|xz</p>
+</li>
+<li><p>rpm包命名方式<br> name-VERSION-release.arch.rpm</p>
+</li>
+</ol>
+<p>例 bash-4.2.46-19.e17.x86_64.rpm</p>
+<ol start="3">
+<li>包：分类和拆包</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Application-VERSION-ARCH.rpm	主包</span><br><span class="line">Application-devel-VERSION-ARCH.rpm	开发子包</span><br><span class="line">Application-utils-VERSION-ARHC.rpm	其它子包</span><br><span class="line">Application-libs-VERSION-ARHC.rpm	其它子包</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><p>包之间：可能存在依赖关系，甚至循环依赖</p>
+<p> 解决依赖包管理工具：</p>
+</li>
+</ol>
+<ul>
+<li>yum： rpm包管理器的前端工具</li>
+<li>apt-get： deb包管理器前端工具</li>
+<li>zypper: suse上的rpm前端管理工具</li>
+<li>dnf: Fedora 18+ rpm包管理器前端管理工具 </li>
+</ul>
+<h2 id="库文件"><a href="#库文件" class="headerlink" title="库文件"></a>库文件</h2><p>查看二进制程序所依赖的库文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldd /PATH/TO/BINARY_FILE</span><br></pre></td></tr></table></figure>
+<p>管理及查看本机装载的库文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ldconfig	加载库文件</span><br><span class="line">/sbin/ldconfig -p	显示本机已经缓存的所有可用库文件名及文件路径映射关系</span><br><span class="line"></span><br><span class="line">/etc/ld.so.conf</span><br><span class="line">/etc/ld.so.conf.d/*.conf	配置文件</span><br><span class="line"></span><br><span class="line">/etc/ld.so.cache	缓存文件</span><br></pre></td></tr></table></figure>
+<h2 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h2><p>&ensp;&ensp;&ensp;&ensp;功能：将编译好的应用程序的各组成文件打包一个或几个程序包文件，从而方便快捷地实现程序包的安装、卸载、查询、升级和校验等管理操作</p>
+<h3 id="包文件组成-每个包独有"><a href="#包文件组成-每个包独有" class="headerlink" title="包文件组成 (每个包独有)"></a>包文件组成 (每个包独有)</h3><ol>
+<li>RPM包内的文件</li>
+<li>RPM的元数据，如名称，版本，依赖性，描述等</li>
+<li>安装或卸载时运行的脚本</li>
+</ol>
+<h3 id="数据库-公共-：-var-lib-rpm"><a href="#数据库-公共-：-var-lib-rpm" class="headerlink" title="数据库(公共)： /var/lib/rpm"></a>数据库(公共)： /var/lib/rpm</h3><ol>
+<li>程序包名称及版本</li>
+<li>依赖关系</li>
+<li>功能说明</li>
+<li>包安装后生成的各文件路径及校验码信息</li>
+</ol>
+<h2 id="程序包的来源"><a href="#程序包的来源" class="headerlink" title="程序包的来源"></a>程序包的来源</h2><h3 id="管理程序包的方式"><a href="#管理程序包的方式" class="headerlink" title="管理程序包的方式"></a>管理程序包的方式</h3><ol>
+<li>使用包管理器： rpm</li>
+<li>使用前端工具： yum, dnf</li>
+</ol>
+<h3 id="获取程序包的途径"><a href="#获取程序包的途径" class="headerlink" title="获取程序包的途径"></a>获取程序包的途径</h3><ol>
+<li>系统发版的光盘或官方的服务器</li>
+</ol>
+<p>CentOS镜像：</p>
+<p><a href="https://www.centos.org/download/" target="_blank" rel="noopener">https://www.centos.org/download/</a></p>
+<p><a href="http://mirrors.aliyun.com" target="_blank" rel="noopener">http://mirrors.aliyun.com</a></p>
+<p><a href="http://mirrors.sohu.com" target="_blank" rel="noopener">http://mirrors.aliyun.com</a></p>
+<p><a href="http://mirrors.163.com" target="_blank" rel="noopener">http://mirrors.aliyun.com</a></p>
+<ol start="2">
+<li><p>项目官方站点</p>
+</li>
+<li><p>第三方组织</p>
+</li>
+</ol>
+<p>Fedora-EPEL<br>Extra Packages for Enterprise Linux<br>Rpmforge:RHEL推荐，包很全<br>搜索引擎：<br><a href="">http://pkgs.org</a></p>
+<p><a href="">http://rpmfind.net</a></p>
+<p><a href="">http://rpm.pbone.net</a></p>
+<p><a href="">https://sourceforge.net/</a></p>
+<ol start="4">
+<li>自己制作</li>
+</ol>
+<p><strong>注意：第三方包建议要检查其合法性包括来源合法性,程序包的完整性</strong> </p>
+<h1 id="RPM包管理器"><a href="#RPM包管理器" class="headerlink" title="RPM包管理器"></a>RPM包管理器</h1><h2 id="包安装"><a href="#包安装" class="headerlink" title="包安装"></a>包安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-i|--install&#125; [install-options] PACKAGE_FILE…</span><br></pre></td></tr></table></figure>
+<p>-i    安装选项<br>​    -v    显示过程<br>​    -h    以#显示程序包管理执行进度<br>[install-options]</p>
+<ol>
+<li>–test    测试安装，但不真正执行安装，即dry run模式 操作走了一次但没装</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：rpm -i --<span class="built_in">test</span> vsftab-2*</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>–nodeps    忽略依赖关系</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：rpm -ivh httpd* --nodeps 能安装但是后期可能不能用</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>–replacepkgs | replacefiles    若删掉了包中的文件重新装包系统提示已经存在，此时可用此命令</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：rpm -ivh --replacepkgs tree*</span><br></pre></td></tr></table></figure>
+<p>replacefiles替代文件 即安装两个包，有同一个相同文件同时写入同一路径下</p>
+<p>​    此时系统提示不能安装便可用此选项强制安装并覆盖</p>
+<ol start="4">
+<li><p>–nosignature: 不检查来源合法性</p>
+</li>
+<li><p>–nodigest：不检查包完整性</p>
+</li>
+<li><p>–noscripts：不执行程序包脚本</p>
+<p> %pre: 安装前脚本； –nopre</p>
+<p> %post: 安装后脚本； –nopost</p>
+<p> %preun: 卸载前脚本； –nopreun</p>
+<p> %postun: 卸载后脚本； –nopostun</p>
+</li>
+</ol>
+<p>rpm -ivh name1 name2… 一次安装多个包</p>
+<p>rpm -V packagesname 查看包属性的变化</p>
+<h2 id="包升级（不建议使用）"><a href="#包升级（不建议使用）" class="headerlink" title="包升级（不建议使用）"></a>包升级（不建议使用）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-U|--upgrade&#125; [install-options] PACKAGE_FILE…</span><br><span class="line">rpm &#123;-F|--freshen&#125; [install-options] PACKAGE_FILE…</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>upgrade：安装有旧版程序包，则“升级”</p>
+<p> 如果不存在旧版程序包，则“安装”</p>
+</li>
+<li><p>freshen：安装有旧版程序包，则“升级”</p>
+<p> 如果不存在旧版程序包，则不执行升级操作</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh PACKAGE_FILE …</span><br><span class="line">rpm -Fvh PACKAGE_FILE …</span><br></pre></td></tr></table></figure>
+<p>​    –oldpackage        降级</p>
+<p>​    –force    强制安装</p>
+<h3 id="升级注意项"><a href="#升级注意项" class="headerlink" title="升级注意项"></a>升级注意项</h3><ol>
+<li><p>不要对内核做升级操作； Linux支持多内核版本并存，因此，对直接安装新版本内核</p>
+</li>
+<li><p>如果原程序包的配置文件安装后曾被修改，升级时，新版本的提供的同一个配置文件并不会直接覆盖老版本的配置文件，而把新版本的文件重命名(FILENAME.rpmnew)后保留 </p>
+</li>
+</ol>
+<h2 id="包查询"><a href="#包查询" class="headerlink" title="包查询"></a>包查询</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-q|--query&#125; [select-options][query-options]</span><br></pre></td></tr></table></figure>
+<p>[select-options]</p>
+<ol>
+<li>-a    所有包</li>
+<li>-f    查看指定的文件由哪个程序包安装生成   配合-P使用 后面跟磁盘上的某个文件（也可路径）</li>
+<li>-p rpmfile    针对尚未安装的程序包文件做查询操作   后面跟文件名（包的完整名）而不是包名</li>
+<li>–whatprovides CAPABILITY        查询指定的CAPABILITY由哪个包所提供</li>
+<li>–whatrequires CAPABILITY        查询指定的CAPABILITY（相当于关键字）被哪个包所依赖</li>
+</ol>
+<p>rpm2cpio 包文件|cpio –itv 预览包内文件  相当于把rpm包转化成cpio格式</p>
+<p>rpm2cpio 包文件|cpio –id “*.conf”     释放包内文件</p>
+<p>[query-options]</p>
+<ol>
+<li>–changelog：查询rpm包的信息变化的过程</li>
+<li>-c: 查询程序的配置文件</li>
+<li>-d: 查询程序的文档</li>
+<li>-i: information</li>
+<li>-l: 查看指定的程序包安装后生成的所有文件</li>
+<li>–scripts：程序包自带的脚本</li>
+<li>–provides: 列出指定程序包所提供的CAPABILITY（能力）</li>
+<li>-R: 查询指定的程序包所依赖的CAPABILITY</li>
+</ol>
+<p>例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -ql tree 查询tree包下的文件</span><br><span class="line">rpm -qR tree 查询tree所依赖的能力</span><br></pre></td></tr></table></figure>
+<h2 id="包卸载"><a href="#包卸载" class="headerlink" title="包卸载"></a>包卸载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-e|--erase&#125;[--allmatches][–-nodeps][–-noscripts][–-notriggers][–-<span class="built_in">test</span>] PACKAGE_NAME …</span><br></pre></td></tr></table></figure>
+<p>​    -e 卸载 后面直接跟包名就可以不用写完整的名字</p>
+<p>​    –allmatches 若一个包有多个版本使用此选项可将全部卸载</p>
+<h2 id="包校验"><a href="#包校验" class="headerlink" title="包校验"></a>包校验</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-V|--verify&#125; [select-options][verify-options]检查包的属性变化 后面跟包名</span><br></pre></td></tr></table></figure>
+<p>S file Size differs</p>
+<p>M Mode differs (includes permissions and file type)</p>
+<p>5 digest (formerly MD5 sum) differs</p>
+<p>D Device major/minor number mismatch</p>
+<p>L readLink(2) path mismatch</p>
+<p>U User ownership differs</p>
+<p>G Group ownership differs</p>
+<p>T mTime differs</p>
+<p>P capabilities differ</p>
+<h3 id="导入所需要公钥"><a href="#导入所需要公钥" class="headerlink" title="导入所需要公钥"></a>导入所需要公钥</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa <span class="string">"gpg-pubkey*"</span></span><br><span class="line"></span><br><span class="line">rpm -K|checksig rpmfile 检查包的完整性和签名（若显示not ok）则此文件存在一定的风险建议不装</span><br><span class="line">若执行-K检查命令则必先执行以下命令</span><br><span class="line">rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br><span class="line">或 rpm --import /run/media/root/centos\7\x86_64/RPM-GPG-Centos-6</span><br><span class="line"></span><br><span class="line">rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</span><br><span class="line">或 rpm --import /run/media/root/centos\7\x86_64/RPM-GPG-KEY-centos-7</span><br></pre></td></tr></table></figure>
+<h2 id="rpm数据库"><a href="#rpm数据库" class="headerlink" title="rpm数据库"></a>rpm数据库</h2><ol>
+<li>数据库重建</li>
+</ol>
+<p>​    /var/lib/rpm</p>
+<ol start="2">
+<li><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;--initdb|--rebuilddb&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>​    initdb: 初始化</p>
+<p>如果事先不存在数据库，则新建之;否则，不执行任何操作</p>
+<p>​    rebuilddb：重建已安装的包头的数据库索引目录 </p>
+<h1 id="YUM"><a href="#YUM" class="headerlink" title="YUM"></a>YUM</h1><p>&ensp;&ensp;&ensp;&ensp;yum(Yellow dog Updater,Modified)主要的功能是方便添加、删除和更新rpm软件包。可以解决软件包依存问题，更便于管理大量的系统更新问题。它可以同时配置多个仓库或叫资源库(repository)，就是存放更新和依存的软件包的地方。</p>
+<h2 id="yum的由来"><a href="#yum的由来" class="headerlink" title="yum的由来"></a>yum的由来</h2><p>&ensp;&ensp;&ensp;&ensp;为了解决程序间的依赖关系，RedHat曾推出了一款名为update的工具。这款工具虽然达到了目的，但用户体验并不是很好。后来一个基于RedHat的二次发行版yellowdog，由此也推出了一个工具：yellowdog update modifier，简写为yum. 由于比update好用，于是便流行开来。后来导致RedHat也弃update不用而使用yum</p>
+<h2 id="yum的特性"><a href="#yum的特性" class="headerlink" title="yum的特性"></a>yum的特性</h2><p>&ensp;&ensp;&ensp;&ensp;yum相对于rpm来说：rpm为基础包管理器，yum则是rpm的前端工具。yum无法独立存在系统,不允许有两个yum命令同时运行，如果有两个，第二次运行时会报错。这是为了防止yum之间的冲突</p>
+<h2 id="yum的配置文件"><a href="#yum的配置文件" class="headerlink" title="yum的配置文件"></a>yum的配置文件</h2><p>/etc/yum.conf：为所有仓库提供公共配置</p>
+<p>/etc/yum.repos.d/*.repo：为仓库的指向提供配置</p>
+<p>yum repository: yum repo，存储了众多rpm包，以及包的相关的元数据文件（放置于特定目录repodata下）<br>文件服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://</span><br><span class="line">https://</span><br><span class="line">ftp://</span><br><span class="line">file://</span><br></pre></td></tr></table></figure>
+<p>yum客户端配置文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.conf：为所有仓库提供公共配置</span><br><span class="line">[main]语句块名称</span><br><span class="line">cachedir=/var/cache/yum/<span class="variable">$basearch</span>/<span class="variable">$releasever</span> <span class="comment">#缓存文件夹</span></span><br><span class="line">keepcache=0  <span class="comment">#1表示rpm包保存 0表示不保存</span></span><br><span class="line">debuglevel=2  <span class="comment">#调试一般不用管</span></span><br><span class="line">logfile=/var/<span class="built_in">log</span>/yum.log  <span class="comment">#yum的日志</span></span><br><span class="line">exactarch=1</span><br><span class="line">obsoletes=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">plugins=1</span><br><span class="line">installonly_limit=5  <span class="comment">#同时可装5个包</span></span><br><span class="line">bugtracker_url=http://bugs.centos.org/set_project.php?project_id=19&amp;ref=http://bugs.centos.org/bug_report_page.php?category=yum</span><br><span class="line">distroverpkg=centos-release</span><br></pre></td></tr></table></figure></p>
+<p>/etc/yum.repos.d/*.repo：为仓库的指向提供配置 后缀必须为.repo</p>
+<p>仓库指向的定义：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[repositoryID] <span class="comment">#第一行用一个单词不允许出现空格名字可以随意</span></span><br><span class="line">name=Some name <span class="keyword">for</span> this repository   <span class="comment">#描述语句</span></span><br><span class="line">baseurl=url://path/to/repository/第二行路径     <span class="comment">#repodata的父目录就是路径</span></span><br><span class="line">enabled=&#123;1|0&#125;   <span class="comment">#0表示禁用1表示启用</span></span><br><span class="line">gpgcheck=&#123;1|0&#125;  <span class="comment">#第三行是否检查包的完整性0表示不检查</span></span><br><span class="line">gpgkey=URL</span><br><span class="line">enablegroups=&#123;1|0&#125;</span><br><span class="line">failovermethod=&#123;roundrobin|priority&#125;</span><br><span class="line"><span class="comment">#    roundrobin：意为随机挑选，默认值</span></span><br><span class="line"><span class="comment">#    priority:按顺序访问</span></span><br><span class="line">cost= 默认为1000</span><br></pre></td></tr></table></figure></p>
+<h2 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h2><p><a href="http://mirrors.aliyun.com/repo/" target="_blank" rel="noopener">阿里云repo文件</a></p>
+<p>CentOS系统的yum源</p>
+<p><a href="https://mirrors.aliyun.com/centos/7/os/x86_64/" target="_blank" rel="noopener">阿里云</a></p>
+<p><a href="https://mirrors.tuna.tsinghua.edu.cn/centos/7/os/x86_64/" target="_blank" rel="noopener">清华大学</a></p>
+<p>EPEL的yum源</p>
+<p><a href="https://mirrors.aliyun.com/epel/$releasever/x86_64" target="_blank" rel="noopener">阿里云</a></p>
+<h2 id="yum-命令"><a href="#yum-命令" class="headerlink" title="yum 命令"></a>yum 命令</h2><p>显示仓库列表<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum repolist [all|enabled|disabled]</span><br></pre></td></tr></table></figure></p>
+<p>显示程序包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum list</span><br><span class="line">yum list [all | glob_exp1] [glob_exp2] […]</span><br><span class="line">yum list &#123;available|installed|updates&#125; [glob_exp1] […]</span><br></pre></td></tr></table></figure></p>
+<p>安装程序包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install package1 [package2] […]</span><br><span class="line">yum reinstall package1 [package2] […] (重新安装)</span><br></pre></td></tr></table></figure></p>
+<p>升级程序包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update [package1] [package2] […]</span><br><span class="line">yum downgrade package1 [package2] […] (降级)</span><br></pre></td></tr></table></figure></p>
+<p>检查可用升级<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum check-update</span><br></pre></td></tr></table></figure></p>
+<p>卸载程序包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove | erase package1 [package2] […]</span><br></pre></td></tr></table></figure></p>
+<p>查看程序包information<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info […]</span><br></pre></td></tr></table></figure></p>
+<p>查看指定的特性(可以是某文件)是由哪个程序包所提供<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum provides | whatprovides feature1 [feature2] […]</span><br></pre></td></tr></table></figure></p>
+<p>清理本地缓存<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">清除/var/cache/yum/<span class="variable">$basearch</span>/<span class="variable">$releasever</span>缓存</span><br><span class="line">yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]</span><br></pre></td></tr></table></figure></p>
+<p>构建缓存<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum makecache</span><br></pre></td></tr></table></figure></p>
+<p>搜索:以指定的关键字搜索程序包名及summary信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum search string1 [string2] […]</span><br></pre></td></tr></table></figure></p>
+<p>查看指定包所依赖的capabilities<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum deplist package1 [package2] […]</span><br></pre></td></tr></table></figure></p>
+<p>查看yum事务历史<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="built_in">history</span> [info|list|packages-list|packages-info|</span><br><span class="line">summary|addon-info|redo|undo|</span><br><span class="line">rollback|new|sync|stats]</span><br><span class="line">yum <span class="built_in">history</span></span><br><span class="line">yum <span class="built_in">history</span> info 6</span><br><span class="line">yum <span class="built_in">history</span> undo 6</span><br></pre></td></tr></table></figure></p>
+<p>日志<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/<span class="built_in">log</span>/yum.log</span><br></pre></td></tr></table></figure></p>
+<p>安装及升级本地程序包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum localinstall rpmfile1 [rpmfile2] […]</span><br><span class="line">(用install替代)</span><br><span class="line">yum localupdate rpmfile1 [rpmfile2] […]</span><br><span class="line">(用update替代)</span><br></pre></td></tr></table></figure></p>
+<p>包组管理的相关命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum groupinstall group1 [group2] […]</span><br><span class="line">yum groupupdate group1 [group2] […]</span><br><span class="line">yum grouplist [hidden] [groupwildcard] […]</span><br><span class="line">yum groupremove group1 [group2] […]</span><br><span class="line">yum groupinfo group1 […]</span><br></pre></td></tr></table></figure></p>
+<p>yum的命令行选项：</p>
+<p>–nogpgcheck：禁止进行gpg check</p>
+<p>-y: 自动回答为“yes”</p>
+<p>-q：静默模式</p>
+<p>–disablerepo=repoidglob：临时禁用此处指定的repo</p>
+<p>–enablerepo=repoidglob：临时启用此处指定的repo</p>
+<p>–noplugins：禁用所有插件</p>
+<h2 id="系统光盘作为本地yum仓库"><a href="#系统光盘作为本地yum仓库" class="headerlink" title="系统光盘作为本地yum仓库"></a>系统光盘作为本地yum仓库</h2><p>(1) 挂载光盘至某目录，例如/mnt/cdrom<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/cdrom /mnt/cdrom</span><br></pre></td></tr></table></figure></p>
+<p>(2) 创建配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[base]</span><br><span class="line">name=base.repo</span><br><span class="line">baseurl=file:///mnt/cdrom</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+  <div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rpm/" rel="tag"><i class="fa fa-tag"></i> rpm</a>
+          
+            <a href="/tags/yum/" rel="tag"><i class="fa fa-tag"></i> yum</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/31/文本三剑客之grep/" rel="next" title="文本三剑客之grep">
+                <i class="fa fa-chevron-left"></i> 文本三剑客之grep
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/10/Ansible的高级用法之playbook和roles/" rel="prev" title="Ansible的高级用法之playbook和roles">
+                Ansible的高级用法之playbook和roles <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.gif" alt="谢 佳">
+            
+              <p class="site-author-name" itemprop="name">谢 佳</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#静态和动态链接"><span class="nav-number">1.</span> <span class="nav-text">静态和动态链接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态链接"><span class="nav-number">1.1.</span> <span class="nav-text">静态链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态链接"><span class="nav-number">1.2.</span> <span class="nav-text">动态链接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件包"><span class="nav-number">2.</span> <span class="nav-text">软件包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包命名和工具"><span class="nav-number">2.1.</span> <span class="nav-text">包命名和工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#库文件"><span class="nav-number">2.2.</span> <span class="nav-text">库文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包管理器"><span class="nav-number">2.3.</span> <span class="nav-text">包管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包文件组成-每个包独有"><span class="nav-number">2.3.1.</span> <span class="nav-text">包文件组成 (每个包独有)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库-公共-：-var-lib-rpm"><span class="nav-number">2.3.2.</span> <span class="nav-text">数据库(公共)： /var/lib/rpm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序包的来源"><span class="nav-number">2.4.</span> <span class="nav-text">程序包的来源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#管理程序包的方式"><span class="nav-number">2.4.1.</span> <span class="nav-text">管理程序包的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取程序包的途径"><span class="nav-number">2.4.2.</span> <span class="nav-text">获取程序包的途径</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RPM包管理器"><span class="nav-number">3.</span> <span class="nav-text">RPM包管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包安装"><span class="nav-number">3.1.</span> <span class="nav-text">包安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包升级（不建议使用）"><span class="nav-number">3.2.</span> <span class="nav-text">包升级（不建议使用）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#升级注意项"><span class="nav-number">3.2.1.</span> <span class="nav-text">升级注意项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包查询"><span class="nav-number">3.3.</span> <span class="nav-text">包查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包卸载"><span class="nav-number">3.4.</span> <span class="nav-text">包卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包校验"><span class="nav-number">3.5.</span> <span class="nav-text">包校验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导入所需要公钥"><span class="nav-number">3.5.1.</span> <span class="nav-text">导入所需要公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rpm数据库"><span class="nav-number">3.6.</span> <span class="nav-text">rpm数据库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YUM"><span class="nav-number">4.</span> <span class="nav-text">YUM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yum的由来"><span class="nav-number">4.1.</span> <span class="nav-text">yum的由来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yum的特性"><span class="nav-number">4.2.</span> <span class="nav-text">yum的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yum的配置文件"><span class="nav-number">4.3.</span> <span class="nav-text">yum的配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yum源"><span class="nav-number">4.4.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yum-命令"><span class="nav-number">4.5.</span> <span class="nav-text">yum 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统光盘作为本地yum仓库"><span class="nav-number">4.6.</span> <span class="nav-text">系统光盘作为本地yum仓库</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢 佳</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">51.5k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
