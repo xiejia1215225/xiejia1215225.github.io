@@ -32,9 +32,9 @@
         <category>linux</category>
       </categories>
       <tags>
+        <tag>sed</tag>
         <tag>文本工具</tag>
         <tag>正则</tag>
-        <tag>sed</tag>
       </tags>
   </entry>
   <entry>
@@ -160,9 +160,9 @@
         <category>linux</category>
       </categories>
       <tags>
-        <tag>grep</tag>
         <tag>文本工具</tag>
         <tag>正则</tag>
+        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
