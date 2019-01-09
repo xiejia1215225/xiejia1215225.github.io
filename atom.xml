@@ -93,11 +93,11 @@
       <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
     
     
-      <category term="sed" scheme="http://yoursite.com/tags/sed/"/>
-    
       <category term="文本工具" scheme="http://yoursite.com/tags/%E6%96%87%E6%9C%AC%E5%B7%A5%E5%85%B7/"/>
     
       <category term="正则" scheme="http://yoursite.com/tags/%E6%AD%A3%E5%88%99/"/>
+    
+      <category term="sed" scheme="http://yoursite.com/tags/sed/"/>
     
   </entry>
   
@@ -380,11 +380,11 @@
       <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
     
     
+      <category term="grep" scheme="http://yoursite.com/tags/grep/"/>
+    
       <category term="文本工具" scheme="http://yoursite.com/tags/%E6%96%87%E6%9C%AC%E5%B7%A5%E5%85%B7/"/>
     
       <category term="正则" scheme="http://yoursite.com/tags/%E6%AD%A3%E5%88%99/"/>
-    
-      <category term="grep" scheme="http://yoursite.com/tags/grep/"/>
     
   </entry>
   
