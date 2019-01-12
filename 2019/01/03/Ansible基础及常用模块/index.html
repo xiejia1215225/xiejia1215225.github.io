@@ -90,12 +90,10 @@
 <meta property="og:site_name" content="Linux知识库">
 <meta property="og:description" content="Ansible的概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;概念：是一个配置管理工具，是一个自动化运维工具，通过ssh实现配置管理、应用部署、任务执行等功能。要实现ansible，必须基于key验证作用：可以完成一些批量任务或者完成一些需要经常重复的工作   同时在100台服务器上安装服务，并在安装后启动服务将某个文件一次性拷贝到100台服务器上每当有新服务器加入工作环境时都要部署新的服务">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-03T17:38:43.489Z">
+<meta property="og:updated_time" content="2019-01-12T05:04:20.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible基础及常用模块">
 <meta name="twitter:description" content="Ansible的概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;概念：是一个配置管理工具，是一个自动化运维工具，通过ssh实现配置管理、应用部署、任务执行等功能。要实现ansible，必须基于key验证作用：可以完成一些批量任务或者完成一些需要经常重复的工作   同时在100台服务器上安装服务，并在安装后启动服务将某个文件一次性拷贝到100台服务器上每当有新服务器加入工作环境时都要部署新的服务">
-<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
 
 
 
@@ -526,7 +524,6 @@
 <p>Service：管理服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]<span class="comment">#ansible all -m service -a 'name=httpd state=stopped'</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m service -a 'name=httpd state=started enabled=yes'          启动服务，并且开机启动</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m service -a 'name=httpd state=reloaded'</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m service -a 'name=httpd state=restarted'</span></span><br></pre></td></tr></table></figure></p>
 <p>User：管理用户<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]<span class="comment">#ansible all -m user -a 'name=user1 comment="test user" uid=2048 home=/app/user1 group=root shell=/sbin/nologin'</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m user -a 'name=sysuser1 system=yes home=/app/sysuser1'</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m user -a 'name=user1 state=absent remove=yes'</span></span><br><span class="line">          删除账号并且删除家目录</span><br></pre></td></tr></table></figure></p>
 <p>Group：管理组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]<span class="comment">#ansible all -m group -a "name=testgroup system=yes"</span></span><br><span class="line">[root@centos ~]<span class="comment">#ansible all -m group -a "name=testgroup state=absent"</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
 
       
     </div>
@@ -589,8 +586,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/18/自动化安装系统/" rel="next" title="自动化安装系统">
-                <i class="fa fa-chevron-left"></i> 自动化安装系统
+              <a href="/2018/11/19/DHCP服务/" rel="next" title="DNCP服务">
+                <i class="fa fa-chevron-left"></i> DNCP服务
               </a>
             
           </div>
@@ -599,8 +596,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/DHCP服务/" rel="prev" title="DNCP服务">
-                DNCP服务 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/03/DNS服务/" rel="prev" title="DNS服务">
+                DNS服务 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

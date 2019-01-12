@@ -90,12 +90,10 @@
 <meta property="og:site_name" content="Linux知识库">
 <meta property="og:description" content="静态和动态链接&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态 静态链接 ​    把程序对应的依赖库复制一份到包   ​    以.a为后缀  ​    嵌入程序包   ​        升级难 需重新编译  ​    占用空间多 迁移容易   动态链接 只把依赖加做一个动态链接 以.so为后缀 连接">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-07T13:41:24.122Z">
+<meta property="og:updated_time" content="2019-01-12T04:38:00.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="软件包管理">
 <meta name="twitter:description" content="静态和动态链接&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;链接主要作用是吧各个模块之间互相引用的部分处理好，使得各个模块之间能够正确的链接，分为静态和动态 静态链接 ​    把程序对应的依赖库复制一份到包   ​    以.a为后缀  ​    嵌入程序包   ​        升级难 需重新编译  ​    占用空间多 迁移容易   动态链接 只把依赖加做一个动态链接 以.so为后缀 连接">
-<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
 
 
 
@@ -645,7 +643,6 @@
 <p>–noplugins：禁用所有插件</p>
 <h2 id="系统光盘作为本地yum仓库"><a href="#系统光盘作为本地yum仓库" class="headerlink" title="系统光盘作为本地yum仓库"></a>系统光盘作为本地yum仓库</h2><p>(1) 挂载光盘至某目录，例如/mnt/cdrom<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/cdrom /mnt/cdrom</span><br></pre></td></tr></table></figure></p>
 <p>(2) 创建配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[base]</span><br><span class="line">name=base.repo</span><br><span class="line">baseurl=file:///mnt/cdrom</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
 
       
     </div>

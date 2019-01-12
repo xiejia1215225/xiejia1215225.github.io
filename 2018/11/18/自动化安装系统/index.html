@@ -106,8 +106,7 @@
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/kickstart14.png?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E5%BC%80%E6%9C%BA%E7%95%8C%E9%9D%A2.png?raw=true">
 <meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/%E9%85%8D%E7%BD%AEboot.png?raw=true">
-<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true">
-<meta property="og:updated_time" content="2019-01-09T17:12:44.715Z">
+<meta property="og:updated_time" content="2019-01-12T04:26:02.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自动化安装系统">
 <meta name="twitter:description" content="kickstart安装步骤    自动化安装之前我们首先要使用相应的工具去生成相应的文件（应答文件），在我们的系统装好之后，在管理员的家目录下都有这样一个文件anaconda-ks.cfg,此文件中的 kickstart就是我们实现自动化安装的重要文件，那么在配置此文件之前首先要安装kickstart所依赖的服务的包system-config-kickstart使用此工具需要在图形界面下进行具体步">
@@ -508,7 +507,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/sr0 of=/dev/sdb</span><br></pre></td></tr></table></figure>
 <h1 id="mkisofs选项"><a href="#mkisofs选项" class="headerlink" title="mkisofs选项"></a>mkisofs选项</h1><p>-o 指定映像文件的名称。<br>-b 指定在制作可开机光盘时所需的开机映像文件。<br>-c 制作可开机光盘时，会将开机映像文件中的 no-eltorito-catalog 全部内容作成一个文件。<br>-no-emul-boot 非模拟模式启动。<br>-boot-load-size 4 设置载入部分的数量<br>-boot-info-table 在启动的图像中现实信息<br>-R 或 -rock 使用 Rock RidgeExtensions<br>-J 或 -joliet 使用 Joliet 格式的目录与文件名称<br>-v 或 -verbose 执行时显示详细的信息<br>-T 或 -translation-table 建立文件名的转换表，适用于不支持 Rock Ridge Extensions 的系统上</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="comment">#mkdir /data/iso</span></span><br><span class="line">[root@CentOS6 ~]<span class="comment">#cp -r /misc/cd/isolinux/ /data/iso</span></span><br><span class="line">[root@CentOS6 ~]<span class="comment">#tree /data/iso</span></span><br><span class="line">/data/iso</span><br><span class="line">└── isolinux</span><br><span class="line">├── boot.cat</span><br><span class="line">├── boot.msg</span><br><span class="line">├── grub.conf</span><br><span class="line">├── initrd.img</span><br><span class="line">├── isolinux.bin</span><br><span class="line">├── isolinux.cfg</span><br><span class="line">├── memtest</span><br><span class="line">├── splash.jpg</span><br><span class="line">├── TRANS.TBL</span><br><span class="line">├── vesamenu.c32</span><br><span class="line">└── vmlinuz</span><br><span class="line"></span><br><span class="line">1 directory, 11 files</span><br><span class="line">[root@CentOS6 ~]<span class="comment">#cp /var/www/html/ksdir/6/ks_mini.cfg /data/iso/</span></span><br><span class="line">[root@CentOS6 iso]<span class="comment">#mkdir ksdir</span></span><br><span class="line">[root@CentOS6 iso]<span class="comment">#mv ks_mini.cfg ksdir/</span></span><br><span class="line">[root@CentOS6 iso]<span class="comment">#ls</span></span><br><span class="line">isolinux ksdir</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/Linux%E6%A0%87%E5%BF%97.jpg?raw=true" alt=""></p>
 
       
     </div>
@@ -571,8 +569,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/10/Ansible的高级用法之playbook和roles/" rel="next" title="Ansible的高级用法之playbook和roles">
-                <i class="fa fa-chevron-left"></i> Ansible的高级用法之playbook和roles
+              <a href="/2018/11/13/加密和安全/" rel="next" title="加密和安全">
+                <i class="fa fa-chevron-left"></i> 加密和安全
               </a>
             
           </div>
@@ -581,8 +579,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/03/Ansible基础及常用模块/" rel="prev" title="Ansible基础及常用模块">
-                Ansible基础及常用模块 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/19/DHCP服务/" rel="prev" title="DNCP服务">
+                DNCP服务 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
