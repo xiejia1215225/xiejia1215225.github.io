@@ -90,7 +90,7 @@
 <meta property="og:site_name" content="Linux知识库">
 <meta property="og:description" content="一：缓存概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;缓存是为了调节速度不一致的两个或多个不同的物质的速度，在中间对速度较快的一方起到一个加速访问速度较慢的一方的作用，比如CPU的一级、二级缓存是保存了CPU最近经常访问的数据，内存是保存CPU经常访问硬盘的数据，而且硬盘也有大小不一的缓存，甚至是物理服务器的raid 卡有也缓存，都是为了起到加速CPU 访问硬盘数据的目的，因为CPU的速度太">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-14T04:50:01.194Z">
+<meta property="og:updated_time" content="2019-01-20T07:05:49.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis基础">
 <meta name="twitter:description" content="一：缓存概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;缓存是为了调节速度不一致的两个或多个不同的物质的速度，在中间对速度较快的一方起到一个加速访问速度较慢的一方的作用，比如CPU的一级、二级缓存是保存了CPU最近经常访问的数据，内存是保存CPU经常访问硬盘的数据，而且硬盘也有大小不一的缓存，甚至是物理服务器的raid 卡有也缓存，都是为了起到加速CPU 访问硬盘数据的目的，因为CPU的速度太">
@@ -434,7 +434,7 @@
 <p>第二解决不同运营商之间的互联，因为可以让联通的网络访问联通，让电信的网络访问电信，起到加速用户访问的目的；</p>
 <p>第三：解决用户访问的地域问题，就近返回用户资源。</p>
 <p>百度CDN：<a href="https://cloud.baidu.com/product/cdn.html" target="_blank" rel="noopener">https://cloud.baidu.com/product/cdn.html</a> </p>
-<p>阿里CDN：<a href="https://www.aliyun.com/product/cdn?spm=5176.8269123.416540.50.728y8n" target="_blank" rel="noopener">https://www.aliyun.com/product/cdn?spm=5176.8269123.416540.50.728y8n</a> </p>
+<p>阿里CDN：<a href="https://www.aliyun.com/product/cdn" target="_blank" rel="noopener">https://www.aliyun.com/product/cdn</a> </p>
 <p>腾讯CDN：<a href="https://www.qcloud.com/product/cdn" target="_blank" rel="noopener">https://www.qcloud.com/product/cdn</a> </p>
 <h3 id="1-2-2：CDN主要优势"><a href="#1-2-2：CDN主要优势" class="headerlink" title="1.2.2：CDN主要优势"></a>1.2.2：CDN主要优势</h3><p>&ensp;&ensp;&ensp;&ensp;提前对静态内容进行预缓存，避免大量的请求回源，导致主站网络带宽被打满而导致数据无法更新，另外CDN可以将数据根据访问的热度不通而进行不通级别的缓存，例如访问量最高的资源访问CDN 边缘节点的内存，其次的放在SSD或者SATA，再其次的放在云存储，这样兼顾了速度与成本。缓存-缓存到最快的地方如内存，缓存的数据准确命中率高，访问速度就快</p>
 <p>调度准确-将用户调度到最近的边缘节点</p>
