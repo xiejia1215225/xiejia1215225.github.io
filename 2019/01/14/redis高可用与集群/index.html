@@ -421,7 +421,7 @@
       
 
       
-        <h1 id="一：redis-高可用与集群"><a href="#一：redis-高可用与集群" class="headerlink" title="一：redis 高可用与集群"></a>一：redis 高可用与集群</h1><p>&ensp;&ensp;&ensp;&ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="一：redis-高可用与集群"><a href="#一：redis-高可用与集群" class="headerlink" title="一：redis 高可用与集群"></a>一：redis 高可用与集群</h1><p>&ensp;&ensp;&ensp;&ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。</p>
 <h2 id="1：配置reids-主从"><a href="#1：配置reids-主从" class="headerlink" title="1：配置reids 主从"></a>1：配置reids 主从</h2><p>主备模式，可以实现Redis数据的跨主机备份。</p>
 <p>&ensp;&ensp;&ensp;&ensp;程序端连接到高可用负载的VIP，然后连接到负载服务器设置的Redis后端real server，此模式不需要在程序里面配置Redis服务器的真实IP地址，当后期Redis服务器IP地址发生变更只需要更改redis 相应的后端real server即可，可避免更改程序中的IP地址设置。</p>
 <h3 id="1-1：Slave主要配置"><a href="#1-1：Slave主要配置" class="headerlink" title="1.1：Slave主要配置"></a>1.1：Slave主要配置</h3><p>&ensp;&ensp;&ensp;&ensp;Redis Slave 也要开启持久化并设置和master同样的连接密码，因为后期slave会有提升为master的可能,Slave端切换master同步后会丢失之前的所有数据。</p>
