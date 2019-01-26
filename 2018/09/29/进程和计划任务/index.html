@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="进程,计划任务,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="一、进程的相关概念1.1、相关定义 内核的功用：进程管理、文件系统、网络功能、内存管理、驱动程序、 安全功能等   通俗的来说进程是运行起来的程序。唯一标识进程的是进程描述符（PID）,在linux内核中是通过task_struck和task_list来定义和管理进程的 ；   进程Process: 运行中的程序的一个副本，是被载入内存的一个指令集合   ​    进程ID（Process ID，">
+<meta name="keywords" content="进程,计划任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程和计划任务">
+<meta property="og:url" content="http://yoursite.com/2018/09/29/进程和计划任务/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="一、进程的相关概念1.1、相关定义 内核的功用：进程管理、文件系统、网络功能、内存管理、驱动程序、 安全功能等   通俗的来说进程是运行起来的程序。唯一标识进程的是进程描述符（PID）,在linux内核中是通过task_struck和task_list来定义和管理进程的 ；   进程Process: 运行中的程序的一个副本，是被载入内存的一个指令集合   ​    进程ID（Process ID，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-26T02:58:26.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程和计划任务">
+<meta name="twitter:description" content="一、进程的相关概念1.1、相关定义 内核的功用：进程管理、文件系统、网络功能、内存管理、驱动程序、 安全功能等   通俗的来说进程是运行起来的程序。唯一标识进程的是进程描述符（PID）,在linux内核中是通过task_struck和task_list来定义和管理进程的 ；   进程Process: 运行中的程序的一个副本，是被载入内存的一个指令集合   ​    进程ID（Process ID，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/29/进程和计划任务/">
+
+
+
+<script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+<script>tpwidget("init", {
+    "flavor": "bubble",
+    "location": "WTW3SJ5ZBJUY",
+    "geolocation": "enabled",
+    "position": "top-left",
+    "margin": "10px 10px",
+    "language": "zh-chs",
+    "unit": "c",
+    "theme": "chameleon",
+    "uid": "U4F2547B10",
+    "hash": "d49c6de3fe37062a9b1db42177056f08"
+});
+tpwidget("show");</script>
+
+  <title>进程和计划任务 | Linux知识库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+  
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xiejia1215225"><img style="position: absolute; top: 0; right: 0; border: 0
+	;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Linux知识库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/进程和计划任务/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢 佳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linux知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">进程和计划任务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-29T00:00:00+08:00">
+                2018-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/进程和计划任务/" itemprop="url" rel="index">
+                    <span itemprop="name">进程和计划任务</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  7.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  31
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="一、进程的相关概念"><a href="#一、进程的相关概念" class="headerlink" title="一、进程的相关概念"></a>一、进程的相关概念</h1><h2 id="1-1、相关定义"><a href="#1-1、相关定义" class="headerlink" title="1.1、相关定义"></a>1.1、相关定义</h2><ul>
+<li>内核的功用：进程管理、文件系统、网络功能、内存管理、驱动程序、 安全功能等</li>
+</ul>
+<ul>
+<li>通俗的来说<strong>进程</strong>是运行起来的程序。唯一标识进程的是<strong>进程描述符（PID）</strong>,在linux内核中是通过task_struck和task_list来定义和管理进程的 ；</li>
+</ul>
+<ul>
+<li><p>进程Process: 运行中的程序的一个副本，是被载入内存的一个指令集合</p>
+<p>  ​    进程ID（Process ID，PID）号码被用来标记各个进程</p>
+<p>  ​    UID、 GID、和SELinux语境决定对文件系统的存取和访问权限</p>
+<p>  ​    通常从执行进程的用户来继承</p>
+<p>  ​    存在生命周期</p>
+</li>
+<li><p>task struct：Linux内核存储进程信息的数据结构格式</p>
+</li>
+</ul>
+<ul>
+<li>task list：多个任务的的task struct组成的链表</li>
+</ul>
+<h2 id="1-2、进程创建"><a href="#1-2、进程创建" class="headerlink" title="1.2、进程创建"></a>1.2、进程创建</h2><ul>
+<li><p>init：第一个进程</p>
+</li>
+<li><p>进程：都由其父进程创建，父子关系，CoW（写实复制）</p>
+<p>  ​        fork(), clone()</p>
+</li>
+<li><p>创建过程</p>
+</li>
+</ul>
+<p>1.系统首先以fock的方式复制（cow）一个与父进程相同的进程，这个进程与父进程唯一的差别就是PID不同，但是这个进程还会多一个PPID的参数，PPID就是父进程的程序识别码PID；</p>
+<p> 2.然后新产生的进程开始加载实际要运行的程序进行执行。</p>
+<h2 id="1-3、进程的基本状态"><a href="#1-3、进程的基本状态" class="headerlink" title="1.3、进程的基本状态"></a>1.3、进程的基本状态</h2><ol>
+<li>创建状态：进程在创建时需要申请一个空白PCB(process control block进程控制块)，向其中填写控制和管理进程的信息，完成资源分配。如果创建工作无法完成，比如资源无法满足，就无法被调度运行，把此时进程所处状态称为创建状态</li>
+<li>就绪状态：进程已准备好，已分配到所需资源，只要分配到CPU就能够立即运行</li>
+<li>执行状态：进程处于就绪状态被调度后，进程进入执行状态</li>
+<li>阻塞状态：正在执行的进程由于某些事件（I/O请求，申请缓存区失败）而暂时无法运行，进程受到阻塞。在满足请求时进入就绪状态等待系统调用</li>
+<li>终止状态：进程结束，或出现错误，或被系统终止，进入终止状态。无法再执行</li>
+</ol>
+<h3 id="1-3-1、状态之间转换六种情况"><a href="#1-3-1、状态之间转换六种情况" class="headerlink" title="1.3.1、状态之间转换六种情况"></a>1.3.1、状态之间转换六种情况</h3><p>运行——&gt;就绪：1、主要是进程占用CPU的时间过长，而系统分配给该进程占用CPU的时间是有限的；</p>
+<p>​                 2、在采用抢先式优先级调度算法的系统中,当有更高优先级的进程要运行时，该进程就被迫让出CPU，该进程便由执行状态转变为就绪状态</p>
+<p>就绪——&gt;运行：运行的进程的时间片用完，调度就转到就绪队列中选择合适的进程分配CPU</p>
+<p>运行——&gt;阻塞：正在执行的进程因发生某等待事件而无法执行，则进程由执行状态变为阻塞状态，如发生了I/O请求</p>
+<p>阻塞——&gt;就绪:进程所等待的事件已经发生，就进入就绪队列</p>
+<p><strong>以下两种状态是不可能发生的：</strong></p>
+<p>阻塞——&gt;运行：即使给阻塞进程分配CPU，也无法执行，操作系统在进行调度时不会从阻塞队列进行挑选，而是从就绪队列中选取</p>
+<p>就绪——&gt;阻塞：就绪态根本就没有执行，谈不上进入阻塞态</p>
+<h2 id="1-4、进程优先级"><a href="#1-4、进程优先级" class="headerlink" title="1.4、进程优先级"></a>1.4、进程优先级</h2><ul>
+<li><p>进程优先级：</p>
+<p>  ​    系统优先级：数字越小，优先级越高</p>
+<p>  ​        0-139（CentOS4,5）</p>
+<p>  ​            各有140个运行队列和过期队列</p>
+<p>  ​        0-98，99（CentOS6）</p>
+<p>  ​    实时优先级: 99-0 值最大优先级最高</p>
+</li>
+<li><p>nice值：-20到19，对应系统优先级100-139或99</p>
+</li>
+<li><p>Big O：时间复杂度，用时和规模的关系<br>  ​    O(1), O(logn), O(n)线性, O(n^2)抛物线, O(2^n)</p>
+</li>
+</ul>
+<h2 id="1-5、进程内存"><a href="#1-5、进程内存" class="headerlink" title="1.5、进程内存"></a>1.5、进程内存</h2><ul>
+<li><p>Page Frame: 页框，用存储页面数据，存储Page 4k</p>
+</li>
+<li><p>LRU：Least Recently Used 近期最少使用算法,释放内存</p>
+</li>
+<li><p>物理地址空间和线性地址空间</p>
+<p>  ​    MMU：Memory Management Unit负责转换线性和物理地址</p>
+<p>  ​    TLB：Translation Lookaside Buffer</p>
+<p>  ​        翻译后备缓冲器,用于保存虚拟地址和物理地址映射关系的缓存</p>
+</li>
+</ul>
+<h2 id="1-6、IPC：进程间通信（Inter-Process-Communication）"><a href="#1-6、IPC：进程间通信（Inter-Process-Communication）" class="headerlink" title="1.6、IPC：进程间通信（Inter Process Communication）"></a>1.6、IPC：进程间通信（Inter Process Communication）</h2><p>&ensp;&ensp;&ensp;&ensp;在计算机网络体系中，主机与主机之间的通信，实质上是主机进程与主机进程之间的通信，也就是进程间的通信；</p>
+<ul>
+<li><p>同一主机：signal:信号</p>
+<p>  ​            shm: shared memory</p>
+<p>  ​           semaphore:信号量，一种计数器</p>
+</li>
+<li><p>​不同主机：socket: IP和端口号</p>
+<p>  ​           RPC: remote procedure call</p>
+<p>  ​           MQ：消息队列，Kafka，ActiveMQ</p>
+</li>
+</ul>
+<p>## </p>
+<h2 id="1-7、Linux内核：抢占式多任务"><a href="#1-7、Linux内核：抢占式多任务" class="headerlink" title="1.7、Linux内核：抢占式多任务"></a>1.7、Linux内核：抢占式多任务</h2><h2 id="1-8、进程类型"><a href="#1-8、进程类型" class="headerlink" title="1.8、进程类型"></a>1.8、进程类型</h2><ul>
+<li>守护进程: daemon,在系统引导过程中启动的进程，和终端无关进程</li>
+<li>​前台进程：跟终端相关，通过终端启动的进程</li>
+</ul>
+<p>​<strong>注意：两者可相互转化</strong> </p>
+<h2 id="1-9、进程状态"><a href="#1-9、进程状态" class="headerlink" title="1.9、进程状态"></a>1.9、进程状态</h2><ul>
+<li><p>​    运行态：running</p>
+</li>
+<li><p>​    就绪态：ready</p>
+</li>
+<li><p>​    睡眠态：</p>
+<p>  ​        可中断：interruptable</p>
+<p>  ​        不可中断：uninterruptable</p>
+</li>
+<li><p>​    停止态：stopped,暂停于内存，但不会被调度，除非手动启动</p>
+</li>
+<li><p>​    僵死态：zombie，结束进程，父进程结束前，子进程不关闭</p>
+</li>
+</ul>
+<h2 id="1-10、进程的分类"><a href="#1-10、进程的分类" class="headerlink" title="1.10、进程的分类"></a>1.10、进程的分类</h2><ul>
+<li>CPU-Bound：CPU密集型，非交互</li>
+<li>IO-Bound：IO密集型，交互</li>
+</ul>
+<h1 id="二、进程和线程的关系"><a href="#二、进程和线程的关系" class="headerlink" title="二、进程和线程的关系"></a>二、进程和线程的关系</h1><p>&ensp;&ensp;&ensp;&ensp;进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。<br>进程和线程的区别在于： </p>
+<p>1、一个程序至少有一个进程,一个进程至少有一个线程. 线程的划分尺度小于进程，使得多线程程序的并发性高。另外，进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。<br>2、线程在执行过程中与进程还是有区别的。每个独立的线程有一个程序运行的入口、顺序执行序列和程序的出口。但是线程不能够独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制。<br>3、从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别。<br>4、进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动,进程是系统进行资源分配和调度的一个独立单位.<br>​    线程是进程的一个实体,是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位.线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈),但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源. 一个线程可以创建和撤销另一个线程;同一个进程中的多个线程之间可以并发执行.</p>
+<h1 id="三、系统管理工具"><a href="#三、系统管理工具" class="headerlink" title="三、系统管理工具"></a>三、系统管理工具</h1><p>Linux系统状态的查看及管理工具</p>
+<p>pstree, ps, pidof, pgrep, top, htop,glance, pmap, vmstat, dstat, kill, pkill, job, bg, fg, nohup</p>
+<h2 id="3-1、pstree命令"><a href="#3-1、pstree命令" class="headerlink" title="3.1、pstree命令"></a>3.1、pstree命令</h2><p>display a tree of processes（显示查看进程树）</p>
+<p>以下为CentOS 6 和 CentOS 7 的区别</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@CentOS6 ~]<span class="comment"># pstree</span></span><br><span class="line">init─┬─abrtd           <span class="comment">#可以看到都是有init生成的</span></span><br><span class="line">     ├─acpid</span><br><span class="line">     ├─atd</span><br><span class="line">     ├─auditd───&#123;auditd&#125;</span><br><span class="line">     ├─automount───4*[&#123;automount&#125;]</span><br><span class="line">     ├─bonobo-activati───&#123;bonobo-activat&#125;</span><br><span class="line">     ├─clock-applet</span><br><span class="line">、、、、</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pstree</span></span><br><span class="line">systemd─┬─ModemManager───2*[&#123;ModemManager&#125;]	<span class="comment">#可以看到都是有systemd生成的</span></span><br><span class="line">        ├─NetworkManager─┬─dhclient</span><br><span class="line">        │                └─3*[&#123;NetworkManager&#125;]</span><br><span class="line">        ├─VGAuthService</span><br><span class="line">        ├─abrt-dbus───3*[&#123;abrt-dbus&#125;]</span><br><span class="line">        ├─2*[abrt-watch-log]</span><br><span class="line">        ├─abrtd</span><br><span class="line">        ├─alsactl</span><br><span class="line">        ├─atd</span><br><span class="line">        ├─auditd─┬─audispd─┬─sedispatch</span><br><span class="line">、、、、、、</span><br></pre></td></tr></table></figure>
+<h1 id="四、进程查看命令"><a href="#四、进程查看命令" class="headerlink" title="四、进程查看命令"></a>四、进程查看命令</h1><h2 id="4-1、ps：查看进程信息"><a href="#4-1、ps：查看进程信息" class="headerlink" title="4.1、ps：查看进程信息"></a>4.1、ps：查看进程信息</h2><p>ps [OPTION]…</p>
+<p>支持三种选项：</p>
+<ul>
+<li><p>​    UNIX选项 如-A    -e</p>
+</li>
+<li><p>​    BSD选项 如a</p>
+</li>
+<li>​    GNU选项 如–help</li>
+</ul>
+<h3 id="4-1-1、选项：默认显示当前终端中的进程"><a href="#4-1-1、选项：默认显示当前终端中的进程" class="headerlink" title="4.1.1、选项：默认显示当前终端中的进程"></a>4.1.1、选项：默认显示当前终端中的进程</h3><ul>
+<li><p>​    a    选项包括所有终端中的进程</p>
+</li>
+<li><p>​    x    选项包括不链接终端的进程</p>
+</li>
+<li><p>​    u    选项显示进程所有者的信息</p>
+</li>
+<li><p>​    f    选项显示进程树,相当于–forest</p>
+</li>
+<li><p>​    k|–sort    属性 对属性排序,属性前加-表示倒序</p>
+</li>
+<li><p>​    o    属性…选项显示定制的信息pid、cmd、%cpu、%mem</p>
+</li>
+<li><p>​    L    显示支持的属性列表</p>
+</li>
+</ul>
+<h3 id="4-1-2、常见选项："><a href="#4-1-2、常见选项：" class="headerlink" title="4.1.2、常见选项："></a>4.1.2、常见选项：</h3><ul>
+<li>-C cmdlist 指定命令，多个命令用，分隔</li>
+<li><p>-L 显示线程</p>
+</li>
+<li><p>-e: 显示所有进程，相当于-A</p>
+</li>
+<li><p>-f: 显示完整格式程序信息</p>
+</li>
+<li><p>-F: 显示更完整格式的进程信息</p>
+</li>
+<li><p>-H: 以进程层级格式显示进程相关信息</p>
+</li>
+<li><p>-u userlist 指定有效的用户ID或名称</p>
+</li>
+<li><p>-U userlist 指定真正的用户ID或名称</p>
+</li>
+<li><p>-g gid或groupname 指定有效的gid或组名称</p>
+</li>
+<li><p>-G gid或groupname 指定真正的gid或组名称</p>
+</li>
+<li><p>-p pid 显示指pid的进程</p>
+</li>
+<li><p>–ppid pid 显示属于pid的子进程</p>
+</li>
+<li>-M 显示SELinux信息，相当于Z</li>
+</ul>
+<h3 id="4-1-3、ps输出属性"><a href="#4-1-3、ps输出属性" class="headerlink" title="4.1.3、ps输出属性"></a>4.1.3、ps输出属性</h3><p>VSZ: Virtual memory SiZe，虚拟内存集，线性内存</p>
+<p>RSS: ReSident Size, 常驻内存集</p>
+<p>STAT：进程状态<br>​    R：running<br>​    S: interruptable sleeping<br>​    D: uninterruptable sleeping<br>​    T: stopped<br>​    Z: zombie<br>​    +: 前台进程<br>​    l: 多线程进程<br>​    L：内存分页并带锁<br>​    N：低优先级进程<br>​    &lt;: 高优先级进程<br>​    s: session leader，会话（子进程）发起者</p>
+<h3 id="4-1-4、常用组合"><a href="#4-1-4、常用组合" class="headerlink" title="4.1.4、常用组合"></a>4.1.4、常用组合</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ps aux：观察系统所有的程序数据</span><br><span class="line">ps -lA：也是能够观察所有系统的数据</span><br><span class="line">ps axjf：连同部分程序树状态</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ni: nice值</li>
+<li>pri: priority 优先级</li>
+<li>psr: processor CPU编号</li>
+<li>rtprio: 实时优先级</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -eo pid,tid,class,rtprio,ni,pri,psr,pcpu,<span class="built_in">stat</span>,comm</span><br><span class="line">ps axo <span class="built_in">stat</span>,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-5、示例"><a href="#4-1-5、示例" class="headerlink" title="4.1.5、示例"></a>4.1.5、示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">1.查询你拥有的所有进程</span><br><span class="line">ps -x</span><br><span class="line"></span><br><span class="line">2.显示指定用户名(RUID)或用户ID的进程</span><br><span class="line">ps -fU apache</span><br><span class="line">ps -fU 48</span><br><span class="line"></span><br><span class="line">3.显示指定用户名(EUID)或用户ID的进程</span><br><span class="line">ps -fu wang</span><br><span class="line">ps -fu 1000</span><br><span class="line"></span><br><span class="line">4.查看以root用户权限（实际和有效ID）运行的每个进程</span><br><span class="line">ps -U root -u root</span><br><span class="line"></span><br><span class="line">5.列出某个组拥有的所有进程（实际组ID：RGID或名称）</span><br><span class="line">ps -fG nginx</span><br><span class="line"></span><br><span class="line">6.列出有效组名称（或会话）所拥有的所有进程</span><br><span class="line">ps -<span class="built_in">fg</span> mysql</span><br><span class="line">ps -<span class="built_in">fg</span> 27</span><br><span class="line"></span><br><span class="line">7.显示指定的进程ID对应的进程</span><br><span class="line">ps -fp 1234</span><br><span class="line"></span><br><span class="line">8.以父进程ID来显示其下所有的进程，如显示父进程为1234的所有进程</span><br><span class="line">ps -f --ppid 1234</span><br><span class="line"></span><br><span class="line">9.显示指定PID的多个进程</span><br><span class="line">ps -fp 1204,1239,1263</span><br><span class="line"></span><br><span class="line">10.要按tty显示所属进程</span><br><span class="line">ps -ft pts/0</span><br><span class="line"></span><br><span class="line">11.以进程树显示系统中的进程如何相互链接</span><br><span class="line">ps -e --forest</span><br><span class="line"></span><br><span class="line">12.以进程树显示指定的进程</span><br><span class="line">ps -f --forest -C sshd</span><br><span class="line">ps -ef --forest | grep -v grep | grep sshd</span><br><span class="line"></span><br><span class="line">13.要显示一个进程的所有线程,将显示LWP（轻量级进程）以及NLWP（轻量级进程数）列</span><br><span class="line">ps -fL -C nginx</span><br><span class="line"></span><br><span class="line">14.要列出所有格式说明符</span><br><span class="line">ps L</span><br><span class="line"></span><br><span class="line">15.查看进程的PID，PPID，用户名和命令</span><br><span class="line">ps -eo pid,ppid,user,cmd</span><br><span class="line"></span><br><span class="line">16.自定义格式显示文件系统组,ni值开始时间和进程的时间</span><br><span class="line">ps -p 1234 -o pid,ppid,fgroup,ni,lstart,etime</span><br><span class="line"></span><br><span class="line">17.使用其PID查找进程名称：</span><br><span class="line">ps -p 1244 -o comm=</span><br><span class="line"></span><br><span class="line">18.要以其名称选择特定进程，显示其所有子进程</span><br><span class="line">ps -C sshd,bash</span><br><span class="line"></span><br><span class="line">19.查找指定进程名所有的所属PID，在编写需要从std输出或文件读取PID的脚本时这个参数很有用</span><br><span class="line">ps -C httpd,sshd -o pid=</span><br><span class="line"></span><br><span class="line">20.检查一个进程的执行时间</span><br><span class="line">ps -eo comm,etime,user | grep nginx</span><br><span class="line"></span><br><span class="line">21.查找占用最多内存和CPU的进程</span><br><span class="line">ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head</span><br><span class="line">ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head</span><br><span class="line"></span><br><span class="line">22.显示安全信息</span><br><span class="line">ps -eM</span><br><span class="line">ps --context</span><br><span class="line"></span><br><span class="line">23.使用以下命令以用户定义的格式显示安全信息</span><br><span class="line">ps -eo euser,ruser,suser,fuser,f,comm,label</span><br><span class="line"></span><br><span class="line">24.使用watch实用程序执行重复的输出以实现对就程进行实时的监视，如下面的命令显示每秒钟的监视</span><br><span class="line">watch -n 1 <span class="string">'ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'</span></span><br></pre></td></tr></table></figure>
+<h1 id="五、进程管理工具"><a href="#五、进程管理工具" class="headerlink" title="五、进程管理工具"></a>五、进程管理工具</h1><h2 id="5-1、top：持续观察进程运行状态"><a href="#5-1、top：持续观察进程运行状态" class="headerlink" title="5.1、top：持续观察进程运行状态"></a>5.1、top：持续观察进程运行状态</h2><h3 id="5-1-1、常用参数"><a href="#5-1-1、常用参数" class="headerlink" title="5.1.1、常用参数"></a>5.1.1、常用参数</h3><p>​    -d # 指定刷新时间间隔，默认为3秒<br>​    -b 全部显示所有进程<br>​    -n # 刷新多少次后退出<br>​    -H 线程模式，示例：top -H -p <code>pidof mysqld</code></p>
+<h3 id="5-1-2、内置命令"><a href="#5-1-2、内置命令" class="headerlink" title="5.1.2、内置命令"></a>5.1.2、内置命令</h3><p>​    排序：<br>​        P：以占据的CPU百分比,%CPU<br>​        M：占据内存百分比,%MEM<br>​        T：累积占据CPU时长,TIME+<br>​    首部信息显示：<br>​        uptime信息：l命令<br>​        tasks及cpu信息：t命令<br>​        cpu分别显示：1 (数字)<br>​        memory信息：m命令<br>​    退出命令：q<br>​    修改刷新时间间隔：s<br>​    终止指定进程：k<br>​    保存文件：W</p>
+<h2 id="5-2、htop命令"><a href="#5-2、htop命令" class="headerlink" title="5.2、htop命令"></a>5.2、htop命令</h2><p>选项：<br>​    -d #: 指定延迟时间；<br>​    -u UserName: 仅显示指定用户的进程<br>​    -s COLUME: 以指定字段进行排序<br>子命令：<br>​    s：跟踪选定进程的系统调用<br>​    l：显示选定进程打开的文件列表<br>​    a：将选定的进程绑定至某指定CPU核心<br>​    t：显示进程树</p>
+<h2 id="5-3、kill命令"><a href="#5-3、kill命令" class="headerlink" title="5.3、kill命令"></a>5.3、kill命令</h2><p>&ensp;&ensp;&ensp;&ensp;&ensp;向进程发送控制信号，以实现对进程管理,每个信号对应一个数字，信号名称以SIG开头（可省略），不区分大小写<br>显示当前系统可用信号： kill –l 或者 trap -l</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#kill -l</span></span><br><span class="line"> 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP</span><br><span class="line"> 6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1</span><br><span class="line">11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM</span><br><span class="line">16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP</span><br><span class="line">21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR</span><br><span class="line">31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3</span><br><span class="line">38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8</span><br><span class="line">43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13</span><br><span class="line">48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12</span><br><span class="line">53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7</span><br><span class="line">58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2</span><br><span class="line">63) SIGRTMAX-1  64) SIGRTMAX</span><br></pre></td></tr></table></figure>
+<p>常用信号：man 7 signal<br>​    1) SIGHUP 无须关闭进程而让其重读配置文件<br>​    2) SIGINT 中止正在运行的进程；相当于Ctrl+c<br>​    3) SIGQUIT 相当于ctrl+\<br>​    9) SIGKILL 强制杀死正在运行的进程<br>​    15) SIGTERM 终止正在运行的进程<br>​    18) SIGCONT 继续运行<br>​    19) SIGSTOP 后台休眠<br>指定信号的方法 :   (1) 信号的数字标识：1, 2, 9<br>​                (2) 信号完整名称：SIGHUP<br>​                (3) 信号的简写名称：HUP</p>
+<p>按PID：kill [-SIGNAL] pid …</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> –n SIGNAL pid</span><br><span class="line"><span class="built_in">kill</span> –s SIGNAL pid</span><br></pre></td></tr></table></figure>
+<p>按名称：killall [-SIGNAL] comm…</p>
+<p>按模式：pkill [options] pattern<br>​    -SIGNAL<br>​    -u uid: effective user，生效者<br>​    -U uid: real user，真正发起运行命令者<br>​    -t terminal: 与指定终端相关的进程<br>​    -l: 显示进程名（pgrep可用）<br>​    -a: 显示完整格式的进程名（pgrep可用）<br>​    -P pid: 显示指定进程的子进程</p>
+<h1 id="六、系统、内存工具"><a href="#六、系统、内存工具" class="headerlink" title="六、系统、内存工具"></a>六、系统、内存工具</h1><h2 id="6-1、系统工具"><a href="#6-1、系统工具" class="headerlink" title="6.1、系统工具"></a>6.1、系统工具</h2><p>1、uptime：</p>
+<p>&ensp;&ensp;&ensp;&ensp;显示当前时间，系统已启动的时间、当前上线人数，系统平均负载（1、 5、 10分钟的平均负载，一般不会超过1）</p>
+<p>2、系统平均负载:<br>&ensp;&ensp;&ensp;&ensp;指在特定时间间隔内运行队列中的平均进程数</p>
+<p>3、通常每个CPU内核的当前活动进程数不大于3，那么系统的性能良好。 如果每个CPU内核的任务数大于5，那么此主机的性能有严重问题</p>
+<p>4、如果linux主机是1个双核CPU，当Load Average 为6的时候说明机器已经被充分使用</p>
+<h2 id="6-2、内存空间"><a href="#6-2、内存空间" class="headerlink" title="6.2、内存空间"></a>6.2、内存空间</h2><p>内存空间使用状态：<br>​    free [OPTION]<br>​        -b 以字节为单位<br>​        -m 以MB为单位<br>​        -g 以GB为单位<br>​        -h 易读格式<br>​        -o 不显示-/+buffers/cache行<br>​        -t 显示RAM + swap的总和<br>​        -s n 刷新间隔为n秒<br>​        -c n 刷新n次后即退出</p>
+<h2 id="6-3、内存工具"><a href="#6-3、内存工具" class="headerlink" title="6.3、内存工具"></a>6.3、内存工具</h2><h3 id="6-3-1、vmstat命令：虚拟内存信息"><a href="#6-3-1、vmstat命令：虚拟内存信息" class="headerlink" title="6.3.1、vmstat命令：虚拟内存信息"></a>6.3.1、vmstat命令：虚拟内存信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmstat [options][delay [count]]</span><br></pre></td></tr></table></figure>
+<p>选项：<br>​    -s: 显示内存的统计数据</p>
+<p>例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vmstat -s</span></span><br><span class="line">      1865308 K total memory</span><br><span class="line">       189440 K used memory</span><br><span class="line">       274412 K active memory</span><br><span class="line">       145448 K inactive memory</span><br><span class="line">      1225172 K free memory</span><br><span class="line">         2200 K buffer memory</span><br><span class="line">       448496 K swap cache</span><br><span class="line">      2097148 K total swap</span><br><span class="line">            0 K used swap</span><br><span class="line">      2097148 K free swap</span><br><span class="line">         8210 non-nice user cpu ticks</span><br><span class="line">           70 nice user cpu ticks</span><br><span class="line">        36498 system cpu ticks</span><br><span class="line">     24164865 idle cpu ticks</span><br><span class="line">         3536 IO-wait cpu ticks</span><br><span class="line">            0 IRQ cpu ticks</span><br><span class="line">         1236 softirq cpu ticks</span><br><span class="line">            0 stolen cpu ticks</span><br><span class="line">       387226 pages paged <span class="keyword">in</span></span><br><span class="line">       174244 pages paged out</span><br><span class="line">            0 pages swapped <span class="keyword">in</span></span><br><span class="line">            0 pages swapped out</span><br><span class="line">      8310928 interrupts</span><br><span class="line">      7174983 CPU context switches</span><br><span class="line">   1548195503 boot time</span><br><span class="line">        29025 forks</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vmstat</span></span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   <span class="keyword">in</span>   cs us sy id wa st</span><br><span class="line"> 0  0      0 1225240   2200 448572    0    0     2     1   34   30  0  0 100  0  0</span><br></pre></td></tr></table></figure>
+<p>6.3.1.1、procs:</p>
+<p>​    r：可运行（正运行或等待运行）进程的个数，和核心数有关<br>​    b：处于不可中断睡眠态的进程个数(被阻塞的队列的长度)</p>
+<p>6.3.1.2、memory：</p>
+<p>​    swpd: 交换内存的使用总量<br>​    free：空闲物理内存总量<br>​    buffer：用于buffer的内存总量<br>​    cache：用于cache的内存总量</p>
+<p>6.3.1.3、swap:</p>
+<p>​    si：从磁盘交换进内存的数据速率(kb/s)<br>​    so：从内存交换至磁盘的数据速率(kb/s)</p>
+<p>6.3.1.4、io：<br>​    bi：从块设备读入数据到系统的速率(kb/s)<br>​    bo: 保存数据至块设备的速率</p>
+<p>6.3.1.5、system：<br>​    in: interrupts 中断速率，包括时钟<br>​    cs: context switch 进程切换速率</p>
+<p>6.3.1.6、cpu：<br>​    us:Time spent running non-kernel code<br>​    sy: Time spent running kernel code<br>​    id: Time spent idle. Linux 2.5.41前,包括IO-wait time.<br>​    wa: Time spent waiting for IO. 2.5.41前，包括in idle.<br>​    st: Time stolen from a virtual machine. 2.6.11前, unknown.</p>
+<h3 id="6-3-2、iostat-统计CPU和设备IO信息"><a href="#6-3-2、iostat-统计CPU和设备IO信息" class="headerlink" title="6.3.2、iostat:统计CPU和设备IO信息"></a>6.3.2、iostat:统计CPU和设备IO信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#iostat</span></span><br><span class="line">Linux 3.10.0-862.el7.x86_64 (centos7.5.localdomain)     01/24/2019      _x86_64_        (2 CPU)</span><br><span class="line"></span><br><span class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</span><br><span class="line">           0.03    0.00    0.16    0.01    0.00   99.80</span><br><span class="line"></span><br><span class="line">Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn</span><br><span class="line">sdb               0.00         0.04         0.00       4272          0</span><br><span class="line">sdc               0.00         0.01         0.00        884          0</span><br><span class="line">sdd               0.00         0.02         0.00       2200          0</span><br><span class="line">sda               0.18         3.06         1.43     372232     174335</span><br><span class="line">sde               0.00         0.02         0.00       2200          0</span><br><span class="line">sdf               0.00         0.02         0.00       2204          0</span><br><span class="line">scd0              0.00         0.03         0.00       3298          0</span><br><span class="line">dm-0              0.00         0.01         0.00       1036          0</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-3、pmap命令：进程对应的内存映射"><a href="#6-3-3、pmap命令：进程对应的内存映射" class="headerlink" title="6.3.3、pmap命令：进程对应的内存映射"></a>6.3.3、pmap命令：进程对应的内存映射</h3><p>pmap [options] pid […]<br>​    -x: 显示详细格式的信息<br>​    例：pmap 1</p>
+<p>另外一种实现</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/PID/maps</span><br></pre></td></tr></table></figure>
+<h1 id="七、系统监控工具"><a href="#七、系统监控工具" class="headerlink" title="七、系统监控工具"></a>七、系统监控工具</h1><h2 id="7-1、glances命令：-EPEL源"><a href="#7-1、glances命令：-EPEL源" class="headerlink" title="7.1、glances命令：(EPEL源)"></a>7.1、glances命令：(EPEL源)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glances [-bdehmnrsvyz1] [-B <span class="built_in">bind</span>] [-c server] [-C conffile] [-p port] [-P password] [--password] [-t refresh] [-f file] [-o output]</span><br></pre></td></tr></table></figure>
+<h3 id="7-1-1、常用选项："><a href="#7-1-1、常用选项：" class="headerlink" title="7.1.1、常用选项："></a>7.1.1、常用选项：</h3><p>​    -b: 以Byte为单位显示网卡数据速率<br>​    -d: 关闭磁盘I/O模块<br>​    -f /path/to/somefile: 设定输入文件位置<br>​    -o {HTML|CSV}：输出格式<br>​    -m: 禁用mount模块<br>​    -n: 禁用网络模块<br>​    -t #: 延迟时间间隔<br>​    -1：每个CPU的相关数据单独显示</p>
+<h3 id="7-1-2、C-S模式下运行glances命令"><a href="#7-1-2、C-S模式下运行glances命令" class="headerlink" title="7.1.2、C/S模式下运行glances命令"></a>7.1.2、C/S模式下运行glances命令</h3><p>1、服务器模式：<br>​    glances -s -B IPADDR<br>​    IPADDR: 指明监听的本机哪个地址</p>
+<p>2、客户端模式：<br>​    glances -c IPADDR<br>​    IPADDR：要连入的服务器端地址</p>
+<h2 id="7-2、dstat命令：系统资源统计-代替vmstat-iostat"><a href="#7-2、dstat命令：系统资源统计-代替vmstat-iostat" class="headerlink" title="7.2、dstat命令：系统资源统计,代替vmstat,iostat"></a>7.2、dstat命令：系统资源统计,代替vmstat,iostat</h2><p>dstat [-afv][options..] [delay [count]]</p>
+<ul>
+<li>​    -c 显示cpu相关信息</li>
+<li>​    -C #,#,…,total</li>
+<li>​    -d 显示disk相关信息</li>
+<li>​    -D total,sda,sdb,…</li>
+<li>​    -g 显示page相关统计数据</li>
+<li>​    -m 显示memory相关统计数据</li>
+<li>​    -n 显示network相关统计数据</li>
+<li>​    -p 显示process相关统计数据</li>
+<li>​    -r 显示io请求相关的统计数据</li>
+<li><p>​    -s 显示swapped相关的统计数据</p>
+</li>
+<li><p>​    –top-cpu：显示最占用CPU的进程</p>
+</li>
+<li><p>​    –top-io: 显示最占用io的进程</p>
+</li>
+<li><p>​    –top-mem: 显示最占用内存的进程</p>
+</li>
+<li><p>​    –top-latency: 显示延迟最大的进程</p>
+</li>
+</ul>
+<h2 id="7-3、iotop"><a href="#7-3、iotop" class="headerlink" title="7.3、iotop"></a>7.3、iotop</h2><p>&ensp;&ensp;&ensp;&ensp;iotop命令是一个用来监视磁盘I/O使用状况的top类工具iotop具有与top相似的UI，其中包括PID、用户、 I/O、进程等相关信息，可查看每个进程是如何使用IO</p>
+<h3 id="7-3-1、iotop常用参数"><a href="#7-3-1、iotop常用参数" class="headerlink" title="7.3.1、iotop常用参数"></a>7.3.1、iotop常用参数</h3><p>​    -o, –only只显示正在产生I/O的进程或线程，除了传参，可以在运行过程中按o生效</p>
+<p>​    -b, –batch非交互模式，一般用来记录日志</p>
+<p>​    -n NUM, –iter=NUM设置监测的次数，默认无限。在非交互模式下很有用</p>
+<p>​    -d SEC, –delay=SEC设置每次监测的间隔，默认1秒，接受非整形数据例如1.1</p>
+<p>​    -p PID, –pid=PID指定监测的进程/线程</p>
+<p>​    -u USER, –user=USER指定监测某个用户产生的I/O</p>
+<p>​    -P, –processes仅显示进程，默认iotop显示所有线程</p>
+<p>​    -a, –accumulated显示累积的I/O，而不是带宽</p>
+<p>​    -k, –kilobytes使用kB单位，而不是对人友好的单位。在非交互模式下，脚本编程有用</p>
+<p>​    -t, –time 加上时间戳，非交互非模式</p>
+<p>​    -q, –quiet 禁止头几行，非交互模式，有三种指定方式</p>
+<p>​        -q 只在第一次监测时显示列名</p>
+<p>​        -qq 永远不显示列名</p>
+<p>​        -qqq 永远不显示I/O汇总</p>
+<h3 id="7-3-2、交互按键"><a href="#7-3-2、交互按键" class="headerlink" title="7.3.2、交互按键"></a>7.3.2、交互按键</h3><p>​    left和right方向键：改变排序<br>​    r：反向排序<br>​    o：切换至选项–only<br>​    p：切换至–processes选项<br>​    a：切换至–accumulated选项<br>​    q：退出<br>​    i：改变线程的优先级</p>
+<h2 id="7-4、lsof"><a href="#7-4、lsof" class="headerlink" title="7.4、lsof"></a>7.4、lsof</h2><p>&ensp;&ensp;&ensp;&ensp;lsof：list open files查看当前系统文件的工具。在linux环境下，一切皆文件，用户通过文件不仅可以访问常规数据，还可以访问网络连接和硬件如传输控制协议 (TCP) 和用户数据报协议 (UDP)套接字等，系统在后台都为该应用程序分配了一个文件描述符</p>
+<h3 id="7-4-1、命令参数"><a href="#7-4-1、命令参数" class="headerlink" title="7.4.1、命令参数"></a>7.4.1、命令参数</h3><p>​    -a：列出打开文件存在的进程</p>
+<p>​    -c&lt;进程名&gt;：列出指定进程所打开的文件</p>
+<p>​    -g：列出GID号进程详情</p>
+<p>​    -d&lt;文件号&gt;：列出占用该文件号的进程</p>
+<p>​    +d&lt;目录&gt;：列出目录下被打开的文件</p>
+<p>​    +D&lt;目录&gt;：递归列出目录下被打开的文件</p>
+<p>​    -n&lt;目录&gt;：列出使用NFS的文件</p>
+<p>​    -i&lt;条件&gt;：列出符合条件的进程(4、 6、协议、 :端口、 @ip )</p>
+<p>​    -p&lt;进程号&gt;：列出指定进程号所打开的文件</p>
+<p>​    -u：列出UID号进程详情</p>
+<p>​    -h：显示帮助信息</p>
+<p>​    -v：显示版本信息。</p>
+<p>​    -n: 不反向解析网络名字</p>
+<h3 id="7-4-2、lsof示例"><a href="#7-4-2、lsof示例" class="headerlink" title="7.4.2、lsof示例"></a>7.4.2、lsof示例</h3><h4 id="7-4-2-1、进程管理"><a href="#7-4-2-1、进程管理" class="headerlink" title="7.4.2.1、进程管理"></a>7.4.2.1、进程管理</h4><p>1、查看由登陆用户启动而非系统启动的进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof /dev/pts1</span><br></pre></td></tr></table></figure>
+<p>2、指定进程号，可以查看该进程打开的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -p 9527</span><br></pre></td></tr></table></figure>
+<h4 id="7-4-2-2、文件管理"><a href="#7-4-2-2、文件管理" class="headerlink" title="7.4.2.2、文件管理"></a>7.4.2.2、文件管理</h4><p>1、查看指定程序打开的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -c httpd</span><br></pre></td></tr></table></figure>
+<p>2、查看指定用户打开的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -u root | more</span><br></pre></td></tr></table></figure>
+<p>3、查看指定目录下被打开的文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lsof +D /var/<span class="built_in">log</span>/</span><br><span class="line">lsof +d /var/<span class="built_in">log</span>/</span><br><span class="line"><span class="comment">#参数+D为递归列出目录下被打开的文件，参数+d为列出目录下被打开的文件</span></span><br></pre></td></tr></table></figure>
+<h4 id="7-4-2-3、网络管理"><a href="#7-4-2-3、网络管理" class="headerlink" title="7.4.2.3、网络管理"></a>7.4.2.3、网络管理</h4><p>1、查看所有网络连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lsof -i –n</span><br><span class="line">lsof -i@127.0.0.1</span><br><span class="line"><span class="comment">#通过参数-i查看网络连接的情况，包括连接的ip、端口等以及一些服务的连接情况，例如：sshd等。也可以通过指定ip查看该ip的网络连接情况</span></span><br></pre></td></tr></table></figure>
+<p>2、查看端口连接情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i :80 -n</span><br><span class="line"><span class="comment">#通过参数-i:端口可以查看端口的占用情况，-i参数还有查看协议，ip的连接情况等</span></span><br></pre></td></tr></table></figure>
+<p>3、查看指定进程打开的网络连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i –n -a -p 9527</span><br><span class="line"><span class="comment">#参数-i、 -a、 -p等，-i查看网络连接情况，-a查看存在的进程，-p指定进程</span></span><br></pre></td></tr></table></figure>
+<p>4、查看指定状态的网络连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -n -P -i TCP -s TCP:ESTABLISHED</span><br><span class="line"><span class="comment">#-n:no host names, -P:no port names,-i TCP指定协议，-s指定协议状态通过多个参数可以清晰的查看网络连接情况、协议连接情况等</span></span><br></pre></td></tr></table></figure>
+<h4 id="7-4-2-4、恢复删除文件"><a href="#7-4-2-4、恢复删除文件" class="headerlink" title="7.4.2.4、恢复删除文件"></a>7.4.2.4、恢复删除文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lsof |grep /var/<span class="built_in">log</span>/messages</span><br><span class="line">rm -f /var/<span class="built_in">log</span>/messages</span><br><span class="line">lsof |grep /var/<span class="built_in">log</span>/messages</span><br><span class="line">cat /proc/653/fd/6</span><br><span class="line">cat /proc/653/fd/6 &gt; /var/<span class="built_in">log</span>/messages</span><br></pre></td></tr></table></figure>
+<h1 id="八、作业管理"><a href="#八、作业管理" class="headerlink" title="八、作业管理"></a>八、作业管理</h1><p>Linux的作业控制<br>​    前台作业：通过终端启动，且启动后一直占据终端<br>​    后台作业：可通过终端启动，但启动后即转入后台运行（释放终端）</p>
+<p>让作业运行于后台<br>​    (1) 运行中的作业： Ctrl+z<br>​    (2) 尚未启动的作业： COMMAND &amp;</p>
+<p>后台作业虽然被送往后台运行，但其依然与终端相关；退出终端，将关闭后台作业。如果希望送往后台后，剥离与终端的关系<br>​    nohup COMMAND &amp;&gt;/dev/null &amp;<br>​    screen；COMMAND</p>
+<p>查看当前终端所有作业：jobs</p>
+<p>作业控制：<br>​    fg [[%]JOB_NUM]：把指定的后台作业调回前台<br>​    bg [[%]JOB_NUM]：让送往后台的作业在后台继续运行<br>​    kill [%JOB_NUM]： 终止指定的作业</p>
+<p>并行运行</p>
+<p>同时运行多个进程，提高效率</p>
+<p>方法1<br>​    vi all.sh<br>​    f1.sh&amp;<br>​    f2.sh&amp;<br>​    f3.sh&amp;</p>
+<p>方法2<br>​    (f1.sh&amp;);(f2.sh&amp;);(f3.sh&amp;)</p>
+<p>方法3<br>​    { f1.sh&amp; f2.sh&amp; f3.sh&amp; }</p>
+<h1 id="九、任务计划"><a href="#九、任务计划" class="headerlink" title="九、任务计划"></a>九、任务计划</h1><p>Linux任务计划、周期性任务执行</p>
+<p>未来的某时间点执行一次任务</p>
+<p>​    at    指定时间点，执行一次性任务</p>
+<p>​    batch       系统自行选择空闲时间去执行此处指定的任务</p>
+<p>周期性运行某任务<br>​    cron</p>
+<h2 id="9-1、at任务"><a href="#9-1、at任务" class="headerlink" title="9.1、at任务"></a>9.1、at任务</h2><p>1、包：at</p>
+<p>2、at命令：at [option] TIME</p>
+<p>3、常用选项：<br>​    -V 显示版本信息</p>
+<p>​    -t time 时间格式 [[CC]YY]MMDDhhmm[.ss]</p>
+<p>​    -l   列出指定队列中等待运行的作业；相当于atq  </p>
+<p>​    -d   删除指定的作业；相当于atrm  </p>
+<p>​    -c   查看具体作业任务</p>
+<p>​    -f /path/file 指定的文件中读取任务<br>​    -m 当任务被完成之后，将给用户发送邮件，即使没有标准输出</p>
+<p><strong>注意：作业执行命令的结果中的标准输出和错误以邮件通知给相关用户</strong></p>
+<p>4、TIME：定义出什么时候进行 at 这项任务的时间<br>​    HH:MM [YYYY-mm-dd]</p>
+<p>​        noon, midnight, teatime（4pm）<br>​        tomorrow<br>​        now+#{minutes,hours,days, OR weeks}</p>
+<p>5、at时间格式</p>
+<p>​    HH:MM 02:00<br>在今日的 HH:MM 进行，若该时刻已过，则明天此时执行任务</p>
+<p>​    HH:MM YYYY-MM-DD 02:00 2016-09-20<br>规定在某年某月的某一天的特殊时刻进行该项任务</p>
+<p>​    HH:MM[am|pm] + number [minutes|hours|days|weeks]<br>在某个时间点再加几个时间后才进行该项任务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">now + 5 min</span><br><span class="line">02pm + 3 days</span><br></pre></td></tr></table></figure>
+<p>6、执行方式：<br>​    1）交互式 </p>
+<p>​    2）输入重定向 </p>
+<p>​    3）at –f 文件</p>
+<p>7、依赖与atd服务,需要启动才能实现at任务</p>
+<p>8、at队列存放在/var/spool/at目录中</p>
+<p>9、/etc/at.{allow,deny}控制用户是否能执行at任务<br>​    白名单：/etc/at.allow 默认不存在，只有该文件中的用户才能执行at命令<br>​    黑名单：/etc/at.deny 默认存在，拒绝该文件中用户执行at命令，而没有在at.deny 文件中的使用者则可执行<br>​    如果两个文件都不存在，只有 root 可以执行 at 命令</p>
+<h2 id="9-2、周期性任务计划cron"><a href="#9-2、周期性任务计划cron" class="headerlink" title="9.2、周期性任务计划cron"></a>9.2、周期性任务计划cron</h2><h3 id="9-2-1、相关的程序包"><a href="#9-2-1、相关的程序包" class="headerlink" title="9.2.1、相关的程序包"></a>9.2.1、相关的程序包</h3><p>​    cronie：主程序包，提供crond守护进程及相关辅助工具<br>​    cronie-anacron：cronie的补充程序，用于监控cronie任务执行状况，如cronie中的任务在过去该运行的时间点未能正常运行，则anacron会随后启动一次此任务<br>​    crontabs：包含CentOS提供系统维护任务</p>
+<h3 id="9-2-2、计划任务"><a href="#9-2-2、计划任务" class="headerlink" title="9.2.2、计划任务"></a>9.2.2、计划任务</h3><p>确保crond守护处于运行状态：<br>​    CentOS 7:<br>​        systemctl status crond<br>​    CentOS 6:<br>​        service crond status</p>
+<h3 id="9-2-3、计划周期性执行的任务提交给crond，到指定时间会自动运行"><a href="#9-2-3、计划周期性执行的任务提交给crond，到指定时间会自动运行" class="headerlink" title="9.2.3、计划周期性执行的任务提交给crond，到指定时间会自动运行"></a>9.2.3、计划周期性执行的任务提交给crond，到指定时间会自动运行</h3><p>系统cron任务：系统维护作业<br>​    /etc/crontab<br>用户cron任务：<br>​    crontab命令</p>
+<p>日志：/var/log/cron</p>
+<h3 id="9-2-3-1、系统cron任务"><a href="#9-2-3-1、系统cron任务" class="headerlink" title="9.2.3.1、系统cron任务"></a>9.2.3.1、系统cron任务</h3><p>注释行以 # 开头</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">~]<span class="comment">#cat /etc/crontab</span></span><br><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line"></span><br><span class="line"><span class="comment"># For details see man 4 crontabs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Example of job definition:</span></span><br><span class="line"><span class="comment"># .---------------- minute (0 - 59)</span></span><br><span class="line"><span class="comment"># |  .------------- hour (0 - 23)</span></span><br><span class="line"><span class="comment"># |  |  .---------- day of month (1 - 31)</span></span><br><span class="line"><span class="comment"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span></span><br><span class="line"><span class="comment"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span></span><br><span class="line"><span class="comment"># |  |  |  |  |</span></span><br><span class="line"><span class="comment"># *  *  *  *  * user-name  command to be executed</span></span><br></pre></td></tr></table></figure>
+<p>例：晚上9点10分运行echo命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10 21 * * * wang /bin/<span class="built_in">echo</span> <span class="string">"Howdy!"</span></span><br></pre></td></tr></table></figure>
+<h4 id="9-2-3-1-1、时间表示法"><a href="#9-2-3-1-1、时间表示法" class="headerlink" title="9.2.3.1.1、时间表示法"></a>9.2.3.1.1、时间表示法</h4><p>(1) 特定值<br>​    给定时间点有效取值范围内的值</p>
+<p>(2) *</p>
+<p>​    给定时间点上有效取值范围内的所有值<br>​    表示“每…”</p>
+<p>(3) 离散取值</p>
+<p>​    #,#,#</p>
+<p>(4) 连续取值</p>
+<p>​    #-#</p>
+<p>(5) 在指定时间范围上，定义步长</p>
+<p>/#: #即为步长</p>
+<p>例：每3小时echo和wall命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 */3 * * * centos /bin/<span class="built_in">echo</span> “howdy”; wall <span class="string">"welcome to Magedu!”</span></span><br></pre></td></tr></table></figure>
+<h4 id="9-2-3-1-2、系统的计划任务"><a href="#9-2-3-1-2、系统的计划任务" class="headerlink" title="9.2.3.1.2、系统的计划任务"></a>9.2.3.1.2、系统的计划任务</h4><p>​    /etc/crontab 配置文件<br>​    /etc/cron.d/ 配置文件<br>​    /etc/cron.hourly/ 脚本<br>​    /etc/cron.daily/ 脚本<br>​    /etc/cron.weekly/ 脚本<br>​    /etc/cron.monthly/ 脚本</p>
+<h4 id="9-2-3-1-3、anacron系统"><a href="#9-2-3-1-3、anacron系统" class="headerlink" title="9.2.3.1.3、anacron系统"></a>9.2.3.1.3、anacron系统</h4><p>1、运行计算机关机时cron不运行的任务，CentOS6以后版本取消anacron服务，由crond服务管理</p>
+<p>2、对笔记本电脑、台式机、工作站、偶尔要关机的服务器及其它不一直开机的系统很重要对很有用</p>
+<p>3、配置文件：/etc/anacrontab，负责执行/etc/ cron.daily /etc/cron.weekly<br>/etc/cron.monthly中系统任务</p>
+<ul>
+<li><p>​    字段1：如果在这些日子里没有运行这些任务……</p>
+</li>
+<li><p>​    字段2：在重新引导后等待这么多分钟后运行它</p>
+</li>
+<li><p>​    字段3：任务识别器，在日志文件中标识</p>
+</li>
+<li><p>​    字段4：要执行的任务</p>
+</li>
+</ul>
+<p>4、由/etc/cron.hourly/0anacron执行</p>
+<p>5、当执行任务时，更新/var/spool/anacron/cron.daily 文件的时间戳</p>
+<h4 id="9-2-3-1-4、管理临时文件"><a href="#9-2-3-1-4、管理临时文件" class="headerlink" title="9.2.3.1.4、管理临时文件"></a>9.2.3.1.4、管理临时文件</h4><p>1、CentOS6使用/etc/cron.daily/tmpwatch定时清除临时文件</p>
+<p>2、CentOS7使用systemd-tmpfiles-setup服务实现</p>
+<p>3、配置文件：</p>
+<p>​    /etc/tmpfiles.d/*.conf</p>
+<p>​    /run/tmpfiles.d/*.conf</p>
+<p>​    /usr/lib/tmpfiles/*.conf</p>
+<p>4、/usr/lib/tmpfiles.d/tmp.conf</p>
+<p>​    d /tmp 1777 root root 10d</p>
+<p>​    d /var/tmp 1777 root root 30d</p>
+<p>5、命令：</p>
+<p>​    systemd-tmpfiles –clean|remove|create configfile</p>
+<h3 id="9-2-3-2、crontab命令定义"><a href="#9-2-3-2、crontab命令定义" class="headerlink" title="9.2.3.2、crontab命令定义"></a>9.2.3.2、crontab命令定义</h3><p>​    每个用户都有专用的cron任务文件：/var/spool/cron/USERNAME</p>
+<p>crontab命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab [-u user][-l | -r | -e][-i]</span><br></pre></td></tr></table></figure>
+<p>​    -l    列出所有任务</p>
+<p>​    -e    编辑任务  </p>
+<p>​    -r    移除所有任务  </p>
+<p>​    -i    同-r一同使用，以交互式模式移除指定任务  </p>
+<p>​    -u user   仅root可运行，指定用户管理cron任务</p>
+<p>控制用户执行计划任务：<br>​    /etc/cron.{allow,deny}</p>
+<h3 id="9-2-3-4、at和crontab"><a href="#9-2-3-4、at和crontab" class="headerlink" title="9.2.3.4、at和crontab"></a>9.2.3.4、at和crontab</h3><p>1、一次性作业使用 at </p>
+<p>​    重复性作业使用crontab </p>
+<p>2、没有被重定向的输出会被邮寄给用户</p>
+<p>3、root能够修改其它用户的作业</p>
+<p>4、<strong>注意：运行结果的标准输出和错误以邮件通知给相关用户</strong><br>​    (1) COMMAND &gt; /dev/null<br>​    (2) COMMAND &amp;&gt; /dev/null</p>
+<p>5、对于cron任务来讲，%有特殊用途；如果在命令中要使用%，则需要转义，将%放置于单引号中，则可不用转义</p>
+
+      
+    </div>
+    
+    
+    
+
+  <div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/进程/" rel="tag"><i class="fa fa-tag"></i> 进程</a>
+          
+            <a href="/tags/计划任务/" rel="tag"><i class="fa fa-tag"></i> 计划任务</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/21/Linux用户、组和权限管理/" rel="next" title="Linux用户、组和权限管理">
+                <i class="fa fa-chevron-left"></i> Linux用户、组和权限管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/06/linux kernel/" rel="prev" title="linux kernel">
+                linux kernel <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.gif" alt="谢 佳">
+            
+              <p class="site-author-name" itemprop="name">谢 佳</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+	  
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=25638273&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、进程的相关概念"><span class="nav-number">1.</span> <span class="nav-text">一、进程的相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1、相关定义"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、相关定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2、进程创建"><span class="nav-number">1.2.</span> <span class="nav-text">1.2、进程创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3、进程的基本状态"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、进程的基本状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1、状态之间转换六种情况"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1、状态之间转换六种情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4、进程优先级"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、进程优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5、进程内存"><span class="nav-number">1.5.</span> <span class="nav-text">1.5、进程内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6、IPC：进程间通信（Inter-Process-Communication）"><span class="nav-number">1.6.</span> <span class="nav-text">1.6、IPC：进程间通信（Inter Process Communication）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7、Linux内核：抢占式多任务"><span class="nav-number">1.7.</span> <span class="nav-text">1.7、Linux内核：抢占式多任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8、进程类型"><span class="nav-number">1.8.</span> <span class="nav-text">1.8、进程类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9、进程状态"><span class="nav-number">1.9.</span> <span class="nav-text">1.9、进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10、进程的分类"><span class="nav-number">1.10.</span> <span class="nav-text">1.10、进程的分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、进程和线程的关系"><span class="nav-number">2.</span> <span class="nav-text">二、进程和线程的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、系统管理工具"><span class="nav-number">3.</span> <span class="nav-text">三、系统管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1、pstree命令"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、pstree命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、进程查看命令"><span class="nav-number">4.</span> <span class="nav-text">四、进程查看命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1、ps：查看进程信息"><span class="nav-number">4.1.</span> <span class="nav-text">4.1、ps：查看进程信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1、选项：默认显示当前终端中的进程"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1、选项：默认显示当前终端中的进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2、常见选项："><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2、常见选项：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3、ps输出属性"><span class="nav-number">4.1.3.</span> <span class="nav-text">4.1.3、ps输出属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-4、常用组合"><span class="nav-number">4.1.4.</span> <span class="nav-text">4.1.4、常用组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-5、示例"><span class="nav-number">4.1.5.</span> <span class="nav-text">4.1.5、示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、进程管理工具"><span class="nav-number">5.</span> <span class="nav-text">五、进程管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1、top：持续观察进程运行状态"><span class="nav-number">5.1.</span> <span class="nav-text">5.1、top：持续观察进程运行状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-1、常用参数"><span class="nav-number">5.1.1.</span> <span class="nav-text">5.1.1、常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-2、内置命令"><span class="nav-number">5.1.2.</span> <span class="nav-text">5.1.2、内置命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2、htop命令"><span class="nav-number">5.2.</span> <span class="nav-text">5.2、htop命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3、kill命令"><span class="nav-number">5.3.</span> <span class="nav-text">5.3、kill命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、系统、内存工具"><span class="nav-number">6.</span> <span class="nav-text">六、系统、内存工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1、系统工具"><span class="nav-number">6.1.</span> <span class="nav-text">6.1、系统工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2、内存空间"><span class="nav-number">6.2.</span> <span class="nav-text">6.2、内存空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3、内存工具"><span class="nav-number">6.3.</span> <span class="nav-text">6.3、内存工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1、vmstat命令：虚拟内存信息"><span class="nav-number">6.3.1.</span> <span class="nav-text">6.3.1、vmstat命令：虚拟内存信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2、iostat-统计CPU和设备IO信息"><span class="nav-number">6.3.2.</span> <span class="nav-text">6.3.2、iostat:统计CPU和设备IO信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-3、pmap命令：进程对应的内存映射"><span class="nav-number">6.3.3.</span> <span class="nav-text">6.3.3、pmap命令：进程对应的内存映射</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、系统监控工具"><span class="nav-number">7.</span> <span class="nav-text">七、系统监控工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1、glances命令：-EPEL源"><span class="nav-number">7.1.</span> <span class="nav-text">7.1、glances命令：(EPEL源)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-1、常用选项："><span class="nav-number">7.1.1.</span> <span class="nav-text">7.1.1、常用选项：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-2、C-S模式下运行glances命令"><span class="nav-number">7.1.2.</span> <span class="nav-text">7.1.2、C/S模式下运行glances命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2、dstat命令：系统资源统计-代替vmstat-iostat"><span class="nav-number">7.2.</span> <span class="nav-text">7.2、dstat命令：系统资源统计,代替vmstat,iostat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3、iotop"><span class="nav-number">7.3.</span> <span class="nav-text">7.3、iotop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-1、iotop常用参数"><span class="nav-number">7.3.1.</span> <span class="nav-text">7.3.1、iotop常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-2、交互按键"><span class="nav-number">7.3.2.</span> <span class="nav-text">7.3.2、交互按键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4、lsof"><span class="nav-number">7.4.</span> <span class="nav-text">7.4、lsof</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-1、命令参数"><span class="nav-number">7.4.1.</span> <span class="nav-text">7.4.1、命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-2、lsof示例"><span class="nav-number">7.4.2.</span> <span class="nav-text">7.4.2、lsof示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-1、进程管理"><span class="nav-number">7.4.2.1.</span> <span class="nav-text">7.4.2.1、进程管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-2、文件管理"><span class="nav-number">7.4.2.2.</span> <span class="nav-text">7.4.2.2、文件管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-3、网络管理"><span class="nav-number">7.4.2.3.</span> <span class="nav-text">7.4.2.3、网络管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-4、恢复删除文件"><span class="nav-number">7.4.2.4.</span> <span class="nav-text">7.4.2.4、恢复删除文件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、作业管理"><span class="nav-number">8.</span> <span class="nav-text">八、作业管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九、任务计划"><span class="nav-number">9.</span> <span class="nav-text">九、任务计划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1、at任务"><span class="nav-number">9.1.</span> <span class="nav-text">9.1、at任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2、周期性任务计划cron"><span class="nav-number">9.2.</span> <span class="nav-text">9.2、周期性任务计划cron</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-1、相关的程序包"><span class="nav-number">9.2.1.</span> <span class="nav-text">9.2.1、相关的程序包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-2、计划任务"><span class="nav-number">9.2.2.</span> <span class="nav-text">9.2.2、计划任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-3、计划周期性执行的任务提交给crond，到指定时间会自动运行"><span class="nav-number">9.2.3.</span> <span class="nav-text">9.2.3、计划周期性执行的任务提交给crond，到指定时间会自动运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-3-1、系统cron任务"><span class="nav-number">9.2.4.</span> <span class="nav-text">9.2.3.1、系统cron任务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-1-1、时间表示法"><span class="nav-number">9.2.4.1.</span> <span class="nav-text">9.2.3.1.1、时间表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-1-2、系统的计划任务"><span class="nav-number">9.2.4.2.</span> <span class="nav-text">9.2.3.1.2、系统的计划任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-1-3、anacron系统"><span class="nav-number">9.2.4.3.</span> <span class="nav-text">9.2.3.1.3、anacron系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-1-4、管理临时文件"><span class="nav-number">9.2.4.4.</span> <span class="nav-text">9.2.3.1.4、管理临时文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-3-2、crontab命令定义"><span class="nav-number">9.2.5.</span> <span class="nav-text">9.2.3.2、crontab命令定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-3-4、at和crontab"><span class="nav-number">9.2.6.</span> <span class="nav-text">9.2.3.4、at和crontab</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢 佳</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">96.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+<div>
+<!-- 填写你的友盟代码 -->
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1276087848'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1276087848%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- 你的友盟代码 end -->
+</div>
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 雪花特效 -->
+  <script type="text/javascript">
+    var windowWidth = $(window).width();
+    if (windowWidth > 480) {
+      document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+      }
+  </script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="一：redis 高可用与集群&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。 1：配置reids 主从主备模式，可以实现Redis数据的跨主机备份。 &amp;ensp;&amp;ensp;&amp;ens">
+<meta name="keywords" content="redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis高可用与集群">
+<meta property="og:url" content="http://yoursite.com/2019/01/14/redis高可用与集群/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="一：redis 高可用与集群&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。 1：配置reids 主从主备模式，可以实现Redis数据的跨主机备份。 &amp;ensp;&amp;ensp;&amp;ens">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-26T02:29:20.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis高可用与集群">
+<meta name="twitter:description" content="一：redis 高可用与集群&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。 1：配置reids 主从主备模式，可以实现Redis数据的跨主机备份。 &amp;ensp;&amp;ensp;&amp;ens">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/14/redis高可用与集群/">
+
+
+
+<script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+<script>tpwidget("init", {
+    "flavor": "bubble",
+    "location": "WTW3SJ5ZBJUY",
+    "geolocation": "enabled",
+    "position": "top-left",
+    "margin": "10px 10px",
+    "language": "zh-chs",
+    "unit": "c",
+    "theme": "chameleon",
+    "uid": "U4F2547B10",
+    "hash": "d49c6de3fe37062a9b1db42177056f08"
+});
+tpwidget("show");</script>
+
+  <title>redis高可用与集群 | Linux知识库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+  
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xiejia1215225"><img style="position: absolute; top: 0; right: 0; border: 0
+	;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Linux知识库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/redis高可用与集群/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢 佳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linux知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">redis高可用与集群</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-14T00:00:00+08:00">
+                2019-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/nosql/" itemprop="url" rel="index">
+                    <span itemprop="name">nosql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  6.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  30
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="一：redis-高可用与集群"><a href="#一：redis-高可用与集群" class="headerlink" title="一：redis 高可用与集群"></a>一：redis 高可用与集群</h1><p>&ensp;&ensp;&ensp;&ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身出现系统故障、硬件故障等问题后，就会直接造成数据的丢失，因此需要使用另外的技术来解决单点问题。</p>
+<h2 id="1：配置reids-主从"><a href="#1：配置reids-主从" class="headerlink" title="1：配置reids 主从"></a>1：配置reids 主从</h2><p>主备模式，可以实现Redis数据的跨主机备份。</p>
+<p>&ensp;&ensp;&ensp;&ensp;程序端连接到高可用负载的VIP，然后连接到负载服务器设置的Redis后端real server，此模式不需要在程序里面配置Redis服务器的真实IP地址，当后期Redis服务器IP地址发生变更只需要更改redis 相应的后端real server即可，可避免更改程序中的IP地址设置。</p>
+<h3 id="1-1：Slave主要配置"><a href="#1-1：Slave主要配置" class="headerlink" title="1.1：Slave主要配置"></a>1.1：Slave主要配置</h3><p>&ensp;&ensp;&ensp;&ensp;Redis Slave 也要开启持久化并设置和master同样的连接密码，因为后期slave会有提升为master的可能,Slave端切换master同步后会丢失之前的所有数据。</p>
+<p>一旦某个Slave成为一个master的slave，Redis Slave服务会清空当前redis服务器上的所有数据并将master的数据导入到自己的内存，但是断开同步关系后不会删除当前已经同步过的数据。</p>
+<h3 id="1-1-1：Slave的配置的两种方法"><a href="#1-1-1：Slave的配置的两种方法" class="headerlink" title="1.1.1：Slave的配置的两种方法"></a>1.1.1：Slave的配置的两种方法</h3><h4 id="1-1-1-1：修改配置文件"><a href="#1-1-1-1：修改配置文件" class="headerlink" title="1.1.1.1：修改配置文件"></a>1.1.1.1：修改配置文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line">	<span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">	requirepass 123456	<span class="comment">#可以给加上密码</span></span><br><span class="line">	slaveof 192.168.183.155 6379</span><br><span class="line">	masterauth 123456</span><br><span class="line">	<span class="comment">#主要改上面四项</span></span><br><span class="line">	slave-read-only yes</span><br><span class="line">	slave-serve-stale-data yes</span><br><span class="line">[root@slave-redis ~]<span class="comment">#systemctl restart redis</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-1-1-2：命令行配置"><a href="#1-1-1-2：命令行配置" class="headerlink" title="1.1.1.2：命令行配置"></a>1.1.1.2：命令行配置</h4><p>当前状态为master，需要转换为slave角色并指向master服务器的IP+PORT+Password<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#redic-cli</span></span><br><span class="line">127.0.0.1:6379&gt; SLAVEOF 192.168.183.155 6379</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; CONFIG SET masterauth 123456</span><br><span class="line">OK</span><br><span class="line"><span class="comment">#上面是临时生效</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="1-1-2：同步日志"><a href="#1-1-2：同步日志" class="headerlink" title="1.1.2：同步日志"></a>1.1.2：同步日志</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#tail /var/log/redis/redis.log </span></span><br><span class="line">4362:S 13 Jan 11:03:05.824 * Connecting to MASTER 192.168.183.155:6379</span><br><span class="line">4362:S 13 Jan 11:03:05.824 * MASTER &lt;-&gt; SLAVE sync started</span><br><span class="line">4362:S 13 Jan 11:03:05.825 * Non blocking connect <span class="keyword">for</span> SYNC fired the event.</span><br><span class="line">4362:S 13 Jan 11:03:05.826 * Master replied to PING, replication can <span class="built_in">continue</span>...</span><br><span class="line">4362:S 13 Jan 11:03:05.838 * Partial resynchronization not possible (no cached master)</span><br><span class="line">4362:S 13 Jan 11:03:05.965 * Full resync from master: 50d58c28d9314edbf815581709bbe1aca05347fe:1</span><br><span class="line">4362:S 13 Jan 11:03:05.965 * MASTER &lt;-&gt; SLAVE sync: receiving 102 bytes from master</span><br><span class="line">4362:S 13 Jan 11:03:05.965 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</span><br><span class="line">4362:S 13 Jan 11:03:05.966 * MASTER &lt;-&gt; SLAVE sync: Loading DB <span class="keyword">in</span> memory</span><br><span class="line">4362:S 13 Jan 11:03:05.966 * MASTER &lt;-&gt; SLAVE sync: Finished with success</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-3：当前slave状态"><a href="#1-1-3：当前slave状态" class="headerlink" title="1.1.3：当前slave状态"></a>1.1.3：当前slave状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info Replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:192.168.183.155</span><br><span class="line">master_port:6379</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:8</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:715</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_repl_offset:0</span><br><span class="line">repl_backlog_active:0</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:0</span><br><span class="line">repl_backlog_histlen:0</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-4：存配置到redis-conf："><a href="#1-1-4：存配置到redis-conf：" class="headerlink" title="1.1.4：存配置到redis.conf："></a>1.1.4：存配置到redis.conf：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config rewrite</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exit</span></span><br><span class="line">[root@slave-redis ~]<span class="comment">#tail /etc/redis.conf </span></span><br><span class="line">hz 10</span><br><span class="line"></span><br><span class="line"><span class="comment"># When a child rewrites the AOF file, if the following option is enabled</span></span><br><span class="line"><span class="comment"># the file will be fsync-ed every 32 MB of data generated. This is useful</span></span><br><span class="line"><span class="comment"># in order to commit the file to the disk more incrementally and avoid</span></span><br><span class="line"><span class="comment"># big latency spikes.</span></span><br><span class="line">aof-rewrite-incremental-fsync yes</span><br><span class="line"><span class="comment"># Generated by CONFIG REWRITE</span></span><br><span class="line">slaveof 192.168.183.155 6379</span><br><span class="line">masterauth <span class="string">"123456"</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-1-5：重启slave验证"><a href="#1-1-5：重启slave验证" class="headerlink" title="1.1.5：重启slave验证"></a>1.1.5：重启slave验证</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#systemctl restart redis</span></span><br><span class="line">[root@slave-redis ~]<span class="comment">#redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:192.168.183.155</span><br><span class="line">master_port:6379</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:7</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:1989</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_repl_offset:0</span><br><span class="line">repl_backlog_active:0</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:0</span><br><span class="line">repl_backlog_histlen:0</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-6：验证slave数据"><a href="#1-1-6：验证slave数据" class="headerlink" title="1.1.6：验证slave数据"></a>1.1.6：验证slave数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">1) <span class="string">"key1"</span></span><br><span class="line">2) <span class="string">"key"</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-1-7：slave-状态只读无法写入数据"><a href="#1-1-7：slave-状态只读无法写入数据" class="headerlink" title="1.1.7：slave 状态只读无法写入数据"></a>1.1.7：slave 状态只读无法写入数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key1 value1</span><br><span class="line">(error) READONLY You can<span class="string">'t write against a read only slave.</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-1-8：Master日志"><a href="#1-1-8：Master日志" class="headerlink" title="1.1.8：Master日志"></a>1.1.8：Master日志</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#tail /var/log/redis/redis.log </span></span><br><span class="line">61981:M 13 Jan 11:03:05.913 * Synchronization with slave 192.168.183.154:6379 succeeded</span><br><span class="line">61981:M 13 Jan 11:20:32.391 <span class="comment"># Connection with slave 192.168.183.154:6379 lost.</span></span><br><span class="line">61981:M 13 Jan 11:20:32.406 * Slave 192.168.183.154:6379 asks <span class="keyword">for</span> synchronization</span><br><span class="line">61981:M 13 Jan 11:20:32.406 * Full resync requested by slave 192.168.183.154:6379</span><br><span class="line">61981:M 13 Jan 11:20:32.406 * Starting BGSAVE <span class="keyword">for</span> SYNC with target: disk</span><br><span class="line">61981:M 13 Jan 11:20:32.408 * Background saving started by pid 64640</span><br><span class="line">64640:C 13 Jan 11:20:32.410 * DB saved on disk</span><br><span class="line">64640:C 13 Jan 11:20:32.410 * RDB: 4 MB of memory used by copy-on-write</span><br><span class="line">61981:M 13 Jan 11:20:32.480 * Background saving terminated with success</span><br><span class="line">61981:M 13 Jan 11:20:32.480 * Synchronization with slave 192.168.183.154:6379 succeeded</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-9：主从复制过程"><a href="#1-1-9：主从复制过程" class="headerlink" title="1.1.9：主从复制过程"></a>1.1.9：主从复制过程</h4><p>&ensp;&ensp;&ensp;&ensp;Redis支持主从复制分为全量同步和增量同步，首次同步是全量同步，主从同步可以让从服务器从主服务器备份数据，而且从服务器还可与有从服务器，即另外一台redis服务器可以从一台从服务器进行数据同步，redis 的主从同步是非阻塞的，其收到从服务器的sync(2.8版本之前是PSYNC)命令会fork一个子进程在后台执行bgsave命令，并将新写入的数据写入到一个缓冲区里面，bgsave执行完成之后并生成的将RDB文件发送给客户端，客户端将收到后的RDB文件载入自己的内存，然后主redis将缓冲区的内容在全部发送给从redis，之后的同步从服务器会发送一个offset的位置(等同于MySQL的binlog的位置)给主服务器，主服务器检查后位置没有错误将此位置之后的数据包括写在缓冲区的积压数据发送给redis从服务器，从服务器将主服务器发送的挤压数据写入内存，这样一次完整的数据同步，再之后再同步的时候从服务器只要发送当前的offset位 置给主服务器，然后主服务器根据响应的位置将之后的数据发送给从服务器保存到其内存即可。</p>
+<p>Redis全量复制一般发生在Slave初始化阶段，这时Slave需要将Master上的所有数据都复制一份。具体步骤如下： </p>
+<p>1）从服务器连接主服务器，发送SYNC命令； </p>
+<p>2）主服务器接收到SYNC命名后，开始执行BGSAVE命令生成RDB快照文件并使用缓冲区记录此后执行的所有写命令； </p>
+<p>3）主服务器BGSAVE执行完后，向所有从服务器发送快照文件，并在发送期间继续记录被执行的写命令； </p>
+<p>4）从服务器收到快照文件后丢弃所有旧数据，载入收到的快照； </p>
+<p>5）主服务器快照发送完毕后开始向从服务器发送缓冲区中的写命令； </p>
+<p>6）从服务器完成对快照的载入，开始接收命令请求，并执行来自主服务器缓冲区的写命令；</p>
+<p>7）后期同步会先发送自己slave_repl_offset位置，只同步新增加的数据，不再全量同步。</p>
+<h4 id="1-1-10：主从同步优化"><a href="#1-1-10：主从同步优化" class="headerlink" title="1.1.10：主从同步优化"></a>1.1.10：主从同步优化</h4><p>&ensp;&ensp;&ensp;&ensp;Redis在2.8版本之前没有提供增量部分复制的功能，当网络闪断或者slave Redis重启之后会导致主从之间的全量同步，即从2.8版本开始增加了部分复制的功能。</p>
+<p><strong>repl-diskless-sync  no</strong>     #yes为支持disk，master将RDB文件先保存到磁盘在发送给slave，no为maste直接将RDB文件发送给slave，默认即为使用no，Master RDB文件不需要与磁盘交互。</p>
+<p><strong>repl-diskless-sync-delay 5</strong>     #Master准备好RDB文件后等等待传输时间</p>
+<p><strong>repl-ping-slave-period 10</strong>        #slave端向server端发送pings的时间区间设置，默认为10秒 </p>
+<p><strong>repl-timeout 60</strong>        #设置超时时间</p>
+<p><strong>repl-disable-tcp-nodelay no</strong> #是否启用TCP_NODELAY，如设置成yes，则redis会合并小的TCP包从而节省带宽，但会增加同步延迟（40ms），造成master与slave数据不一致，假如设置成no，则redis master会立即发送同步数据，没有延迟，前者关注性能，后者关注一致性</p>
+<p><strong>repl-backlog-size 1mb</strong>      #master的写入数据缓冲区，用于记录自上一次同步后到下一次同步过程中间的写入命令，计算公式：b repl-backlog-size = 允许从节点最大中断时长 <em> 主实例offset每秒写入量，比如master每秒最大写入64mb，最大允许60秒，那么就要设置为64mb</em>60秒=3840mb(3.8G)=</p>
+<p><strong>repl-backlog-ttl 3600</strong>     #如果一段时间后没有slave连接到master，则backlog size的内存将会被释放。如果值为0则表示永远不释放这部份内存。 </p>
+<p><strong>slave-priority 100</strong>     #slave端的优先级设置，值是一个整数，数字越小表示优先级越高。当master故障时将会按照优先级来选择slave端进行恢复，如果值设置为0，则表示该slave永远不会被选择。 </p>
+<p><strong>min-slaves-to-write 0</strong>     # </p>
+<p><strong>min-slaves-max-lag 10</strong> #设置当一个master端的可用slave少于N个，延迟时间大于M秒时，不接收写操作。</p>
+<p>Master的重启会导致master_replid发生变化，slave之前的master_replid就和master不一致从而会引发所有slave的全量同步。</p>
+<h4 id="1-1-11：slave切换master"><a href="#1-1-11：slave切换master" class="headerlink" title="1.1.11：slave切换master"></a>1.1.11：slave切换master</h4><h5 id="当前状态："><a href="#当前状态：" class="headerlink" title="当前状态："></a>当前状态：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info Replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:192.168.183.155</span><br><span class="line">master_port:6379</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:7</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:4694</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_repl_offset:0</span><br><span class="line">repl_backlog_active:0</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:0</span><br><span class="line">repl_backlog_histlen:0</span><br></pre></td></tr></table></figure>
+<h5 id="停止slave同步并查看当前状态："><a href="#停止slave同步并查看当前状态：" class="headerlink" title="停止slave同步并查看当前状态："></a>停止slave同步并查看当前状态：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SLAVEOF no one	<span class="comment">#临时生效</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_repl_offset:5184</span><br><span class="line">repl_backlog_active:0</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:0</span><br><span class="line">repl_backlog_histlen:0</span><br></pre></td></tr></table></figure>
+<h5 id="测试能否写入数据："><a href="#测试能否写入数据：" class="headerlink" title="测试能否写入数据："></a>测试能否写入数据：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key3 value3</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>#### </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="二：redis-集群"><a href="#二：redis-集群" class="headerlink" title="二：redis 集群"></a>二：redis 集群</h2><p>&ensp;&ensp;&ensp;&ensp;上一个步骤的主从架构无法实现master和slave角色的自动切换，即当master出现redis服务异常、主机断电、磁盘损坏等问题导致master无法使用，而redis高可用无法实现自故障转移(将slave提升为master)，需要手动改环境配置才能切换到slave redis服务器，另外也无法横向扩展Redis服务的并行写入性能，当单台Redis服务器性能无法满足业务写入需求的时候就必须需要一种方式解决以上的两个核心问题，即：</p>
+<p>1.master和slave角色的无缝切换，让业务无感知从而不影响业务使用 ；</p>
+<p>2.可以横向动态扩展Redis服务器，从而实现多台服务器并行写入以实现更高并发的目的。</p>
+<p>Redis 集群实现方式：客户端分片  代理分片  Redis Cluster</p>
+<h3 id="2-1：Sentinel-哨兵"><a href="#2-1：Sentinel-哨兵" class="headerlink" title="2.1：Sentinel(哨兵)"></a>2.1：Sentinel(哨兵)</h3><p>&ensp;&ensp;&ensp;&ensp;Sentinel 进程是用于监控redis集群中Master主服务器工作的状态，在Master主服务器发生故障的时候，可以实现Master和Slave服务器的切换，保证系统的高可用，其已经被集成在redis2.6+的版本中，Redis的哨兵模式到了2.8版本之后就稳定了下来。一般在生产环境也建议使用Redis的2.8版本的以后版本。哨兵(Sentinel) 是一个分布式系统，你可以在一个架构中运行多个哨兵(sentinel) 进程，这些进程使用流言协议(gossipprotocols)来接收关于Master主服务器是否下线的信息，并使用投票协议(Agreement Protocols)来决定是否执行自动故障迁移,以及选择哪个Slave作为新的Master。</p>
+<p>&ensp;&ensp;&ensp;&ensp;每个哨兵(Sentinel)进程会向其它哨兵(Sentinel)、Master、Slave定时发送消息，以确认对方是否”活”着，如果发现对方在指定配置时间(可配置的)内未得到回应，则暂时认为对方已掉线，也就是所谓的”主观认为宕机” ，英文名称：Subjective Down，简称SDOWN。</p>
+<p>&ensp;&ensp;&ensp;&ensp;当“哨兵群”中的多数Sentinel进程在对Master主服务器做出 SDOWN 的判断，并且通过 SENTINEL is-master-down-by-addr 命令互相交流之后，得出的Master Server下线判断，这种方式就是“客观宕机”，英文名称是：Objectively Down， 简称 ODOWN。</p>
+<p>&ensp;&ensp;&ensp;&ensp;通过一定的vote算法，从剩下的slave从服务器节点中，选一台提升为Master服务器节点，然后自动修改相关配置，并开启故障转移（failover）。</p>
+<p>  Sentinel 机制可以解决master和slave角色的切换问题。</p>
+<h3 id="2-1-1：配置redis主从服务器"><a href="#2-1-1：配置redis主从服务器" class="headerlink" title="2.1.1：配置redis主从服务器"></a>2.1.1：配置redis主从服务器</h3><h4 id="2-1-1-1：手动配置master"><a href="#2-1-1-1：手动配置master" class="headerlink" title="2.1.1.1：手动配置master"></a>2.1.1.1：手动配置master</h4><p>需要手动先指定某一台Redis服务器为master，然后将其他slave服务器使用命令配置为master服务器的slave</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line">	<span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">	requirepass 123456</span><br><span class="line">[root@master-redis ~]<span class="comment">#systemctl restart redis</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-1-2：服务器A配置slave"><a href="#2-1-1-2：服务器A配置slave" class="headerlink" title="2.1.1.2：服务器A配置slave"></a>2.1.1.2：服务器A配置slave</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line">	<span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">	requirepass 123456	<span class="comment">#可以给加上密码</span></span><br><span class="line">	slaveof 192.168.183.155 6379</span><br><span class="line">	masterauth 123456</span><br><span class="line">	<span class="comment">#主要改上面四项</span></span><br><span class="line">	slave-read-only yes</span><br><span class="line">	slave-serve-stale-data yes</span><br><span class="line">[root@slave-redis ~]<span class="comment">#systemctl restart redis</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-1-3：服务器B配置slave"><a href="#2-1-1-3：服务器B配置slave" class="headerlink" title="2.1.1.3：服务器B配置slave"></a>2.1.1.3：服务器B配置slave</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@slave1-redis ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line">	<span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">	requirepass 123456	</span><br><span class="line">	slaveof 192.168.183.155 6379</span><br><span class="line">	masterauth 123456</span><br><span class="line">	slave-read-only yes</span><br><span class="line">	slave-serve-stale-data yes</span><br><span class="line">[root@slave-redis ~]<span class="comment">#systemctl restart redis</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-1-4：当前master状态"><a href="#2-1-1-4：当前master状态" class="headerlink" title="2.1.1.4：当前master状态"></a>2.1.1.4：当前master状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip=192.168.183.154,port=6379,state=online,offset=50562,lag=1</span><br><span class="line">slave1:ip=192.168.183.153,port=6379,state=online,offset=50997,lag=0</span><br><span class="line">master_repl_offset:50997</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:50996</span><br></pre></td></tr></table></figure>
+<h3 id="2-1-2：编辑配置文件sentinel-conf"><a href="#2-1-2：编辑配置文件sentinel-conf" class="headerlink" title="2.1.2：编辑配置文件sentinel.conf"></a>2.1.2：编辑配置文件sentinel.conf</h3><h4 id="2-1-2-1：master-配置"><a href="#2-1-2-1：master-配置" class="headerlink" title="2.1.2.1：master 配置"></a>2.1.2.1：master 配置</h4><p>哨兵可以不和Redis服务器部署在一起,</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#vim /etc/redis-sentinel.conf</span></span><br><span class="line"><span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">port 26379</span><br><span class="line">sentinel monitor mymaster 192.168.183.155 6379 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br><span class="line">sentinel down-after-milliseconds mymaster 30000  <span class="comment">#(SDOWN)主观下线的时间</span></span><br><span class="line">sentinel parallel-syncs mymaster 1 <span class="comment">#发生故障转移时候同时向新master同步数据的slave数量，数字越小总同步时间越长</span></span><br><span class="line">sentinel failover-timeout mymaster 180000  <span class="comment">#所有slaves指向新的master所需的超时时间</span></span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-2：Slave-配置"><a href="#2-1-2-2：Slave-配置" class="headerlink" title="2.1.2.2：Slave 配置"></a>2.1.2.2：Slave 配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#vim /etc/redis-sentinel.conf </span></span><br><span class="line"><span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">port 26379</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br><span class="line">sentinel monitor mymaster 192.168.183.155 6379 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-3：Slave1配置"><a href="#2-1-2-3：Slave1配置" class="headerlink" title="2.1.2.3：Slave1配置"></a>2.1.2.3：Slave1配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@slave1-redis ~]<span class="comment">#vim /etc/redis-sentinel.conf </span></span><br><span class="line"><span class="built_in">bind</span> 0.0.0.0</span><br><span class="line">port 26379</span><br><span class="line">sentinel deny-scripts-reconfig yes</span><br><span class="line">sentinel monitor mymaster 192.168.183.155 6379 2</span><br><span class="line">sentinel auth-pass mymaster 123456</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-4：启动哨兵"><a href="#2-1-2-4：启动哨兵" class="headerlink" title="2.1.2.4：启动哨兵"></a>2.1.2.4：启动哨兵</h4><p>三台哨兵都要启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#systemctl start redis-sentinel.service</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-3：验证端口"><a href="#2-1-2-3：验证端口" class="headerlink" title="2.1.2.3：验证端口"></a>2.1.2.3：验证端口</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#ss -ntl</span></span><br><span class="line">State      Recv-Q Send-Q    Local Address:Port                   Peer Address:Port     </span><br><span class="line">LISTEN     0      128                   *:26379                             *:*         </span><br><span class="line">LISTEN     0      128                   *:6379                              *:*</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-4：哨兵日志"><a href="#2-1-2-4：哨兵日志" class="headerlink" title="2.1.2.4：哨兵日志"></a>2.1.2.4：哨兵日志</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#tail /var/log/redis/sentinel.log</span></span><br><span class="line">70507:X 13 Jan 16:58:43.089 <span class="comment"># +sdown master mymaster 192.168.183.155 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:43.140 <span class="comment"># +new-epoch 1</span></span><br><span class="line">70507:X 13 Jan 16:58:43.144 <span class="comment"># +vote-for-leader a1862470710ec770e8818de80d3a6b06f0fc9388 1</span></span><br><span class="line">70507:X 13 Jan 16:58:43.147 <span class="comment"># +odown master mymaster 192.168.183.155 6379 #quorum 3/2</span></span><br><span class="line">70507:X 13 Jan 16:58:43.147 <span class="comment"># Next failover delay: I will not start a failover before Sun Jan 13 17:04:43 2019</span></span><br><span class="line">70507:X 13 Jan 16:58:44.272 <span class="comment"># +config-update-from sentinel a1862470710ec770e8818de80d3a6b06f0fc9388 192.168.183.154 26379 @ mymaster 192.168.183.155 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:44.277 <span class="comment"># +switch-master mymaster 192.168.183.155 6379 192.168.183.153 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:44.283 * +slave slave 192.168.183.154:6379 192.168.183.154 6379 @ mymaster 192.168.183.153 6379</span><br><span class="line">70507:X 13 Jan 16:58:44.283 * +slave slave 192.168.183.155:6379 192.168.183.155 6379 @ mymaster 192.168.183.153 6379</span><br><span class="line">70507:X 13 Jan 16:58:49.288 <span class="comment"># +sdown slave 192.168.183.155:6379 192.168.183.155 6379 @ mymaster 192.168.183.153 6379</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-5：当前redis-状态"><a href="#2-1-2-5：当前redis-状态" class="headerlink" title="2.1.2.5：当前redis 状态"></a>2.1.2.5：当前redis 状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip=192.168.183.154,port=6379,state=online,offset=717856,lag=0</span><br><span class="line">slave1:ip=192.168.183.153,port=6379,state=online,offset=717856,lag=0</span><br><span class="line">master_repl_offset:717856</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:717855</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-6：当前sentinel状态"><a href="#2-1-2-6：当前sentinel状态" class="headerlink" title="2.1.2.6：当前sentinel状态"></a>2.1.2.6：当前sentinel状态</h4><p>尤其是最后一行，涉及到master IP是多少，有几个slave，有几个sentinels，必须是符合全部服务器数量的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#redis-cli -p 26379</span></span><br><span class="line">127.0.0.1:26379&gt; info Sentinel</span><br><span class="line"><span class="comment"># Sentinel</span></span><br><span class="line">sentinel_masters:1</span><br><span class="line">sentinel_tilt:0</span><br><span class="line">sentinel_running_scripts:0</span><br><span class="line">sentinel_scripts_queue_length:0</span><br><span class="line">sentinel_simulate_failure_flags:0</span><br><span class="line">master0:name=mymaster,status=ok,address=192.168.183.155:6379,slaves=2,sentinels=3</span><br><span class="line">127.0.0.1:26379&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-7：停止Redis-Master测试故障转移"><a href="#2-1-2-7：停止Redis-Master测试故障转移" class="headerlink" title="2.1.2.7：停止Redis Master测试故障转移"></a>2.1.2.7：停止Redis Master测试故障转移</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#systemctl stop redis</span></span><br></pre></td></tr></table></figure>
+<p>查看master信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip=192.168.183.154,port=6379,state=online,offset=386953,lag=1</span><br><span class="line">master_repl_offset:387098</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:387097</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>查看哨兵信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#redis-cli -p 26379          </span></span><br><span class="line">127.0.0.1:26379&gt; info sentinel</span><br><span class="line"><span class="comment"># Sentinel</span></span><br><span class="line">sentinel_masters:1</span><br><span class="line">sentinel_tilt:0</span><br><span class="line">sentinel_running_scripts:0</span><br><span class="line">sentinel_scripts_queue_length:0</span><br><span class="line">sentinel_simulate_failure_flags:0</span><br><span class="line">master0:name=mymaster,status=ok,address=192.168.183.153:6379,slaves=2,sentinels=3</span><br><span class="line">127.0.0.1:26379&gt;</span><br></pre></td></tr></table></figure>
+<p>故障转移时sentinel 的信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@master-redis ~]<span class="comment">#tail -n20 /var/log/redis/sentinel.log</span></span><br><span class="line">          `-._        _.-<span class="string">'                                           </span></span><br><span class="line"><span class="string">              `-.__.-'</span>                                               </span><br><span class="line"></span><br><span class="line">70507:X 13 Jan 16:54:22.693 <span class="comment"># WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.</span></span><br><span class="line">70507:X 13 Jan 16:54:22.697 <span class="comment"># Sentinel ID is 3f42cd492af4ace415ec11659d0f63a6bd806a6b</span></span><br><span class="line">70507:X 13 Jan 16:54:22.697 <span class="comment"># +monitor master mymaster 192.168.183.155 6379 quorum 2</span></span><br><span class="line">70507:X 13 Jan 16:54:22.698 * +slave slave 192.168.183.153:6379 192.168.183.153 6379 @ mymaster 192.168.183.155 6379</span><br><span class="line">70507:X 13 Jan 16:54:22.699 * +slave slave 192.168.183.154:6379 192.168.183.154 6379 @ mymaster 192.168.183.155 6379</span><br><span class="line">70507:X 13 Jan 16:54:23.453 * +sentinel sentinel a1862470710ec770e8818de80d3a6b06f0fc9388 192.168.183.154 26379 @ mymaster 192.168.183.155 6379</span><br><span class="line">70507:X 13 Jan 16:54:33.026 * +sentinel sentinel 5f77dc65c6e8c44156418a64c4a8fa5da563a1cb 192.168.183.153 26379 @ mymaster 192.168.183.155 6379</span><br><span class="line">70507:X 13 Jan 16:58:43.089 <span class="comment"># +sdown master mymaster 192.168.183.155 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:43.140 <span class="comment"># +new-epoch 1</span></span><br><span class="line">70507:X 13 Jan 16:58:43.144 <span class="comment"># +vote-for-leader a1862470710ec770e8818de80d3a6b06f0fc9388 1</span></span><br><span class="line">70507:X 13 Jan 16:58:43.147 <span class="comment"># +odown master mymaster 192.168.183.155 6379 #quorum 3/2</span></span><br><span class="line">70507:X 13 Jan 16:58:43.147 <span class="comment"># Next failover delay: I will not start a failover before Sun Jan 13 17:04:43 2019</span></span><br><span class="line">70507:X 13 Jan 16:58:44.272 <span class="comment"># +config-update-from sentinel a1862470710ec770e8818de80d3a6b06f0fc9388 192.168.183.154 26379 @ mymaster 192.168.183.155 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:44.277 <span class="comment"># +switch-master mymaster 192.168.183.155 6379 192.168.183.153 6379</span></span><br><span class="line">70507:X 13 Jan 16:58:44.283 * +slave slave 192.168.183.154:6379 192.168.183.154 6379 @ mymaster 192.168.183.153 6379</span><br><span class="line">70507:X 13 Jan 16:58:44.283 * +slave slave 192.168.183.155:6379 192.168.183.155 6379 @ mymaster 192.168.183.153 6379</span><br><span class="line">70507:X 13 Jan 16:58:49.288 <span class="comment"># +sdown slave 192.168.183.155:6379 192.168.183.155 6379 @ mymaster 192.168.183.153 6379</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-8：故障转移后的redis配置文件"><a href="#2-1-2-8：故障转移后的redis配置文件" class="headerlink" title="2.1.2.8：故障转移后的redis配置文件"></a>2.1.2.8：故障转移后的redis配置文件</h4><p>故障转移后redis.conf中的replicaof行的master IP会被修改，sentinel.conf中的sentinel monitor IP会被修改。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line"><span class="comment">#    network partition slaves automatically try to reconnect to masters</span></span><br><span class="line"><span class="comment">#    and resynchronize with them.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># slaveof &lt;masterip&gt; &lt;masterport&gt;</span></span><br><span class="line">slaveof 192.168.183.153 6379	<span class="comment">#自动变成现在的masterip</span></span><br><span class="line"></span><br><span class="line">[root@slave-redis ~]<span class="comment">#vim /etc/redis-sentinel.conf</span></span><br><span class="line"><span class="comment"># Note that the master password is also used for slaves, so it is not</span></span><br><span class="line"><span class="comment"># possible to set a different password in masters and slaves instances</span></span><br><span class="line"><span class="comment"># if you want to be able to monitor these instances with Sentinel.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># However you can have Redis instances without the authentication enabled</span></span><br><span class="line"><span class="comment"># mixed with Redis instances requiring the authentication (as long as the</span></span><br><span class="line"><span class="comment"># password set is the same for all the instances requiring the password) as</span></span><br><span class="line"><span class="comment"># the AUTH command will have no effect in Redis instances with authentication</span></span><br><span class="line"><span class="comment"># switched off.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Example:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">sentinel monitor mymaster 192.168.183.153 6379 2  <span class="comment">#这个也一样，自动变成新master ip</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-1-2-9：当前reids状态"><a href="#2-1-2-9：当前reids状态" class="headerlink" title="2.1.2.9：当前reids状态"></a>2.1.2.9：当前reids状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@slave-redis ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:192.168.183.153</span><br><span class="line">master_port:6379</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:0</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:216328</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip=192.168.183.140,port=6379,state=online,offset=430638,lag=0</span><br><span class="line">master_repl_offset:431073</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:2</span><br><span class="line">repl_backlog_histlen:431072</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="2-2：Redis-Cluster部署"><a href="#2-2：Redis-Cluster部署" class="headerlink" title="2.2：Redis Cluster部署"></a>2.2：Redis Cluster部署</h2><p>Redis cluster之前的分布式方案：</p>
+<p>1) 客户端分区：由客户端程序决定key写分配和写入的redis node，但是需要客户端自己处理写入分配、高可用管理和故障转移等</p>
+<p>2)代理方案：基于三方软件实现redis proxy，客户端先连接之代理层，由代理层实现key的写入分配，对客户端来说是有比较简单，但是对于集群管节点增减相对比较麻烦，而且代理本身也是单点和性能瓶颈。</p>
+<p>&ensp;&ensp;&ensp;&ensp;在哨兵sentinel机制中，可以解决redis高可用的问题，即当master故障后可以自动将slave提升为master从而可以保证redis服务的正常使用，但是无法解决redis单机写入的瓶颈问题，即单机的redis写入性能受限于单机的内存大小、并发数量、网卡速率等因素，因此redis官方在redis 3.0版本之后推出了无中心架构的redis cluster机制，在无中心的redis集群汇中，其每个节点保存当前节点数据和整个集群状态,每个节点都和其他所有节点连接，特点如下：</p>
+<p>1：所有Redis节点使用(PING-PING机制)互联</p>
+<p>2：集群中某个节点的实效是整个集群中超过半数的节点监测都实效才算真正的实效</p>
+<p>3：客户端不需要proxy即可直接连接redis，且客户端不需要连接集群中的所有节点，只要连接集群中的任何一个节点即可。</p>
+<p>4：redis cluster把所有的redisnode映射到 0-16383个槽位(slot)上，读写需要到指定的redis node上进行操作，因此有多少个reids node相当于redis 并发扩展了多少倍。</p>
+<p>5：Redis集群预先分配16384个(slot)槽位，当需要在redis集群中写入一个key -value的时候，会使用CRC16(key)  mod 16384之后的值，决定将key写入值哪一个槽位从而决定写入哪一个Redis节点上，从而有效解决单机瓶颈。​          </p>
+<h3 id="2-2-1：部署redis集群"><a href="#2-2-1：部署redis集群" class="headerlink" title="2.2.1：部署redis集群"></a>2.2.1：部署redis集群</h3><p>环境准备：</p>
+<p>三台服务器，每台服务器启动6379端口，（192.168.183.155:6379  192.168.183.154:6379</p>
+<p>192.168.183.153:6379  ）</p>
+<h5 id="2-2-1-1：创建redis-cluster集群的前提："><a href="#2-2-1-1：创建redis-cluster集群的前提：" class="headerlink" title="2.2.1.1：创建redis cluster集群的前提："></a>2.2.1.1：创建redis cluster集群的前提：</h5><p>1.每个redis node节点采用相同的硬件配置、相同的密码</p>
+<p>2.每个节点必须开启参数,设置配置文件，启用集群功能；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@redis1 ~]<span class="comment">#vim /etc/redis.conf</span></span><br><span class="line">cluster-enabled <span class="comment">#是否开启集群配置</span></span><br><span class="line">cluster-config-file <span class="comment">#集群节点集群信息配置文件,每个节点都有一个,由redis生成和更新,配置时避免名称冲突</span></span><br><span class="line">cluster-node-timeout <span class="comment">#集群节点互连超时的阈值，单位毫秒</span></span><br><span class="line">cluster-slave-validity-factor <span class="comment">#进行故障转移时,salve会申请成为master。有时slave会和master失联很久导致数据较旧，这样的slave不应该成为master。这个配置用来判断slave是否和master失联时间过长。</span></span><br><span class="line"><span class="comment">#以上四个参数都启用</span></span><br><span class="line">[root@redis1 ~]<span class="comment">#systemctl start redis</span></span><br></pre></td></tr></table></figure>
+<p>2.2.1.2：启动redis后为每个节点分配slots；</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">[root@redis1 ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:fail</span><br><span class="line">cluster_slots_assigned:0</span><br><span class="line">cluster_slots_ok:0</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:1</span><br><span class="line">cluster_size:0</span><br><span class="line">cluster_current_epoch:0</span><br><span class="line">cluster_my_epoch:0</span><br><span class="line">cluster_stats_messages_sent:0</span><br><span class="line">cluster_stats_messages_received:0</span><br><span class="line"></span><br><span class="line">[root@redis1 ~]<span class="comment">#redis-cli -c -h 192.168.183.155 -p 6379 -a 123456 cluster addslots &#123;0..5500&#125; </span></span><br><span class="line">OK</span><br><span class="line">[root@redis1 ~]<span class="comment">#redis-cli -c -h 192.168.183.154 -p 6379 -a 123456 cluster addslots &#123;5501..11000&#125;</span></span><br><span class="line">OK</span><br><span class="line">[root@redis1 ~]<span class="comment">#redis-cli -c -h 192.168.183.153 -p 6379 -a 123456 cluster addslots &#123;11001..16383&#125;</span></span><br><span class="line">OK</span><br><span class="line">[root@redis1 ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:fail</span><br><span class="line">cluster_slots_assigned:5501</span><br><span class="line">cluster_slots_ok:5501</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:1</span><br><span class="line">cluster_size:1</span><br><span class="line">cluster_current_epoch:0</span><br><span class="line">cluster_my_epoch:0</span><br><span class="line">cluster_stats_messages_sent:0</span><br><span class="line">cluster_stats_messages_received:0</span><br><span class="line"></span><br><span class="line">[root@redis2 ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:fail</span><br><span class="line">cluster_slots_assigned:5500</span><br><span class="line">cluster_slots_ok:5500</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:1</span><br><span class="line">cluster_size:1</span><br><span class="line">cluster_current_epoch:0</span><br><span class="line">cluster_my_epoch:0</span><br><span class="line">cluster_stats_messages_sent:0</span><br><span class="line">cluster_stats_messages_received:0</span><br><span class="line"></span><br><span class="line">[root@redis3 ~]<span class="comment">#redis-cli -a 123456</span></span><br><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:fail</span><br><span class="line">cluster_slots_assigned:5383</span><br><span class="line">cluster_slots_ok:5383</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:1</span><br><span class="line">cluster_size:1</span><br><span class="line">cluster_current_epoch:0</span><br><span class="line">cluster_my_epoch:0</span><br><span class="line">cluster_stats_messages_sent:0</span><br><span class="line">cluster_stats_messages_received:0</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>2.2.1.3：设定集群成员关系；(CLUSTE MEET)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; CLUSTER MEET 192.168.183.154 6379</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; CLUSTER MEET 192.168.183.153 6379</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; cluster info</span><br><span class="line">cluster_state:ok</span><br><span class="line">cluster_slots_assigned:16384</span><br><span class="line">cluster_slots_ok:16384</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:3</span><br><span class="line">cluster_size:3</span><br><span class="line">cluster_current_epoch:2</span><br><span class="line">cluster_my_epoch:2</span><br><span class="line">cluster_stats_messages_sent:57</span><br><span class="line">cluster_stats_messages_received:57</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> name tom</span><br><span class="line">(error) MOVED 5798 192.168.183.154:6379</span><br><span class="line"><span class="comment">#在192.168.183.154上</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> name tom</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<h3 id="2-3：redis扩展集群方案："><a href="#2-3：redis扩展集群方案：" class="headerlink" title="2.3：redis扩展集群方案："></a>2.3：redis扩展集群方案：</h3><p>除了Redis 官方自带的Redis cluster集群之外，还有一写开源的集群解决方案可供参考使用。</p>
+<h4 id="2-3-1：codis："><a href="#2-3-1：codis：" class="headerlink" title="2.3.1：codis："></a>2.3.1：codis：</h4><p>&ensp;&ensp;&ensp;&ensp;Codis 是一个分布式 Redis 解决方案, 对于上层的应用来说, 连接到 Codis Proxy 和连接原生的 Redis Server 没有显著区别 (<a href="https://github.com/CodisLabs/codis/blob/release3.2/doc/unsupported_cmds.md" target="_blank" rel="noopener">不支持的命令列表)</a>, 上层应用可以像使用单机的 Redis 一样使用, Codis 底层会处理请求的转发, 不停机的数据迁移等工作, 所有后边的一切事情, 对于前面的客户端来说是透明的, 可以简单的认为后边连接的是一个内存无限大的 Redis 服务。</p>
+<p>&ensp;&ensp;&ensp;&ensp;codis-proxy相当于redis，即连接codis-proxy和连接redis是没有任何区别的，codis-proxy无状态，不负责记录是否在哪保存，数据在zookeeper记录，即codis proxy向zookeeper查询key的记录位置，proxy 将请求转发到一个组进行处理，一个组里面有一个master和一个或者多个slave组成，默认有1024个槽位，redis cluster 默认有16384个槽位，其把不同的槽位的内容放在不同的group。</p>
+<p>Github 地址：<a href="https://github.com/CodisLabs/codis/blob/release3.2/doc/tutorial_zh.md" target="_blank" rel="noopener">https://github.com/CodisLabs/codis/blob/release3.2/doc/tutorial_zh.md</a> </p>
+<h4 id="2-3-2：twemproxy："><a href="#2-3-2：twemproxy：" class="headerlink" title="2.3.2：twemproxy："></a>2.3.2：twemproxy：</h4><p>&ensp;&ensp;&ensp;&ensp;由Twemproxy代替客户端实现分片，即代替用户将数据分片并到不同的后端服务器进行读写，其还支持memcached，可以为proxy配置算法，缺点为twemproxy是瓶颈，不支持数据迁移，官方github地址<a href="https://github.com/twitter/twemproxy/" target="_blank" rel="noopener">https://github.com/twitter/twemproxy/</a> </p>
+<p>Github 地址：<a href="https://github.com/twitter/twemproxy" target="_blank" rel="noopener">https://github.com/twitter/twemproxy</a> </p>
+<h1 id="三：memcached"><a href="#三：memcached" class="headerlink" title="三：memcached"></a>三：memcached</h1><p>Memcache官网：<a href="http://memcached.org/" target="_blank" rel="noopener">http://memcached.org/</a> </p>
+<p>&ensp;&ensp;&ensp;&ensp;memcache本身没有像redis所具备的数据持久化功能，比如RDB和AOF都没有，但是可以通过做集群同步的方式，让各memcache服务器的数据进行同步，从而实现数据的一致性，即保证各memcache的数据是一样的，即使有任何一台或多台memcache发生故障，只要集群种有一台memcache可用就不会出现数据丢失，当其他memcache重新加入到集群的时候可以自动从有数据的memcache当中自动获取数据并提供服务。</p>
+<p>&ensp;&ensp;&ensp;&ensp;Memcache借助了操作系统的libevent工具做高效的读写。libevent是个程序库，它将Linux的epoll、BSD类操作系统的kqueue等事件处理功能封装成统一的接口。即使对服务器的连接数增加，也能发挥高性能。memcached使用这个libevent库，因此能在Linux、BSD、Solaris等操作系统上发挥其高性能。</p>
+<p>&ensp;&ensp;&ensp;&ensp;Memcache支持最大的内存存储对象为1M，超过1M的数据可以使用客户端压缩或拆分报错到做个key中，比较大的数据在进行读取的时候需要消耗的时间比较长，memcache最适合报错用户的session实现session共享，Memcached存储数据时, Memcached会去申请1MB的内存, 把该块内存称为一个slab, 也称为一个page。</p>
+<p>memcached具有多种语言的客户端开发包，包括：Perl/PHP/JAVA/C/Python/Ruby/C#/</p>
+<h2 id="3-1：单机部署："><a href="#3-1：单机部署：" class="headerlink" title="3.1：单机部署："></a>3.1：单机部署：</h2><h3 id="3-1-1：yum安装与启动："><a href="#3-1-1：yum安装与启动：" class="headerlink" title="3.1.1：yum安装与启动："></a>3.1.1：yum安装与启动：</h3><p>通过yum 安装是相对简单的安装方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum  install  memcached –y</span><br><span class="line"></span><br><span class="line">vim /etc/sysconfig/memcached</span><br><span class="line"></span><br><span class="line">	PORT=<span class="string">"11211"</span> <span class="comment">#监听端口</span></span><br><span class="line"></span><br><span class="line">	USER=<span class="string">"memcached"</span> <span class="comment">#启动用户</span></span><br><span class="line"></span><br><span class="line">	MAXCONN=<span class="string">"1024"</span> <span class="comment">#最大连接数</span></span><br><span class="line"></span><br><span class="line">	CACHESIZE=<span class="string">"1024"</span> <span class="comment">#最大使用内存</span></span><br><span class="line"></span><br><span class="line">	OPTIONS=<span class="string">""</span> <span class="comment">#其他选项</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-1-2：编译安装："><a href="#3-1-2：编译安装：" class="headerlink" title="3.1.2：编译安装："></a>3.1.2：编译安装：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">yum install libevent libevent-devel –y</span><br><span class="line"></span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line"></span><br><span class="line">/usr/<span class="built_in">local</span>/src</span><br><span class="line"></span><br><span class="line">tar xvf  memcached-1.5.12.tar.gz</span><br><span class="line"></span><br><span class="line">./configure   --prefix=/usr/<span class="built_in">local</span>/memcache</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动memcached</span></span><br><span class="line"></span><br><span class="line">/usr/<span class="built_in">local</span>/memcache/bin/memcached -u memcached -p 11211 -m 2048 -c 65536 &amp;</span><br></pre></td></tr></table></figure>
+<h2 id="3-2：memcached集群部署架构："><a href="#3-2：memcached集群部署架构：" class="headerlink" title="3.2：memcached集群部署架构："></a>3.2：memcached集群部署架构：</h2><h3 id="3-2-1：基于magent的部署架构："><a href="#3-2-1：基于magent的部署架构：" class="headerlink" title="3.2.1：基于magent的部署架构："></a>3.2.1：基于magent的部署架构：</h3><p>&ensp;&ensp;&ensp;&ensp;该部署方式依赖于magent实现高可用，应用端通过负载服务器连接到magent，然后再由magent代理用户应用请求到memcached处理，底层的memcached为双主结构会自动同步数据，本部署方式存在magent单点问题因此需要两个magent做高可用。</p>
+<h3 id="3-2-2：简化后的部署架构："><a href="#3-2-2：简化后的部署架构：" class="headerlink" title="3.2.2：简化后的部署架构："></a>3.2.2：简化后的部署架构：</h3><p>&ensp;&ensp;&ensp;&ensp;但magent已经有很长时间没有更新，因此可以不再使用magent，直接通过负载均衡连接之memcached，任然有两台memcached做高可用，memcached会自动同步数据保持数据一致性，即使一台memcached故障也不影响业务正常运行，故障的memcached修复上线后再自动从另外一台同步数据即可保持数据一致性。</p>
+<p>4.1.3：部署repcached</p>
+<p><a href="http://repcached.sourceforge.net/" target="_blank" rel="noopener">http://repcached.sourceforge.net/</a> </p>
+
+      
+    </div>
+    
+    
+    
+
+  <div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/05/企业级调度器LVS/" rel="next" title="企业级调度器LVS">
+                <i class="fa fa-chevron-left"></i> 企业级调度器LVS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/14/redis基础/" rel="prev" title="redis基础">
+                redis基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.gif" alt="谢 佳">
+            
+              <p class="site-author-name" itemprop="name">谢 佳</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+	  
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=25638273&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一：redis-高可用与集群"><span class="nav-number">1.</span> <span class="nav-text">一：redis 高可用与集群</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1：配置reids-主从"><span class="nav-number">1.1.</span> <span class="nav-text">1：配置reids 主从</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1：Slave主要配置"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1：Slave主要配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1：Slave的配置的两种方法"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.1：Slave的配置的两种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-1：修改配置文件"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.1.1.1：修改配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-2：命令行配置"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">1.1.1.2：命令行配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2：同步日志"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.2：同步日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3：当前slave状态"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.1.3：当前slave状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4：存配置到redis-conf："><span class="nav-number">1.1.5.</span> <span class="nav-text">1.1.4：存配置到redis.conf：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-5：重启slave验证"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">1.1.5：重启slave验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-6：验证slave数据"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">1.1.6：验证slave数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-7：slave-状态只读无法写入数据"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">1.1.7：slave 状态只读无法写入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-8：Master日志"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">1.1.8：Master日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-9：主从复制过程"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">1.1.9：主从复制过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-10：主从同步优化"><span class="nav-number">1.1.5.6.</span> <span class="nav-text">1.1.10：主从同步优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-11：slave切换master"><span class="nav-number">1.1.5.7.</span> <span class="nav-text">1.1.11：slave切换master</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#当前状态："><span class="nav-number">1.1.5.7.1.</span> <span class="nav-text">当前状态：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#停止slave同步并查看当前状态："><span class="nav-number">1.1.5.7.2.</span> <span class="nav-text">停止slave同步并查看当前状态：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试能否写入数据："><span class="nav-number">1.1.5.7.3.</span> <span class="nav-text">测试能否写入数据：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二：redis-集群"><span class="nav-number">1.2.</span> <span class="nav-text">二：redis 集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1：Sentinel-哨兵"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1：Sentinel(哨兵)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1：配置redis主从服务器"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.1.1：配置redis主从服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-1：手动配置master"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.1.1.1：手动配置master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-2：服务器A配置slave"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.1.1.2：服务器A配置slave</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-3：服务器B配置slave"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">2.1.1.3：服务器B配置slave</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-4：当前master状态"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">2.1.1.4：当前master状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2：编辑配置文件sentinel-conf"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.1.2：编辑配置文件sentinel.conf</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-1：master-配置"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">2.1.2.1：master 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-2：Slave-配置"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2.1.2.2：Slave 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-3：Slave1配置"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">2.1.2.3：Slave1配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-4：启动哨兵"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">2.1.2.4：启动哨兵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-3：验证端口"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">2.1.2.3：验证端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-4：哨兵日志"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">2.1.2.4：哨兵日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-5：当前redis-状态"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">2.1.2.5：当前redis 状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-6：当前sentinel状态"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">2.1.2.6：当前sentinel状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-7：停止Redis-Master测试故障转移"><span class="nav-number">1.2.3.9.</span> <span class="nav-text">2.1.2.7：停止Redis Master测试故障转移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-8：故障转移后的redis配置文件"><span class="nav-number">1.2.3.10.</span> <span class="nav-text">2.1.2.8：故障转移后的redis配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-9：当前reids状态"><span class="nav-number">1.2.3.11.</span> <span class="nav-text">2.1.2.9：当前reids状态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2：Redis-Cluster部署"><span class="nav-number">1.3.</span> <span class="nav-text">2.2：Redis Cluster部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1：部署redis集群"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.2.1：部署redis集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-1：创建redis-cluster集群的前提："><span class="nav-number">1.3.1.0.1.</span> <span class="nav-text">2.2.1.1：创建redis cluster集群的前提：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3：redis扩展集群方案："><span class="nav-number">1.3.2.</span> <span class="nav-text">2.3：redis扩展集群方案：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1：codis："><span class="nav-number">1.3.2.1.</span> <span class="nav-text">2.3.1：codis：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2：twemproxy："><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2.3.2：twemproxy：</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#三：memcached"><span class="nav-number">2.</span> <span class="nav-text">三：memcached</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1：单机部署："><span class="nav-number">2.1.</span> <span class="nav-text">3.1：单机部署：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1：yum安装与启动："><span class="nav-number">2.1.1.</span> <span class="nav-text">3.1.1：yum安装与启动：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2：编译安装："><span class="nav-number">2.1.2.</span> <span class="nav-text">3.1.2：编译安装：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2：memcached集群部署架构："><span class="nav-number">2.2.</span> <span class="nav-text">3.2：memcached集群部署架构：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1：基于magent的部署架构："><span class="nav-number">2.2.1.</span> <span class="nav-text">3.2.1：基于magent的部署架构：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2：简化后的部署架构："><span class="nav-number">2.2.2.</span> <span class="nav-text">3.2.2：简化后的部署架构：</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢 佳</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">96.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+<div>
+<!-- 填写你的友盟代码 -->
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1276087848'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1276087848%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- 你的友盟代码 end -->
+</div>
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 雪花特效 -->
+  <script type="text/javascript">
+    var windowWidth = $(window).width();
+    if (windowWidth > 480) {
+      document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+      }
+  </script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
