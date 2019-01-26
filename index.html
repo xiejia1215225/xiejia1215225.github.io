@@ -14,6 +14,16 @@
 <meta name="theme-color" content="#222">
 
 
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "66633fdc"
+    });
+  daovoice('update');
+  </script>
+
+
+
 
 
 
@@ -434,7 +444,7 @@ tpwidget("show");</script>
       
         
           
-          Nginx介绍&ensp;&ensp;&ensp;&ensp;Nginx（发音同 engine x）
+          Nginx介绍&ensp;&ensp;&ensp;&ensp;Nginx（发音同 engine x）是一款轻量级的Web 服务器／反向代理服务器及电子邮件（IMAP/POP3）代理服务器，并在一个BS
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -614,7 +624,7 @@ tpwidget("show");</script>
       
         
           
-          一：缓存概念&ensp;&ensp;&ensp;&ensp;缓存是为了调节速度不一致的两个或多个不同
+          一：缓存概念&ensp;&ensp;&ensp;&ensp;缓存是为了调节速度不一致的两个或多个不同的物质的速度，在中间对速度较快的一方起到一个加速访问速度较慢的一方的作用，比如CPU的一级、二级缓存
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -794,7 +804,7 @@ tpwidget("show");</script>
       
         
           
-          一：redis 高可用与集群&ensp;&ensp;&ensp;&ensp;虽然Redis可以实现单
+          一：redis 高可用与集群&ensp;&ensp;&ensp;&ensp;虽然Redis可以实现单机的数据持久化，但无论是RDB也好或者AOF也好，都解决不了单点宕机问题，即一旦redis服务器本身
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -974,7 +984,7 @@ tpwidget("show");</script>
       
         
           
-          Cluster集群&ensp;&ensp;&ensp;&ensp; Cluster：集群,为解决某个
+          Cluster集群&ensp;&ensp;&ensp;&ensp; Cluster：集群,为解决某个特定问题将多台计算机组合起来形成的单个系统•  Linux Cluster类型：​    • LB：
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1154,7 +1164,7 @@ tpwidget("show");</script>
       
         
           
-          playbook概念playbook是由一个或多个“play” 组成的列表play的主要功能在于将预
+          playbook概念playbook是由一个或多个“play” 组成的列表play的主要功能在于将预定义的一组主机，装扮成事先通过ansible中的task定义好的角色。 Task实际是调用ansib
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1334,7 +1344,7 @@ tpwidget("show");</script>
       
         
           
-          Ansible的概念&ensp;&ensp;&ensp;&ensp;概念：是一个配置管理工具，是一个
+          Ansible的概念&ensp;&ensp;&ensp;&ensp;概念：是一个配置管理工具，是一个自动化运维工具，通过ssh实现配置管理、应用部署、任务执行等功能。要实现ansible，必须基于ke
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1514,7 +1524,7 @@ tpwidget("show");</script>
       
         
           
-          网络配置&ensp;&ensp;&ensp;&ensp;DHCP前身是BOOTP，在Linux的网卡
+          网络配置&ensp;&ensp;&ensp;&ensp;DHCP前身是BOOTP，在Linux的网卡配置中也能看到显示的BOOTP，DHCP引进一个bootp没有的概念：租约。bootp分配的地址是永
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1694,7 +1704,7 @@ tpwidget("show");</script>
       
         
           
-          kickstart安装步骤    自动化安装之前我们首先要使用相应的工具去生成相应的文件（应答文件）
+          kickstart安装步骤    自动化安装之前我们首先要使用相应的工具去生成相应的文件（应答文件），在我们的系统装好之后，在管理员的家目录下都有这样一个文件anaconda-ks.cfg,此文件中的
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1877,7 +1887,13 @@ tpwidget("show");</script>
           对称加密算法对称加密
 加密和解密使用同一个密钥特性：
 
-加密、解密使用同一个密钥，效率高将原始数据分
+加密、解密使用同一个密钥，效率高将原始数据分割成固定大小的块，逐个进行加密
+
+缺陷：
+
+密钥过多密钥分发数据来源无法确认
+
+非对称加密算法公钥加
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -2059,7 +2075,8 @@ tpwidget("show");</script>
           
           Centos6启动流程
 POST加电自检,即加载BIOS的硬件信息，获取第一个启动设备
-读取第一个启
+读取第一个启动设备MBR的引导加载程序(grub)的启动信息
+加载核心操作系统的核心信息，核心开始解压缩，并尝试
           ...
           <!--noindex-->
           <div class="post-button text-center">
