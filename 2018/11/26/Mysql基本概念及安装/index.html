@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "66633fdc"
+    });
+  daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Linux知识库" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="数据库概要&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;数据库（Database）是存储与管理数据的软件系统，就像一个存入数据的物流仓库。 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在商业领域，信息就意味着商机，取得信息的一个非常重要的途径就是对数据进行分析处理，这就催生了各种专业的数据管理软件，数据库就是其中的一种。当然，数据库管理系统也不是一下子就建立起来，它也是经过了不断的丰富和发展">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql基本概念及安装">
+<meta property="og:url" content="http://yoursite.com/2018/11/26/Mysql基本概念及安装/index.html">
+<meta property="og:site_name" content="Linux知识库">
+<meta property="og:description" content="数据库概要&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;数据库（Database）是存储与管理数据的软件系统，就像一个存入数据的物流仓库。 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在商业领域，信息就意味着商机，取得信息的一个非常重要的途径就是对数据进行分析处理，这就催生了各种专业的数据管理软件，数据库就是其中的一种。当然，数据库管理系统也不是一下子就建立起来，它也是经过了不断的丰富和发展">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mysql.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mariadb1.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mariadb2.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mariadb3.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mariadb4.png?raw=true">
+<meta property="og:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mariadb5.png?raw=true">
+<meta property="og:updated_time" content="2019-01-26T02:23:51.478Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql基本概念及安装">
+<meta name="twitter:description" content="数据库概要&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;数据库（Database）是存储与管理数据的软件系统，就像一个存入数据的物流仓库。 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在商业领域，信息就意味着商机，取得信息的一个非常重要的途径就是对数据进行分析处理，这就催生了各种专业的数据管理软件，数据库就是其中的一种。当然，数据库管理系统也不是一下子就建立起来，它也是经过了不断的丰富和发展">
+<meta name="twitter:image" content="https://github.com/xiejia1215225/Pictures/blob/master/mysql.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/26/Mysql基本概念及安装/">
+
+
+
+<script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+<script>tpwidget("init", {
+    "flavor": "bubble",
+    "location": "WTW3SJ5ZBJUY",
+    "geolocation": "enabled",
+    "position": "top-left",
+    "margin": "10px 10px",
+    "language": "zh-chs",
+    "unit": "c",
+    "theme": "chameleon",
+    "uid": "U4F2547B10",
+    "hash": "d49c6de3fe37062a9b1db42177056f08"
+});
+tpwidget("show");</script>
+
+  <title>Mysql基本概念及安装 | Linux知识库</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+  
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/xiejia1215225"><img style="position: absolute; top: 0; right: 0; border: 0
+	;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Linux知识库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/26/Mysql基本概念及安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢 佳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linux知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mysql基本概念及安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-26T00:00:00+08:00">
+                2018-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  4.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="数据库概要"><a href="#数据库概要" class="headerlink" title="数据库概要"></a>数据库概要</h1><p>&ensp;&ensp;&ensp;&ensp;数据库（Database）是存储与管理数据的软件系统，就像一个存入数据的物流仓库。</p>
+<p>&ensp;&ensp;&ensp;&ensp;在商业领域，信息就意味着商机，取得信息的一个非常重要的途径就是对数据进行分析处理，这就催生了各种专业的数据管理软件，数据库就是其中的一种。当然，数据库管理系统也不是一下子就建立起来，它也是经过了不断的丰富和发展，才有了今天的模样。</p>
+<h1 id="发展历史"><a href="#发展历史" class="headerlink" title="发展历史"></a>发展历史</h1><ol>
+<li><p>人工处理阶段<br>在20世纪50年代中期以前的计算机诞生初期，其处理能力很有限，只能够完成一些简单的运算，数据处理能力也很有限，这使得当时的计算机只能够用于科学和工程计算。计算机上没有专用的管理数据的软件，数据由计算机或处理它的程序自行携带。当数据的存储格式、读写路径或方法发生变化的时候，其处理程序也必须要做出相应的改变以保持程序的正确性。</p>
+</li>
+<li><p>文件系统<br>20世纪50年代后期到60年代中期，随着硬件和软件技术的发展，计算机不仅用于科学计算，还大量用于商业管理中。在这一时期，数据和程序在存储位置上已经完全分开，数据被单独组织成文件保存到外部存储设备上，这样数据文件就可以为多个不同的程序在不同的时间所使用。<br>虽然程序和数据在存储位置上分开了，而且操作系统也可以帮助我们对完成了数据的存储位置和存取路径的管理，但是程序设计仍然受到数据存储格式和方法的影响，不能够完全独立于数据，而且数据的冗余较大。</p>
+</li>
+<li><p>数据库管理系统<br>从20世纪70年代以来，计算机软硬件技术取得了飞跃式的发展，这一时期最主要的发展就是产生了真正意义上的数据库管理系统，它使得应用程序和数据之间真正的实现的接口统一、数据共享等，这样应用程序都可以按照统一的方式直接操作数据，也就是应用程序和数据都具有了高度的独立性。</p>
+</li>
+</ol>
+<h1 id="数据库分类"><a href="#数据库分类" class="headerlink" title="数据库分类"></a>数据库分类</h1><p>​    数据库通常分为层次式数据库、网络式数据库和关系式数据库三种。</p>
+<p>​    而不同的数据库是按不同的数据结构来联系和组织的。</p>
+<p>​    而在当今的互联网中，最常见的数据库模型主要是两种，即关系型数据库和非关系型数据库。</p>
+<h2 id="关系型数据库-RDMBS"><a href="#关系型数据库-RDMBS" class="headerlink" title="关系型数据库(RDMBS)"></a>关系型数据库(RDMBS)</h2><p>关系 ：关系就是二维表，其中：表中的行、列次序并不重要<br>行row：表中的每一行，又称为一条记录<br>列column：表中的每一列，称为属性，字段<br>主键（Primary key）：用于惟一确定一个记录的字段  （保证数据库避免产生冗余数据的一种手段）<br><code>一张表格只有一个主键，但是可以关联多个字段（复合主键）</code><br>域domain：属性的取值范围，如，性别只能是男’和’女’两个值  </p>
+<p>当前在成熟应用且服务与各种系统的主力数据库还是关系型数据库。<br>代表：Oracle、SQL Server、MySQL</p>
+<h2 id="实体-联系模型E-R"><a href="#实体-联系模型E-R" class="headerlink" title="实体-联系模型E-R"></a>实体-联系模型E-R</h2><p>实体Entity：客观存在并可以相互区分的客观事物或抽象事件称为实体<br>• 在E-R图中用矩形框表示实体，把实体名写在框内<br>属性：实体所具有的特征或性质<br>联系：联系是数据之间的关联集合，是客观存在的应用语义链<br>• 实体内部的联系：指组成实体的各属性之间的联系。如职工实体中，职工号和部门经理号之间有一种关联关系<br>• 实体之间的联系：指不同实体之间联系。例：学生选课实体和学生基本信息实体之间<br>• 实体之间的联系用菱形框表示  </p>
+<h3 id="联系类型"><a href="#联系类型" class="headerlink" title="联系类型"></a>联系类型</h3><ul>
+<li>一对一联系(1:1)  </li>
+<li>一对多联系(1:n)  </li>
+<li>多对多联系(m:n)  </li>
+</ul>
+<h3 id="数据的操作："><a href="#数据的操作：" class="headerlink" title="数据的操作："></a>数据的操作：</h3><p>数据提取：在数据集合中提取感兴趣的内容。 SELECT<br>数据更新：变更数据库中的数据。 INSERT、 DELETE、 UPDATE<br>数据的约束条件 ：是一组完整性规则的集合<br>实体（行）完整性 Entity integrity<br>域（列）完整性 Domain Integrity<br>参考完整性 Referential Integrity  </p>
+<h3 id="约束：constraint，表中的数据要遵守的限制"><a href="#约束：constraint，表中的数据要遵守的限制" class="headerlink" title="约束：constraint，表中的数据要遵守的限制"></a>约束：constraint，表中的数据要遵守的限制</h3><p>​    主键(pk)：一个或多个字段的组合，填入的数据必须能在本表中唯一标识本行；必须提供数据，即NOT NULL，一个表只能有一个<br>​    惟一键(uk)：一个或多个字段的组合，填入的数据必须能在本表中唯一标识本行；允许为NULL，一个表可以存在多个<br>​    外键(fk)：一个表中的某字段可填入的数据取决于另一个表的主键或唯一键已有的数据<br>检查：字段值在一定范围内</p>
+<h2 id="非关系型数据库"><a href="#非关系型数据库" class="headerlink" title="非关系型数据库"></a>非关系型数据库</h2><p>随着时代的进步与发展的需要，非关系型数据库应运而生。</p>
+<p>代表：Redis、Mongodb</p>
+<p>NoSQL数据库在存储速度与灵活性方面有优势，也常用于缓存。</p>
+<h2 id="简易数据规划流程"><a href="#简易数据规划流程" class="headerlink" title="简易数据规划流程"></a>简易数据规划流程</h2><p>第一阶段：收集数据，得到字段  </p>
+<ul>
+<li>收集必要且完整的数据项  </li>
+<li>转换成数据表的字段  </li>
+</ul>
+<p>第二阶段：把字段分类，归入表，建立表的关联  </p>
+<ul>
+<li>关联：表和表间的关系  </li>
+<li>分割数据表并建立关联的优点  </li>
+<li>节省空间  </li>
+<li>减少输入错误  </li>
+<li>方便数据修改  </li>
+</ul>
+<p>第三阶段：  </p>
+<ul>
+<li>规范化数据库  </li>
+</ul>
+<h1 id="数据库的正规化分析"><a href="#数据库的正规化分析" class="headerlink" title="数据库的正规化分析"></a>数据库的正规化分析</h1><h2 id="RDMBS设计范式基础概念"><a href="#RDMBS设计范式基础概念" class="headerlink" title="RDMBS设计范式基础概念"></a>RDMBS设计范式基础概念</h2><p>&ensp;&ensp;&ensp;&ensp;设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同范式，各种范式呈递次规范，越高的范式数据库冗余越小<br>目前关系数据库有六种范式：第一范式（1NF）、第二范式（2NF）、第三范式（3NF）、巴德斯科范式（BCNF）、第四范式(4NF）和第五范式（5NF，又称完美范式）。满足最低要求的范式是第一范式（1NF）。在第一范式的基础上进一步满足更多规范要求的称为第二范式（2NF），其余范式以次类推。一般数据库只需满足第三范式(3NF）即可</p>
+<h2 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h2><p>第一范式（1NF）<br>1NF：无重复的列，每一列都是不可分割的基本数据项，同一列中不能有多个值，即实体中的某个属性不能有多个值或者不能有重复的属性。除去同类型的字段，就是无重复的列<br>说明：第一范式（1NF）是对关系模式的基本要求，不满足第一范式（1NF）的数据库就不是关系数据库<br>第二范式（2NF）<br>2NF：属性完全依赖于主键，第二范式必须先满足第一范式，要求表中的每个行必须可以被唯一地区分。通常为表加上一个列，以存储各个实例的唯一标识PK，非PK的字段需要与整个PK有直接相关性<br>第三范式（3NF）<br>3NF：属性不依赖于其它非主属性，满足第三范式必须先满足第二范式。第三范式要求一个数据库表中不包含已在其它表中已包含的非主关键字信息，非PK的字段间不能有从属关系  </p>
+<h2 id="范式与效率"><a href="#范式与效率" class="headerlink" title="范式与效率"></a>范式与效率</h2><p>&ensp;&ensp;&ensp;&ensp;在我们设计数据库时，设计人员、客户、开发人员通常对数据库的设计有一定的矛盾，客户更喜欢方便，清晰的结果，开发人员也希望数据库关系比较简单，降低开发难度，而设计人员则需要应用三大范式对数据库进行严格规范化，减少数据冗余，提高数据库可维护性和扩展性。由此可以看出，为了满足三大范式，我们数据库设计将会与客户、开发人员产生分歧，所以在实际的数据库设计中，我们不能一味的追求规范化，既要考虑三大范式，减少数据冗余和各种数据库操作异常，又要充分考虑到数据库的性能问题，允许适当的数据库冗余。</p>
+<h1 id="MySQL介绍"><a href="#MySQL介绍" class="headerlink" title="MySQL介绍"></a>MySQL介绍</h1><h2 id="MySQL概要"><a href="#MySQL概要" class="headerlink" title="MySQL概要"></a>MySQL概要</h2><p>&ensp;&ensp;&ensp;&ensp;MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，目前属于 Oracle 旗下产品。MySQL 是最流行的关系型数据库管理系统之一，在 WEB 应用方面，MySQL是最好的 RDBMS (Relational Database Management System，关系数据库管理系统) 应用软件之一</p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/mysql.png?raw=true" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;MySQL是一种关系数据库管理系统，关系数据库将数据保存在不同的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性。<br>&ensp;&ensp;&ensp;&ensp;MySQL所使用的 SQL 语言是用于访问数据库的最常用标准化语言。MySQL 软件采用了双授权政策，分为社区版和商业版，由于其体积小、速度快、总体拥有成本低，尤其是开放源码这一特点，一般中小型网站的开发都选择 MySQL 作为网站数据库。</p>
+<h2 id="MySQL系列"><a href="#MySQL系列" class="headerlink" title="MySQL系列"></a>MySQL系列</h2><h3 id="官方网址："><a href="#官方网址：" class="headerlink" title="官方网址："></a>官方网址：</h3><p><a href="https://www.mysql.com/" target="_blank" rel="noopener">https://www.mysql.com/</a><br><a href="http://mariadb.org/" target="_blank" rel="noopener">http://mariadb.org/</a><br><a href="https://www.percona.com" target="_blank" rel="noopener">https://www.percona.com</a>  </p>
+<h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><p><a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener">https://dev.mysql.com/doc/</a><br><a href="https://mariadb.com/kb/en/" target="_blank" rel="noopener">https://mariadb.com/kb/en/</a><br><a href="https://www.percona.com/software/mysql-database/percona-server" target="_blank" rel="noopener">https://www.percona.com/software/mysql-database/percona-server</a>  </p>
+<h3 id="版本演变："><a href="#版本演变：" class="headerlink" title="版本演变："></a>版本演变：</h3><p>MySQL：5.1 –&gt; 5.5 –&gt; 5.6 –&gt; 5.7 –&gt;8.0<br>MariaDB：5.5 –&gt;10.0–&gt; 10.1 –&gt; 10.2 –&gt; 10.3  </p>
+<h2 id="MYSQL的特性"><a href="#MYSQL的特性" class="headerlink" title="MYSQL的特性"></a>MYSQL的特性</h2><p>&ensp;&ensp;&ensp;&ensp;插件式存储引擎：也称为“表类型”，存储管理器有多种实现版本，功能和特性可能均略有差别；用户可根据需要灵活选择,Mysql5.5.5开始innoDB引擎是MYSQL默认引擎<br>MyISAM ==&gt; Aria<br>InnoDB ==&gt; XtraDB<br>单进程，多线程<br>诸多扩展和新特性<br>提供了较多测试组件<br>开源  </p>
+<h1 id="安装MYSQL"><a href="#安装MYSQL" class="headerlink" title="安装MYSQL"></a>安装MYSQL</h1><p>Mariadb安装方式：</p>
+<ol>
+<li>yum安装</li>
+<li>二进制格式的程序包：展开至特定路径，并经过简单配置后即可使用</li>
+<li>源码编译安装</li>
+</ol>
+<p>以安装mariadb为例介绍：  </p>
+<h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p>1、首先进入mariadb的官网<a href="http://mariadb.org/" target="_blank" rel="noopener">http://mariadb.org/</a><br><img src="https://github.com/xiejia1215225/Pictures/blob/master/mariadb1.png?raw=true" alt=""></p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/mariadb2.png?raw=true" alt=""></p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/mariadb3.png?raw=true" alt=""></p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/mariadb4.png?raw=true" alt=""></p>
+<p>选择操作系统和版本信息后，下面会自动跳出仓库地址，只需复制即可</p>
+<p><img src="https://github.com/xiejia1215225/Pictures/blob/master/mariadb5.png?raw=true" alt=""></p>
+<p>然后安装即可，如果你的仓库中还有其他的EPEL源请禁用:enabled=0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mariadb-server -y(centos7)</span><br></pre></td></tr></table></figure>
+<h2 id="二进制式安装"><a href="#二进制式安装" class="headerlink" title="二进制式安装"></a>二进制式安装</h2><p>二进制安装就是已经将源码进行了编译可以直接复制在相应的文件中即可</p>
+<p>安装前准备：</p>
+<pre><code>1、关闭SELinux
+
+2、关闭防火墙
+
+3、下载所安装的二进制包
+
+4、确保本机没有安装类似的软件
+</code></pre><p>开始安装：</p>
+<p>1、创建系统用户 shell类型为不可登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -r  -d /data/mysqld  -s  /sbin/nologin  mysql</span><br></pre></td></tr></table></figure>
+<p>2、解包 并将解包的文件保存在系统指定的路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tar xf mariadb-10.2.19-linux-x86_64.tar.gz -C /usr/local/</span></span><br><span class="line">[root@centos7 ~]<span class="comment"># ll -d /usr/local/mariadb-10.2.19-linux-x86_64/</span></span><br><span class="line">drwxrwxr-x. 12 1021 1004 4096 Nov 13 07:37 /usr/<span class="built_in">local</span>/mariadb-10.2.19-linux-x86_64/</span><br></pre></td></tr></table></figure>
+<p>3、进入解压后的文件，并将其生成一个软链接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># cd /usr/local/</span></span><br><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># ln -s mariadb-10.2.19-linux-x86_64/ mysql</span></span><br><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># ll mysql</span></span><br><span class="line">lrwxrwxrwx. 1 root root 29 Nov 27 10:30 mysql -&gt; mariadb-10.2.19-linux-x86_64/</span><br></pre></td></tr></table></figure></p>
+<p>4、更改mysql的所属主和所属组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># chown -R root.mysql mysql/</span></span><br></pre></td></tr></table></figure></p>
+<p>5、将其路径写入系统路径变量中并使其立即生效<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># echo 'PATH=/usr/local/mysql/bin:$PATH' &gt;&gt;/etc/profile.d/mysql.sh</span></span><br><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># ./etc/profile.d/mysql.sh</span></span><br></pre></td></tr></table></figure></p>
+<p>6、创建存放用户数据的目录，并修改此目录的相关权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># mkdir /data/mysqldb</span></span><br><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># chown mysql.mysql /data/mysqldb</span></span><br><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># chmod 770 /data/mysqldb</span></span><br></pre></td></tr></table></figure></p>
+<p>7、修改配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 <span class="built_in">local</span>]<span class="comment"># cd mysql/</span></span><br><span class="line">[root@centos7 mysql]<span class="comment"># mkdir /etc/mysql/</span></span><br><span class="line">[root@centos7 mysql]<span class="comment"># cp support-files/my-huge.cnf /etc/mysql/my.cnf</span></span><br><span class="line">[root@centos7 mysql]<span class="comment"># vim /etc/mysql/my.cnf</span></span><br><span class="line">.......省略........</span><br><span class="line">    <span class="comment"># The MySQL server</span></span><br><span class="line">    [mysqld]</span><br><span class="line">    atadir=/data/mysqldb        数据存放的位置</span><br><span class="line">    kip_name_resolve=on         禁止主机名解析（加）</span><br><span class="line">    port            = 3306</span><br><span class="line">    socket          = /tmp/mysql.sock</span><br><span class="line">    .......省略........</span><br></pre></td></tr></table></figure></p>
+<p>7、生成数据库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mysql]<span class="comment"># script/mysql_install_db  --datadir=/data/mysqldb --user=mysql</span></span><br><span class="line">[root@centos7 ~]<span class="comment"># ll /data/mysqldb/</span></span><br><span class="line">total 110660</span><br><span class="line">-rw-rw----. 1 mysql mysql    16384 Nov 27 12:34 aria_log.00000001</span><br><span class="line">-rw-rw----. 1 mysql mysql       52 Nov 27 12:34 aria_log_control</span><br><span class="line">-rw-rw----. 1 mysql mysql      938 Nov 27 12:34 ib_buffer_pool</span><br><span class="line">-rw-rw----. 1 mysql mysql 12582912 Nov 27 12:34 ibdata1</span><br><span class="line">-rw-rw----. 1 mysql mysql 50331648 Nov 27 12:34 ib_logfile0</span><br><span class="line">-rw-rw----. 1 mysql mysql 50331648 Nov 27 12:34 ib_logfile1</span><br><span class="line">drwx------. 2 mysql root      4096 Nov 27 12:34 mysql</span><br><span class="line">-rw-rw----. 1 mysql mysql    29017 Nov 27 12:34 mysql-bin.000001</span><br><span class="line">-rw-rw----. 1 mysql mysql       19 Nov 27 12:34 mysql-bin.index</span><br><span class="line">-rw-rw----. 1 mysql mysql        7 Nov 27 12:34 mysql-bin.state</span><br><span class="line">drwx------. 2 mysql mysql       20 Nov 27 12:34 performance_schema</span><br><span class="line">drwx------. 2 mysql root         6 Nov 27 12:34 <span class="built_in">test</span></span><br></pre></td></tr></table></figure></p>
+<p>9、准备服务脚本，并启动服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mysql]<span class="comment"># cp support-files/mysql.server /etc/init.d/mysqld</span></span><br><span class="line">[root@centos7 mysql]<span class="comment"># chkconfig --add mysqld</span></span><br><span class="line">[root@centos7 mysql]<span class="comment"># service mysqld start</span></span><br></pre></td></tr></table></figure></p>
+<p>10、此时可以正常启动mysql<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># mysql</span></span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MariaDB connection id is 10</span><br><span class="line">Server version: 10.2.19-MariaDB-log MariaDB Server</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt;</span><br></pre></td></tr></table></figure></p>
+<p>11、安全初始化</p>
+<p>​    但是还有一个问题，此时任何用户都可以登录，这样是很危险的，毕竟数据库是想当重要的文件，那么可以通过以下命令进行加密，此命令下有子命令一步一步设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># mysql_secure_installation </span></span><br><span class="line"></span><br><span class="line">NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB</span><br><span class="line">      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!</span><br><span class="line"></span><br><span class="line">In order to <span class="built_in">log</span> into MariaDB to secure it, we<span class="string">'ll need the current</span></span><br><span class="line"><span class="string">password for the root user.  If you'</span>ve just installed MariaDB, and</span><br><span class="line">you haven<span class="string">'t set the root password yet, the password will be blank,</span></span><br><span class="line"><span class="string">so you should just press enter here.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enter current password for root (enter for none): </span></span><br><span class="line"><span class="string">OK, successfully used password, moving on...</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Setting the root password ensures that nobody can log into the MariaDB</span></span><br><span class="line"><span class="string">root user without the proper authorisation.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Set root password? [Y/n] y</span></span><br><span class="line"><span class="string">New password: </span></span><br><span class="line"><span class="string">...............省略........</span></span><br></pre></td></tr></table></figure>
+<p>设置完之后就可以以密码方式登录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># mysql</span></span><br><span class="line">ERROR 1045 (28000): Access denied <span class="keyword">for</span> user <span class="string">'root'</span>@<span class="string">'localhost'</span> (using password: NO)</span><br><span class="line">[root@centos7 ~]<span class="comment"># mysql -uroot -p        以root身份登录，必须要密码了</span></span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MariaDB connection id is 21</span><br><span class="line">Server version: 10.2.19-MariaDB-log MariaDB Server</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="源码编译安装"><a href="#源码编译安装" class="headerlink" title="源码编译安装"></a>源码编译安装</h2><p>1、创建账号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#useradd -r -s /sbin/nologin -d /data/mysql mysql</span></span><br></pre></td></tr></table></figure></p>
+<p>2、安装包组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#yum install bison bison-devel zlib-devel libcurl-devel libarchive-devel boost-devel gcc gcc-c++ cmake ncurses-devel gnutls-devel libxml2-devel openssl-devel libevent-devel libaio-devel</span></span><br></pre></td></tr></table></figure></p>
+<p>3、创建存放用户数据的目录，并修改此目录的相关权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mkdir /data/mysql</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#ll -d /data/mysql</span></span><br><span class="line">drwxr-xr-x 2 root root 6 Nov 27 14:09 /data/mysql</span><br><span class="line">[root@centos7 ~]<span class="comment">#chown mysql.mysql /data/mysql </span></span><br><span class="line">[root@centos7 ~]<span class="comment">#ll -d /data/mysql            </span></span><br><span class="line">drwxr-xr-x 2 mysql mysql 6 Nov 27 14:09 /data/mysql</span><br></pre></td></tr></table></figure></p>
+<p>4、解压缩并且进入目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tar xf mariadb-10.2.19.tar.gz </span></span><br><span class="line">[root@centos7 ~]<span class="comment">#cd mariadb-10.2.19/</span></span><br><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>5、编译安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#cmake . \</span></span><br><span class="line">&gt; -DCMAKE_INSTALL_PREFIX=/app/mysql \</span><br><span class="line">&gt; -DMYSQL_DATADIR=/data/mysql/ \</span><br><span class="line">&gt; -DSYSCONFDIR=/etc \</span><br><span class="line">&gt; -DMYSQL_USER=mysql \</span><br><span class="line">&gt; -DWITH_INNOBASE_STORAGE_ENGINE=1 \</span><br><span class="line">&gt; -DWITH_ARCHIVE_STORAGE_ENGINE=1 \</span><br><span class="line">&gt; -DWITH_BLACKHOLE_STORAGE_ENGINE=1 \</span><br><span class="line">&gt; -DWITH_PARTITION_STORAGE_ENGINE=1 \</span><br><span class="line">&gt; -DWITHOUT_MROONGA_STORAGE_ENGINE=1 \</span><br><span class="line">&gt; -DWITH_DEBUG=0 \</span><br><span class="line">&gt; -DWITH_READLINE=1 \</span><br><span class="line">&gt; -DWITH_SSL=system \</span><br><span class="line">&gt; -DWITH_ZLIB=system \</span><br><span class="line">&gt; -DWITH_LIBWRAP=0 \</span><br><span class="line">&gt; -DENABLED_LOCAL_INFILE=1 \</span><br><span class="line">&gt; -DMYSQL_UNIX_ADDR=/data/mysql/mysql.sock \</span><br><span class="line">&gt; -DDEFAULT_CHARSET=utf8 \</span><br><span class="line">&gt; -DDEFAULT_COLLATION=utf8_general_ci</span><br><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure></p>
+<p>6、准备环境变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#echo 'PATH=/app/mysql/bin:$PATH' &gt; /etc/profile.d/mysql.sh</span></span><br><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#. /etc/profile.d/mysql.sh</span></span><br></pre></td></tr></table></figure></p>
+<p>7、生成数据库文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mariadb-10.2.19]<span class="comment">#cd /app/mysql/</span></span><br><span class="line">[root@centos7 mysql]<span class="comment">#scripts/mysql_install_db --datadir=/data/mysql/ --user=mysql</span></span><br></pre></td></tr></table></figure></p>
+<p>8、准备配置文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mysql]<span class="comment">#cp /app/mysql/support-files/my-huge.cnf /etc/my.cnf</span></span><br></pre></td></tr></table></figure></p>
+<p>9、准备启动脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mysql]<span class="comment">#cp /app/mysql/support-files/mysql.server /etc/init.d/mysqld</span></span><br></pre></td></tr></table></figure></p>
+<p>10、启动服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mysql]<span class="comment">#chkconfig --add mysqld </span></span><br><span class="line">[root@centos7 mysql]<span class="comment">#service mysqld start</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Mysql-客户端"><a href="#Mysql-客户端" class="headerlink" title="Mysql 客户端"></a>Mysql 客户端</h1><h2 id="mysql使用模式："><a href="#mysql使用模式：" class="headerlink" title="mysql使用模式："></a>mysql使用模式：</h2><ol>
+<li>交互式模式：<br>可运行命令有两类：<blockquote>
+<p>客户端命令：  </p>
+<blockquote>
+<p>\h, help<br>\u，use<br>\s，status<br>\!，system  </p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>服务器端命令：<br>SQL语句， 需要语句结束符；</p>
+</blockquote>
+<ol start="2">
+<li><p>脚本模式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql –uUSERNAME -pPASSWORD &lt; /path/somefile.sql</span><br><span class="line">mysql&gt; <span class="built_in">source</span> /path/from/somefile.sql</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="mysql客户端可用选项："><a href="#mysql客户端可用选项：" class="headerlink" title="mysql客户端可用选项："></a>mysql客户端可用选项：</h2><ul>
+<li>-A, –no-auto-rehash 禁止补全  </li>
+<li>-u, –user= 用户名,默认为root  </li>
+<li>-h, –host= 服务器主机,默认为localhost  </li>
+<li>-p, –passowrd= 用户密码,建议使用-p,默认为空密码  </li>
+<li>-P, –port= 服务器端口  </li>
+<li>-S, –socket= 指定连接socket文件路径  </li>
+<li>-D, –database= 指定默认数据库  </li>
+<li>-C, –compress 启用压缩  </li>
+<li>-e “SQL“ 执行SQL命令  </li>
+<li>-V, –version 显示版本  </li>
+<li>-v –verbose 显示详细信息  </li>
+<li>–print-defaults 获取程序默认使用的配置  </li>
+</ul>
+<h2 id="socket地址"><a href="#socket地址" class="headerlink" title="socket地址"></a>socket地址</h2><p>服务器监听的两种socket地址：</p>
+<ol>
+<li><p>ip socket: 监听在tcp的3306端口，支持远程通信</p>
+</li>
+<li><p>unix sock: 监听在sock文件上，仅支持本机通信<br> 如：/var/lib/mysql/mysql.sock)</p>
+<p> <strong>说明：host为localhost,127.0.0.1时自动使用unix sock</strong> </p>
+</li>
+</ol>
+<h2 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h2><p>运行mysql命令：默认空密码登录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; use mysql</span><br><span class="line">Database changed</span><br><span class="line">MariaDB [mysql]&gt; select user();</span><br><span class="line">+----------------+</span><br><span class="line">| user()         |</span><br><span class="line">+----------------+</span><br><span class="line">| root@localhost |</span><br><span class="line">+----------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line">MariaDB [mysql]&gt; select user,host,password from user;</span><br><span class="line">+------+-----------+-------------------------------------------+</span><br><span class="line">| user | host      | password                                  |</span><br><span class="line">+------+-----------+-------------------------------------------+</span><br><span class="line">| root | localhost | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |</span><br><span class="line">| root | 127.0.0.1 | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |</span><br><span class="line">| root | ::1       | *6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 |</span><br><span class="line">+------+-----------+-------------------------------------------+</span><br><span class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>登录系统：<code>mysql –uroot –p</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># mysql -uroot -p</span></span><br><span class="line">Enter password:</span><br></pre></td></tr></table></figure></p>
+<p>客户端命令：本地执行<br><code>mysql&gt; help</code><br>每个命令都完整形式和简写格式<br><code>mysql&gt; status 或 \s</code><br>服务端命令：通过mysql协议发往服务器执行并取回结果<br>​    每个命令末尾都必须使用命令结束符号，默认为分号<br>​    示例：<code>select version();</code>  </p>
+<h1 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h1><p>服务器端(mysqld)：工作特性有多种配置方式  </p>
+<ol>
+<li><p>命令行选项：</p>
+</li>
+<li><p>配置文件：类ini格式</p>
+<p>集中式的配置，能够为mysql的各应用程序提供配置信息<br>[mysqld][mysqld_safe]<br>[mysqld_multi][mysql]<br>[mysqldump][server]<br>[client]<br>格式：parameter = value<br>说明：_和- 相同<br>​    1，ON，TRUE意义相同;</p>
+<p>​    0，OFF，FALSE意义相同  </p>
+</li>
+<li><p>配置文件</p>
+<p>后面覆盖前面的配置文件，顺序如下：  </p>
+<ol>
+<li>/etc/my.cnf     Global选项  </li>
+<li>/etc/mysql/my.cnf       Global选项 </li>
+<li>SYSCONFDIR/my.cnf         Global选项  </li>
+<li>$MYSQL_HOME/my.cnf        Server-specific 选项  </li>
+<li>–defaults-extra-file=path  </li>
+<li>~/.my.cnf          User-specific 选项  </li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+  <div style="text-align:center;color: #ccc;font-size:14px;">---------------- The End ----------------</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="谢 佳 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="谢 佳 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/26/Mysql数据库的基本操作/" rel="next" title="Mysql数据库的基本操作">
+                <i class="fa fa-chevron-left"></i> Mysql数据库的基本操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/26/Mysql多实例/" rel="prev" title="mysql多实例">
+                mysql多实例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.gif" alt="谢 佳">
+            
+              <p class="site-author-name" itemprop="name">谢 佳</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+	  
+	  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=25638273&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库概要"><span class="nav-number">1.</span> <span class="nav-text">数据库概要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发展历史"><span class="nav-number">2.</span> <span class="nav-text">发展历史</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库分类"><span class="nav-number">3.</span> <span class="nav-text">数据库分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关系型数据库-RDMBS"><span class="nav-number">3.1.</span> <span class="nav-text">关系型数据库(RDMBS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实体-联系模型E-R"><span class="nav-number">3.2.</span> <span class="nav-text">实体-联系模型E-R</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#联系类型"><span class="nav-number">3.2.1.</span> <span class="nav-text">联系类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据的操作："><span class="nav-number">3.2.2.</span> <span class="nav-text">数据的操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束：constraint，表中的数据要遵守的限制"><span class="nav-number">3.2.3.</span> <span class="nav-text">约束：constraint，表中的数据要遵守的限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非关系型数据库"><span class="nav-number">3.3.</span> <span class="nav-text">非关系型数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简易数据规划流程"><span class="nav-number">3.4.</span> <span class="nav-text">简易数据规划流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库的正规化分析"><span class="nav-number">4.</span> <span class="nav-text">数据库的正规化分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDMBS设计范式基础概念"><span class="nav-number">4.1.</span> <span class="nav-text">RDMBS设计范式基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#范式"><span class="nav-number">4.2.</span> <span class="nav-text">范式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#范式与效率"><span class="nav-number">4.3.</span> <span class="nav-text">范式与效率</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL介绍"><span class="nav-number">5.</span> <span class="nav-text">MySQL介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL概要"><span class="nav-number">5.1.</span> <span class="nav-text">MySQL概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL系列"><span class="nav-number">5.2.</span> <span class="nav-text">MySQL系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方网址："><span class="nav-number">5.2.1.</span> <span class="nav-text">官方网址：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官方文档"><span class="nav-number">5.2.2.</span> <span class="nav-text">官方文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本演变："><span class="nav-number">5.2.3.</span> <span class="nav-text">版本演变：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MYSQL的特性"><span class="nav-number">5.3.</span> <span class="nav-text">MYSQL的特性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装MYSQL"><span class="nav-number">6.</span> <span class="nav-text">安装MYSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yum安装"><span class="nav-number">6.1.</span> <span class="nav-text">yum安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二进制式安装"><span class="nav-number">6.2.</span> <span class="nav-text">二进制式安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码编译安装"><span class="nav-number">6.3.</span> <span class="nav-text">源码编译安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mysql-客户端"><span class="nav-number">7.</span> <span class="nav-text">Mysql 客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql使用模式："><span class="nav-number">7.1.</span> <span class="nav-text">mysql使用模式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql客户端可用选项："><span class="nav-number">7.2.</span> <span class="nav-text">mysql客户端可用选项：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket地址"><span class="nav-number">7.3.</span> <span class="nav-text">socket地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行命令"><span class="nav-number">7.4.</span> <span class="nav-text">执行命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务器端配置"><span class="nav-number">8.</span> <span class="nav-text">服务器端配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢 佳</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">112.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+<div>
+<!-- 填写你的友盟代码 -->
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1276087848'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1276087848%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- 你的友盟代码 end -->
+</div>
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 雪花特效 -->
+  <script type="text/javascript">
+    var windowWidth = $(window).width();
+    if (windowWidth > 480) {
+      document.write('<script type="text/javascript" src="/js/src/snow.js"><\/script>');
+      }
+  </script>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
